@@ -3,7 +3,9 @@
 Tessuno is an inspectable development source scaffold, based on a reviewed synthetic
 portable-library prototype. The initial prepublication preparation is recorded in
 docs/tessuno-preparation.md. Maintainer and triage owner: GitHub account sha-shank-03.
-Repository creation/push and private reporting settings are not yet verified.
+Public repository creation/push and the single bounded Lane A run are recorded in
+docs/ci-proposal.md. Private reporting settings remain unverified here. This newer local
+candidate needs independent review; the completed run does not validate it or authorize a rerun.
 Public source preview follows docs/source-preview-policy.md and grants no execution authority.
 Keep library objects inert: no installer, runtime, remote calls, provider calls, or secret access.
 Use original synthetic fixtures only. Never copy private application code, account identifiers,

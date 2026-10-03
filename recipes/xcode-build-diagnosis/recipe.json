@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "maintainer": {
+    "name": "sha-shank-03",
+    "contact": "https://github.com/sha-shank-03"
+  },
+  "stacks": [
+    "ios",
+    "swift"
+  ],
+  "kind": "Recipe",
+  "id": "core/xcode-build-diagnosis-review",
+  "title": "Inspect an Xcode Build Failure",
+  "purpose": "Produce and review a cited log-only diagnosis; preserve all unrun checks and forbid automatic repairs.",
+  "inputs": [
+    "Sanitized supplied log with stable line numbers",
+    "Optional source excerpt and scheme/toolchain context"
+  ],
+  "outputs": [
+    "Structured diagnosis matching response.schema.json; no execution claims"
+  ],
+  "steps": [
+    {
+      "id": "diagnose",
+      "uses": {
+        "kind": "Skill",
+        "id": "core/xcode-build-diagnosis",
+        "version": "0.1.0"
+      },
+      "expectedArtifacts": [
+        "Structured diagnosis"
+      ],
+      "verificationCriteria": [
+        "Each observation quotes an exact supplied log line; hypotheses remain unconfirmed; execution statuses are not-run/not-applied."
+      ]
+    },
+    {
+      "id": "review-diagnosis",
+      "uses": {
+        "kind": "Agent",
+        "id": "core/xcode-build-diagnostician",
+        "version": "0.1.0"
+      },
+      "expectedArtifacts": [
+        "Reviewed structured diagnosis and evidence gaps"
+      ],
+      "verificationCriteria": [
+        "Review citations, dependency/context gaps and proposed next steps; fixture scorer output is not model/runtime evidence."
+      ],
+      "humanCheckpoint": {
+        "reason": "A person decides whether more inputs or a separately scoped verification is justified.",
+        "requiredDecision": "Request context or separately authorize a bounded build/test; no automatic fix or signing/account action."
+      }
+    }
+  ]
+}

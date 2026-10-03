@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1",
+  "id": "synthetic-release-review",
+  "subject": {
+    "id": "core/synthetic-release",
+    "version": "1.0.0",
+    "sha256": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+    "sourceRevision": "synthetic-release-not-a-git-run",
+    "lockDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "adapterDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "components": [
+      {
+        "id": "core/synthetic-release",
+        "version": "1.0.0",
+        "sha256": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3"
+      }
+    ]
+  },
+  "producer": {
+    "type": "human",
+    "identity": "synthetic-untrusted-reviewer",
+    "reviewUrl": "https://example.invalid/not-a-review"
+  },
+  "check": {
+    "name": "fixture-only",
+    "suiteDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "fixtureDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "configDigest": "76973ae2679c91f443b49fcc972cbcb224cf227540a15a36351c5962a69a1ffa"
+  },
+  "status": "pass",
+  "artifacts": [],
+  "createdAt": "2026-10-01T00:00:00Z",
+  "limitations": [
+    "SYNTHETIC SCHEMA FIXTURE. No real execution, review or enforcement occurred."
+  ],
+  "category": "human-review",
+  "details": {
+    "decision": "approve",
+    "reviewType": "content-review",
+    "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+    "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+    "actions": [
+      "Inspect synthetic release packet only"
+    ],
+    "rationale": "Authored synthetic review; no real independent reviewer approval."
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "1"
+    },
+    "caseId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "enum": [
+              "unresolved-symbol",
+              "missing-module",
+              "insufficient-log"
+            ]
+          },
+          "logLine": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "code",
+          "logLine",
+          "quote"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "maxItems": 8
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "enum": [
+              "symbol-name-mismatch",
+              "missing-source-declaration",
+              "target-dependency-missing",
+              "insufficient-context"
+            ]
+          },
+          "evidenceLines": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true,
+            "maxItems": 8
+          },
+          "status": {
+            "const": "unconfirmed"
+          }
+        },
+        "required": [
+          "code",
+          "evidenceLines",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "maxItems": 8
+    },
+    "nextSteps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "enum": [
+              "inspect-symbol-definition",
+              "inspect-target-membership",
+              "request-more-context",
+              "propose-simulator-build"
+            ]
+          },
+          "status": {
+            "const": "proposed"
+          },
+          "requiresHumanReview": {
+            "const": true
+          }
+        },
+        "required": [
+          "action",
+          "status",
+          "requiresHumanReview"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "maxItems": 8
+    },
+    "missingInputs": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "source-definitions",
+          "target-configuration",
+          "toolchain-version",
+          "compiler-diagnostic"
+        ]
+      },
+      "minItems": 0,
+      "uniqueItems": true,
+      "maxItems": 8
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "build": {
+          "const": "not-run"
+        },
+        "tests": {
+          "const": "not-run"
+        },
+        "fixes": {
+          "const": "not-applied"
+        }
+      },
+      "required": [
+        "build",
+        "tests",
+        "fixes"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "caseId",
+    "observations",
+    "hypotheses",
+    "nextSteps",
+    "missingInputs",
+    "execution"
+  ],
+  "additionalProperties": false
+}

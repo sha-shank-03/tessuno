@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1",
+  "caseId": "unresolved-symbol",
+  "observations": [
+    {
+      "code": "unresolved-symbol",
+      "logLine": 3,
+      "quote": "Sources/Settings.swift:8:17: error: cannot find 'storedToggle' in scope"
+    }
+  ],
+  "hypotheses": [
+    {
+      "code": "symbol-name-mismatch",
+      "evidenceLines": [
+        3
+      ],
+      "status": "unconfirmed"
+    }
+  ],
+  "nextSteps": [
+    {
+      "action": "inspect-symbol-definition",
+      "status": "proposed",
+      "requiresHumanReview": true
+    }
+  ],
+  "missingInputs": [
+    "source-definitions",
+    "toolchain-version"
+  ],
+  "execution": {
+    "build": "not-run",
+    "tests": "not-run",
+    "fixes": "not-applied"
+  }
+}

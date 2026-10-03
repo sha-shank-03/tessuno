@@ -1,0 +1,44 @@
+// Original synthetic static-library project; no package or script phases.
+{
+    archiveVersion = 1;
+    classes = {};
+    objectVersion = 56;
+    objects = {
+        A00000000000000000000001 = { isa = PBXBuildFile; fileRef = A00000000000000000000002; };
+        A00000000000000000000002 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Counter.swift; sourceTree = "<group>"; };
+        A00000000000000000000003 = { isa = PBXFileReference; explicitFileType = archive.ar; path = libReferenceFixture.a; sourceTree = BUILT_PRODUCTS_DIR; };
+        A00000000000000000000004 = { isa = PBXGroup; children = (A00000000000000000000002, A00000000000000000000005); sourceTree = "<group>"; };
+        A00000000000000000000005 = { isa = PBXGroup; children = (A00000000000000000000003); name = Products; sourceTree = "<group>"; };
+        A00000000000000000000006 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A00000000000000000000001); runOnlyForDeploymentPostprocessing = 0; };
+        A00000000000000000000007 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+        A00000000000000000000008 = {
+            isa = PBXNativeTarget; buildConfigurationList = A00000000000000000000009;
+            buildPhases = (A00000000000000000000006, A00000000000000000000007);
+            buildRules = (); dependencies = (); name = ReferenceFixture;
+            productName = ReferenceFixture; productReference = A00000000000000000000003;
+            productType = "com.apple.product-type.library.static";
+        };
+        A00000000000000000000009 = { isa = XCConfigurationList; buildConfigurations = (A00000000000000000000010); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+        A00000000000000000000010 = {
+            isa = XCBuildConfiguration; name = Debug;
+            buildSettings = {
+                PRODUCT_NAME = ReferenceFixture; PRODUCT_MODULE_NAME = ReferenceFixture;
+                SDKROOT = iphonesimulator; SUPPORTED_PLATFORMS = iphonesimulator;
+                IPHONEOS_DEPLOYMENT_TARGET = 18.0; SWIFT_VERSION = 5.0;
+                SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SKIP_INSTALL = YES;
+                CODE_SIGNING_ALLOWED = NO; CODE_SIGNING_REQUIRED = NO;
+                GENERATE_INFOPLIST_FILE = NO;
+            };
+        };
+        A00000000000000000000011 = { isa = XCConfigurationList; buildConfigurations = (A00000000000000000000012); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+        A00000000000000000000012 = { isa = XCBuildConfiguration; name = Debug; buildSettings = {}; };
+        A00000000000000000000013 = {
+            isa = PBXProject; buildConfigurationList = A00000000000000000000011;
+            compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0;
+            knownRegions = (en); mainGroup = A00000000000000000000004;
+            productRefGroup = A00000000000000000000005; projectDirPath = ""; projectRoot = "";
+            targets = (A00000000000000000000008);
+        };
+    };
+    rootObject = A00000000000000000000013;
+}
