@@ -1,0 +1,81 @@
+# LOCAL REVIEW PROPOSAL ONLY: outside .github/workflows; inert suffix.
+# Requires exact configuration review and explicit owner approval before setup.
+# Checks reviewed source; provides no Agent/runtime/enforcement qualification.
+name: Tessuno reviewed source validation
+'on':
+  workflow_dispatch:
+permissions: {}
+cache-mode: none
+concurrency:
+  group: tessuno-reviewed-source-validation
+  cancel-in-progress: false
+jobs:
+  validate:
+    if: >-
+      ${{ github.event_name == 'workflow_dispatch' &&
+          github.repository == 'sha-shank-03/tessuno' &&
+          github.event.repository.private == false &&
+          github.ref == 'refs/heads/main' &&
+          github.actor == 'sha-shank-03' &&
+          github.triggering_actor == 'sha-shank-03' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    env:
+      REVIEWED_SOURCE_SHA: ade193beda810f85ac38fa008f25f7261c272b23
+      PYTHONDONTWRITEBYTECODE: '1'
+      PIP_DISABLE_PIP_VERSION_CHECK: '1'
+    steps:
+      - name: Acquire exact reviewed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        timeout-minutes: 2
+        with:
+          repository: sha-shank-03/tessuno
+          ref: ade193beda810f85ac38fa008f25f7261c272b23
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - name: Confirm exact source identity
+        run: test "$(git rev-parse HEAD)" = "$REVIEWED_SOURCE_SHA"
+      - name: Select exact Python version
+        uses: actions/setup-python@9191ea1a55b1e7028943ee5647bf579e1182b42d # upstream security fixes after v7.0.0
+        timeout-minutes: 3
+        with:
+          python-version: '3.12.15'
+          architecture: x64
+          check-latest: false
+      - name: Select exact Node version for catalog regression
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        timeout-minutes: 2
+        with:
+          node-version: '24.21.0'
+          architecture: x64
+          check-latest: false
+          package-manager-cache: false
+      - name: Acquire existing hash-locked development dependencies
+        timeout-minutes: 3
+        run: |
+          python -m venv "$RUNNER_TEMP/tessuno-venv"
+          "$RUNNER_TEMP/tessuno-venv/bin/python" -m pip --isolated --disable-pip-version-check install --no-cache-dir --require-hashes --only-binary=:all: --timeout 15 --retries 1 -r requirements-dev.lock
+          "$RUNNER_TEMP/tessuno-venv/bin/python" -m pip check
+      - name: Record source and runtime identities
+        env:
+          CONTROLLER_SHA: ${{ github.workflow_sha }}
+        run: |
+          printf '%s\n' "reviewed-source=$REVIEWED_SOURCE_SHA" "workflow-source=$CONTROLLER_SHA"
+          python -c 'import platform; assert platform.python_version() == "3.12.15"'
+          test "$(node --version)" = 'v24.21.0'
+          "$RUNNER_TEMP/tessuno-venv/bin/python" --version
+          "$RUNNER_TEMP/tessuno-venv/bin/python" -m pip --version
+          node --version
+      - name: Run reviewed source checks and rejecting publication gate
+        timeout-minutes: 4
+        run: |
+          "$RUNNER_TEMP/tessuno-venv/bin/python" -B tools/ci_checks.py
+          "$RUNNER_TEMP/tessuno-venv/bin/python" -B tools/check_ci_proposal.py
+          test -z "$(git status --porcelain)"

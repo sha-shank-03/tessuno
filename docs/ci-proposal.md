@@ -1,6 +1,10 @@
-# Disabled CI design proposal
+# CI policy: scoped Lane A; disabled Lane B
 
-No .github/workflows job is enabled and no GitHub run occurred. This is a reviewable design only.
+Lane A is limited to the conditional exception below. Lane B remains disabled.
+At preparation on 2026-10-03, Actions was disabled and no GitHub run had occurred.
+
+## Disabled Lane B design
+
 Do not copy candidate commands into privileged pull_request_target or workflow_run jobs.
 
 Untrusted pull-request lane:
@@ -23,7 +27,7 @@ Enforcing runner isolation and offline dependencies has not been implemented. A 
 network defaults do not prove network denial. Enable nothing until a real environment and controls
 are independently reviewed. A YAML job that merely runs these scripts would not establish trust.
 
-## Tessuno activation diff to prepare later
+## Lane B activation diff to prepare later
 
 Keep this proposal disabled. A later bounded change should add a reviewed dependency
 lock with hashes and an offline runner image; bind validator/harness/scorer to a
@@ -36,3 +40,198 @@ Do not add pull_request_target, workflow_run, secrets, write tokens, artifact co
 comments, Pages, deployments, signing, package publishing or production environments.
 Ordinary hosted-runner YAML does not enforce the required offline boundary. The runner
 implementation, dependency license inventory and protected configuration remain blockers.
+
+## Reviewed-source Lane A exception; untrusted Lane B remains disabled
+
+**Activation condition:** This bootstrap adopts only the reviewed-source Lane A exception
+when the owner authorizes its exact merge to main, the scoped repository settings and one
+manual run, subject to the readbacks below. Until that authorization and setup, this local
+activation candidate grants no remote execution authority. The original requirements above
+remain effective for Lane B. Their all-activation blocker has only this documented A exception;
+no Agent, Skill, Recipe, Pack, evidence, publication or release contract changes.
+
+The sole controller path is `.github/workflows/reviewed-source-validation.yml`. Its bytes
+are identical to independently accepted inert proposal commit
+`cdb9b22660445e7429df7775d16092117fead0c2`, with SHA256
+`aa96215d825cc9e801e6dc155160a6b1044b66fe02d35bd64549d1dc534819d9`.
+The historical inert-proposal header comments are preserved to retain that reviewed digest;
+the controller path, repository settings and dispatch guards determine activation. No disabled
+copy is added by this bootstrap. Lane B's separate disabled proposal remains unchanged.
+
+### Lane A: manually validate one exact reviewed source commit
+
+The first source is `ade193beda810f85ac38fa008f25f7261c272b23`, the independently accepted
+bounded source integration in [draft PR 17](https://github.com/sha-shank-03/tessuno/pull/17).
+This bootstrap starts from main `f19a87ab6d1a390f0c1848b2338b21301163494e`; it does not
+merge that PR or rewrite any existing branch. The workflow controller and checked
+source are separate identities, both recorded in run logs.
+
+Bounded Lane A configuration:
+
+- Only `workflow_dispatch`; only `sha-shank-03` as both actor and rerun actor, on main
+  in public `sha-shank-03/tessuno`. No arbitrary commit input, PR trigger or matrix.
+- Checkout the literal reviewed SHA and verify it before checking source. No submodules,
+  LFS, persisted Git credentials or checkout of a changing branch/PR merge ref.
+- Empty default token permissions; the only job grants `contents: read`, with all other
+  scopes absent. No repository, organization, environment, application or provider secrets,
+  PAT, OIDC, signing, environment, deployment, package/release publication or PR approval.
+- Three official actions pinned to full commit SHAs; Python 3.12.15 and Node 24.21.0.
+  The existing seven-package development lock is consumed from that same reviewed SHA,
+  requiring hashes and wheels only. No dependency upgrade, source-distribution fallback,
+  pip cache, package-manager cache, Actions cache, artifact upload or privileged consumer.
+- One standard `ubuntu-24.04` job, ten-minute job limit, bounded setup/check steps and
+  dependency retry/time limits. Constant concurrency group; no automatic retries or
+  cancellation of a running attempt. Preserve failed, timed-out and skipped run records.
+- Run the reviewed source-hygiene, validation, unittest and deterministic-build commands;
+  require publication rejection, check the still-inert lane B proposal and source status.
+  The accepted source has 91 local structural/synthetic tests. CI does not call Xcode,
+  Apple services, a model, an Agent host adapter or any deployment service.
+
+"No secrets" excludes application/repository secrets, not every platform credential.
+Checkout/bootstrap still uses the platform's ephemeral read-only `GITHUB_TOKEN`;
+GitHub also supplies internal run-service credentials. No credential-free containment
+claim follows from `persist-credentials: false` or a missing `secrets` expression.
+
+Lane A would accept GitHub-hosted image/bootstrap and network trust. The runner image
+changes over time; exact language/action versions are not an immutable runtime image.
+Standard hosted VMs have outbound network access and passwordless sudo. This proposal
+does not enforce offline execution, remove Docker/sudo capability, prove token absence,
+or implement the proposed 1 GiB memory/scratch and 10 MiB log quotas. Its scope is reviewed
+first-party source validation on a disposable runner, not hostile-code containment.
+
+### Repository-wide workflow admission prerequisite
+
+The owner/ref guard protects this job only. An action allowlist does not prevent other
+workflows with inline `run` steps; local/owner actions may also be permitted. Read-only
+defaults can be overridden by a workflow writer. Require trusted owner review of every
+workflow, trigger, permission and local-action change on every same-repository branch.
+Do not add a writer or approve an untrusted fork run as part of A. Privileged events or
+consumers remain excluded. These are admission procedures, not a universal execution
+allowlist or an implemented branch-protection guarantee.
+
+The 2026-10-03 read-only inventory found Actions disabled, zero registered workflows,
+zero runs and no `.github/workflows` files across all nine same-repository branch heads
+and open-PR heads (nine distinct commit trees; no tags). The fork policy is currently
+`first_time_contributors`. Before enabling Actions, recheck this inventory and change
+the policy to **Require approval for all external contributors**
+(`all_external_contributors`); read back the effective value. Prior contribution can
+bypass first-time-only approval. Leave all untrusted fork runs unapproved under A.
+Any newly discovered workflow or same-repository writer requires fresh scope review.
+[GitHub documents these policy limits](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository).
+
+### Reviewed version and one-run advisory disposition
+
+Select and assert [Python 3.12.15](https://www.python.org/downloads/release/python-31215/),
+the 2026-09-30 security release. The official
+[Python versions manifest](https://github.com/actions/python-versions/blob/main/versions-manifest.json)
+listed a Linux 24.04 x64 build at preparation time. Local foundation checks used the
+existing Python 3.12.13 environment; no 3.12.15 runner check or action execution has occurred.
+
+| Action | Exact commit |
+| --- | --- |
+| `actions/checkout` | `3d3c42e5aac5ba805825da76410c181273ba90b1` (v7.0.1) |
+| `actions/setup-python` | `9191ea1a55b1e7028943ee5647bf579e1182b42d` (official upstream security fixes after v7.0.0) |
+| `actions/setup-node` | `820762786026740c76f36085b0efc47a31fe5020` (v7.0.0) |
+
+The previous setup-python v7.0.0 lock contains `fast-xml-parser` 5.9.3, matching
+[GHSA-8r6m-32jq-jx6q](https://github.com/NaturalIntelligence/fast-xml-parser/security/advisories/GHSA-8r6m-32jq-jx6q).
+Replace that pin with the narrow
+[two-commit upstream security update](https://github.com/actions/setup-python/compare/5fda3b95a4ea91299a34e894583c3862153e4b97...9191ea1a55b1e7028943ee5647bf579e1182b42d).
+Its lock and license metadata select patched 5.10.1 and Undici 6.28.0; both action
+bundles were updated upstream. Action inputs, Node24 runtime, root MIT license and
+cache-control source are unchanged. This is an official commit pin, not a new published
+release tag. Keep the Python cache input unset, Node caching false and cache-mode none.
+The exact replacement and dependency/license delta were independently accepted with the
+documented residual one-run risk. Lock metadata and static bundle inspection do not prove
+source-to-bundle equivalence or vulnerability freedom; no action bundle was executed locally.
+
+The unchanged checkout and setup-node locks contain Undici 6.27.0, matching the July
+advisories [retry response framing](https://github.com/nodejs/undici/security/advisories/GHSA-8xcm-r25x-g524),
+[blob content-type injection](https://github.com/nodejs/undici/security/advisories/GHSA-m8rv-5g2x-5cg5)
+and [cookie attribute injection](https://github.com/nodejs/undici/security/advisories/GHSA-v3r7-h72x-cjcm).
+No reachable exploit in this fixed-source lane has been demonstrated. Reviewed bounded
+disposition: one owner-approved run with literal source/runtime/action inputs, disabled
+caches, reviewed first-party code and ordinary official-upstream network trust; no
+untrusted blob/header/cookie input or downstream proxy feature is supplied by Tessuno.
+Those constraints reduce exposure by inference, not a full dependency reachability proof.
+Independent review accepted this documented one-run disposition; explicit owner acceptance
+is included in the bundled activation approval. The exception cannot cover
+untrusted contributions, new inputs, later pins or later source/controller revisions.
+
+All action roots declare MIT; transitive packages retain their own license expressions
+and are not relicensed under Tessuno's Apache-2.0. This is targeted advisory/metadata
+review, not an exhaustive vulnerability scan, independent bundle rebuild or execution test.
+
+### Lane B: untrusted contribution or evaluation execution
+
+The existing requirements remain: protected external harness/scorer and acceptance policy,
+reviewed immutable runtime/image/wheelhouse, denied egress after acquisition, isolated
+credentials/mounts/socket, enforced CPU/memory/disk/log/time budgets, demonstrated child
+cancellation and adversarial fork/same-repository/injection/artifact-poisoning checks.
+The PR 14 proposal included in the reviewed PR 17 source remains disabled, hard-blocked
+and unchanged. Adding automatic PR execution, arbitrary source selection, contributed
+policy or model/host execution is a new B-scope review, not an extension granted by A.
+
+Neither lane alone authenticates evidence or establishes Agent/runtime/enforcement
+qualification. `trust_evidence`, `qualify` and `publication_gate` remain rejecting.
+Raw-source/browser, real iOS/app/model/producer and release qualification gates stay open.
+
+### One bundled owner approval and conditional execution
+
+One explicit owner approval covers this exact two-file bootstrap, A's hosted-runner
+assumptions and documented one-run residual advisory disposition, the scoped repository
+settings and one manual run. Within that approved scope, proceed through these steps
+without repeated generic approval. Failed or changed readbacks stop execution and require
+resolution/review; this approval does not authorize reruns or scope expansion.
+
+1. Review the final two-file activation diff and unchanged workflow digest. Confirm supported
+   hosted Actions syntax/inputs against the accepted configuration; local YAML/bash parsing
+   is not a hosted execution verdict. Keep Actions disabled while preparing the merge.
+2. Read back public `sha-shank-03/tessuno`, default branch main, current main identity and
+   all branch/PR workflow paths. Inventory registered workflows and existing same-repository
+   writers; resolve unexpected workflows or authority before enabling anything. No canonical
+   contract/tool, existing source branch, PR 17 or original Lane B proposal changes.
+3. Publish and merge only the approved two-file bootstrap into main while Actions remains
+   disabled. Manual dispatch needs the controller on the default branch. Read back the
+   actual controller/main commit and exact workflow bytes/digest; record both identities.
+4. Before enabling Actions, set and read back `approval_policy: all_external_contributors`,
+   `default_workflow_permissions: read` and `can_approve_pull_request_reviews: false`.
+   Set selected-action policy to the three exact SHA refs above, `github_owned_allowed: false`,
+   `verified_allowed: false` and `sha_pinning_required: true`; no broad action exception.
+   Enable Actions only after inventory and admission-policy readbacks pass, then verify every
+   effective setting again. Keep all untrusted fork runs unapproved and workflow/permission/
+   local-action changes under trusted owner review. The allowlist does not block inline code.
+   No secret, production environment, new writer, self-hosted runner or billing setup.
+5. After those matching readbacks, perform exactly one `workflow_dispatch` by `sha-shank-03`
+   from main, bound to the recorded controller SHA and workflow digest, validating only
+   `ade193beda810f85ac38fa008f25f7261c272b23`. Recheck main immediately before dispatch and
+   verify the resulting run's controller identity; abort/cancel on drift. Actor and rerun
+   actor must both be the owner. No second attempt or automatic retry is authorized.
+6. Record run URL, attempt, controller/source SHAs, image/runtime identities, every job/step
+   outcome, test count, expected publication rejection and build receipt. Skips, parser/setup
+   failures, timeouts or partial checks provide no validation verdict. This is not a required
+   PR 17-head status check. No source merge, deployment, release or qualification follows.
+
+The checked source's current tests forbid any live workflow in that source snapshot.
+They remain unchanged for the pinned first run. Before validating a later source that
+contains CI, explicitly review a narrow workflow allowlist and negative tests; do not
+silently delete that assertion or imply the bootstrap validates newer source revisions.
+
+Public standard runner minutes are currently free; the proposal uses no larger runner,
+cache/artifact storage, deployment or model call. Budget: one job per explicit dispatch,
+ten-minute configured timeout, one active job. Hosted public Ubuntu allocation is currently
+4 vCPU, 16 GB RAM and 14 GB SSD, not a custom per-process quota. Cancellation may take
+additional platform shutdown time. Private visibility, paid runners, storage or provider
+calls need a separately approved budget. No account-wide billing change is proposed.
+
+Sources checked during proposal preparation:
+
+- [Manual dispatch and default-branch requirement](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)
+- [Dispatch source/ref semantics](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch)
+- [Hosted runner resources and privileges](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
+- [Permissions, timeout and cache-mode syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [Action pinning and untrusted-code risks](https://docs.github.com/en/actions/reference/security/secure-use)
+- [Repository action allowlists](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository)
+- [Hash-checked wheel installation](https://pip.pypa.io/en/stable/topics/secure-installs/)
+- [Public standard-runner billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions)
+- [Workflow cancellation behavior](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation)
