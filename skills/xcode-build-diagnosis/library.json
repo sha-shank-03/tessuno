@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "maintainer": {
+    "name": "sha-shank-03",
+    "contact": "https://github.com/sha-shank-03"
+  },
+  "stacks": [
+    "ios",
+    "swift"
+  ],
+  "kind": "Skill",
+  "id": "core/xcode-build-diagnosis",
+  "title": "Xcode Build Diagnosis",
+  "purpose": "Diagnose supplied sanitized build logs using cited observations, unconfirmed hypotheses and bounded proposed verification.",
+  "entry": "SKILL.md",
+  "filesystemScope": {
+    "read": [
+      "${workspace}/inputs/**"
+    ],
+    "write": [],
+    "deny": [
+      "${workspace}/secrets/**",
+      "${workspace}/.env*"
+    ]
+  },
+  "networkScope": {
+    "mode": "none",
+    "destinations": [],
+    "externalWriteAllowed": false
+  },
+  "requiredTools": [
+    "repository.read"
+  ],
+  "inputs": [
+    "Sanitized supplied log with stable line numbers",
+    "Optional source excerpt and scheme/toolchain context"
+  ],
+  "outputs": [
+    "Structured diagnosis matching response.schema.json; no execution claims"
+  ],
+  "exampleTasks": [
+    "Explain an unresolved Swift symbol, missing module or incomplete build log."
+  ],
+  "knownLimitations": [
+    "Log-only advice; no build, model evaluation, containment or host qualification.",
+    "Only three original synthetic fixture cases have deterministic oracles; real logs require human review."
+  ]
+}

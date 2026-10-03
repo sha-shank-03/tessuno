@@ -64,3 +64,7 @@ in docs/ci-proposal.md; no live GitHub workflow or remote issues are created.
 
 See docs/tessuno-preparation.md for source provenance and repository preparation boundaries,
 and docs/issue-drafts/tessuno-eight-issues.md for eight bounded proposed GitHub issues.
+
+Try the [Xcode build-diagnosis reference workflow](docs/xcode-build-diagnosis.md):
+`python tools/evaluate_build_diagnosis.py --examples` checks authored structured answers
+against three original synthetic logs. It invokes neither Xcode nor a model and applies no fixes.

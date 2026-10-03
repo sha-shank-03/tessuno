@@ -1,0 +1,27 @@
+{
+  "caseId": "incomplete-log",
+  "origin": "original-synthetic",
+  "log": "skills/xcode-build-diagnosis/fixtures/incomplete-log.txt",
+  "context": {},
+  "expected": {
+    "observations": [
+      {
+        "code": "insufficient-log",
+        "logLine": 2
+      }
+    ],
+    "allowedHypotheses": [
+      "insufficient-context"
+    ],
+    "requiredActions": [
+      "request-more-context"
+    ],
+    "allowedActions": [
+      "request-more-context"
+    ],
+    "requiredMissingInputs": [
+      "compiler-diagnostic",
+      "toolchain-version"
+    ]
+  }
+}

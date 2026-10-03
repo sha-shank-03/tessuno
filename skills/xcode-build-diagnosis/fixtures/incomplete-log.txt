@@ -1,0 +1,3 @@
+SYNTHETIC LOG: original fixture; no compiler was run.
+error: Build task failed without a compiler diagnostic
+** BUILD FAILED **

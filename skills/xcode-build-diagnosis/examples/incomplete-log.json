@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1",
+  "caseId": "incomplete-log",
+  "observations": [
+    {
+      "code": "insufficient-log",
+      "logLine": 2,
+      "quote": "error: Build task failed without a compiler diagnostic"
+    }
+  ],
+  "hypotheses": [
+    {
+      "code": "insufficient-context",
+      "evidenceLines": [
+        2
+      ],
+      "status": "unconfirmed"
+    }
+  ],
+  "nextSteps": [
+    {
+      "action": "request-more-context",
+      "status": "proposed",
+      "requiresHumanReview": true
+    }
+  ],
+  "missingInputs": [
+    "compiler-diagnostic",
+    "toolchain-version"
+  ],
+  "execution": {
+    "build": "not-run",
+    "tests": "not-run",
+    "fixes": "not-applied"
+  }
+}
