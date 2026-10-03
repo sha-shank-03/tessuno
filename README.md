@@ -64,3 +64,7 @@ in docs/ci-proposal.md; no live GitHub workflow or remote issues are created.
 
 See docs/tessuno-preparation.md for source provenance and repository preparation boundaries,
 and docs/issue-drafts/tessuno-eight-issues.md for eight bounded proposed GitHub issues.
+
+For offline inspection of declared permissions and unsupported host controls, run
+`python tools/export_adapter.py --agent core/ios-quality-reviewer`.
+See [adapter inspection](docs/adapter-inspection.md); executable exports always reject.
