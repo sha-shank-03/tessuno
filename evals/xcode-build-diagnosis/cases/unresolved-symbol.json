@@ -1,0 +1,35 @@
+{
+  "caseId": "unresolved-symbol",
+  "origin": "original-synthetic",
+  "log": "skills/xcode-build-diagnosis/fixtures/unresolved-symbol.txt",
+  "context": {
+    "availableSymbols": [
+      "savedToggle"
+    ],
+    "sourceExcerpt": "let current = storedToggle"
+  },
+  "expected": {
+    "observations": [
+      {
+        "code": "unresolved-symbol",
+        "logLine": 3
+      }
+    ],
+    "allowedHypotheses": [
+      "symbol-name-mismatch",
+      "missing-source-declaration"
+    ],
+    "requiredActions": [
+      "inspect-symbol-definition"
+    ],
+    "allowedActions": [
+      "inspect-symbol-definition",
+      "request-more-context",
+      "propose-simulator-build"
+    ],
+    "requiredMissingInputs": [
+      "source-definitions",
+      "toolchain-version"
+    ]
+  }
+}

@@ -10,7 +10,10 @@ class Contracts(unittest.TestCase):
  def evidence(self,category):return read_json(ROOT/f'tests/fixtures/valid/evidence-{category}.json')
  def test_schemas_valid(self):
   for p in (ROOT/'schemas').glob('*.json'):Draft202012Validator.check_schema(read_json(p))
- def test_all_four_objects(self):self.assertEqual(len(load_catalog()),4)
+ def test_original_and_build_diagnosis_objects(self):
+  records=load_catalog();self.assertEqual(len(records),7)
+  self.assertEqual(records['core/xcode-build-diagnostician']['record']['kind'],'Agent')
+  self.assertEqual(records['core/xcode-build-diagnosis']['record']['kind'],'Skill')
  def test_root_alias_preserves_digests_builds_and_symlink_rejection(self):
   import build as builder
   with tempfile.TemporaryDirectory() as d:
@@ -107,7 +110,7 @@ class Contracts(unittest.TestCase):
   with zipfile.ZipFile(ROOT/'dist/prototype.zip') as z:
    self.assertEqual(z.testzip(),None)
    self.assertTrue(all(x.date_time==(1980,1,1,0,0,0) for x in z.infolist()))
-  self.assertEqual(len(read_json(ROOT/'dist/search-index.json')),4)
+  self.assertEqual(len(read_json(ROOT/'dist/search-index.json')),len(load_catalog()))
  def test_publication_fails_closed(self):
   with self.assertRaises(Invalid):publication_gate(load_catalog())
  def test_synthetic_regression_oracle(self):
@@ -186,7 +189,7 @@ class Contracts(unittest.TestCase):
    self.assertEqual(z.read('THIRD_PARTY_NOTICES.md'),(ROOT/'THIRD_PARTY_NOTICES.md').read_bytes())
    self.assertIn(b'Apache-2.0',z.read('LICENSE-STATUS.txt'))
   page=(ROOT/'dist/index.html').read_text()
-  self.assertEqual(page.count('license Apache-2.0'),4)
+  self.assertEqual(page.count('license Apache-2.0'),len(load_catalog()))
   self.assertNotIn('License and identity unresolved',page)
   for b in read_json(ROOT/'dist/content-manifests.json').values():
    self.assertEqual({x['path'] for x in b['manifest']['files']} & {'LICENSE','THIRD_PARTY_NOTICES.md'},{'LICENSE','THIRD_PARTY_NOTICES.md'})

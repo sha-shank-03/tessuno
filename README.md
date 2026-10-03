@@ -68,3 +68,7 @@ and docs/issue-drafts/tessuno-eight-issues.md for eight bounded proposed GitHub 
 For offline inspection of declared permissions and unsupported host controls, run
 `python tools/export_adapter.py --agent core/ios-quality-reviewer`.
 See [adapter inspection](docs/adapter-inspection.md); executable exports always reject.
+
+Try the [Xcode build-diagnosis reference workflow](docs/xcode-build-diagnosis.md):
+`python tools/evaluate_build_diagnosis.py --examples` checks authored structured answers
+against three original synthetic logs. It invokes neither Xcode nor a model and applies no fixes.
