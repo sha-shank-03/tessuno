@@ -19,7 +19,10 @@ Evidence envelopes remain outside that digest. Build output is reproducible, has
 uses fixed ZIP timestamps/modes and sorted entries. Git identity is separate from content identity.
 
 The catalog displays raw metadata, dependency source and content digest. It imports no evidence
-records and cannot award a tested/verified badge. All source is escaped; source downloads use .txt.
+records and cannot award a tested/verified badge. Source inspection uses escaped HTML
+text viewers; original-byte copies remain available as .txt downloads. JSON metadata has
+the same static viewer alongside its unchanged raw file. Viewers execute no scripts and
+retain catalog, raw-file and repository links; file-byte hashes describe the original source.
 Local checks are structure/semantics, not a trusted scanner, model eval or runtime qualification.
 
 Catalog network/write summaries include every component in the exact dependency closure,

@@ -43,7 +43,9 @@ Open dist/index.html to inspect the catalog and source. For same-origin script e
 serve dist with a local-only HTTP server. Catalog deployment is outside this source preview.
 The search box filters
 kind, stack, platform, origin, declared support, network and write-scope terms. Without scripts,
-all objects and plain-text source links remain visible. Two builds produce identical bytes.
+all objects and source links remain visible. Source and JSON metadata inspection use
+static HTML text viewers with original-byte hashes, raw-file links and a repository link.
+Viewer content is escaped data and requires no JavaScript. Two builds produce identical bytes.
 
 ## Boundaries
 
