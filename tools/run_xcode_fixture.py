@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -13,6 +14,11 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / 'evals/xcode-build-fixture'
 DENIALS = ('operation not permitted', 'permission denied', 'sandbox: deny')
+
+
+def permission_denied(log):
+    return (any(marker in log.lower() for marker in DENIALS)
+            or re.search(r'\bsandbox:\s*[^\r\n]*?\bdeny\s*\(', log, re.IGNORECASE) is not None)
 
 
 def digest(path):
@@ -37,7 +43,7 @@ def seed(source):
 
 
 def classify(name, code, log, product_exists):
-    if any(marker in log.lower() for marker in DENIALS):
+    if permission_denied(log):
         return 'blocked-permission'
     if name == 'seeded':
         return ('pass' if code != 0 and "cannot find 'missingIncrement' in scope" in log
@@ -56,7 +62,9 @@ def command(snapshot, output, sdk):
 
 
 def run(output, sdk):
-    if output == ROOT or ROOT in output.parents:
+    output = Path(output).resolve()
+    source_root = ROOT.resolve()
+    if output == source_root or source_root in output.parents:
         raise ValueError('evidence must stay outside the source repository')
     expected = json.loads((ROOT / 'evals/xcode-fixture-inventory.json').read_text())
     if inventory(FIXTURE) != expected:
@@ -83,7 +91,7 @@ def run(output, sdk):
         text = (output / f'{label}.log').read_text(errors='replace')
         receipt[label] = {'command': argv, 'exitCode': probe.returncode,
                           'logSha256': digest(output / f'{label}.log')}
-        if probe.returncode or any(marker in text.lower() for marker in DENIALS):
+        if probe.returncode or permission_denied(text):
             receipt['status'] = 'preflight-blocked'
             save()
             return 1
