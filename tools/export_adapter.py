@@ -5,7 +5,7 @@ import hashlib
 from pathlib import Path
 import sys
 
-from library import ROOT, Invalid, adapter_report, canonical, digest, load_catalog, safe_path, subject_manifest
+from library import ROOT, Invalid, adapter_report, canonical, closure, digest, load_catalog, safe_path, subject_manifest
 
 TOOL_ROOT = Path(__file__).resolve().parents[1]
 
@@ -27,12 +27,22 @@ def inspect_adapter(agent_id, root=ROOT, host='codex', executable=False):
     subject, manifest, lock, _ = subject_manifest(root, records, agent_id)
     # Bind the running exporter/validator sources, consumed schemas and dependency lock.
     # These hashes identify bytes, not an authenticated or protected generator.
-    sources = {'tool': (TOOL_ROOT, ['tools/export_adapter.py', 'tools/library.py', 'requirements-dev.lock']),
+    sources = {'tool': (TOOL_ROOT, ['tools/export_adapter.py', 'requirements-dev.lock']),
+               'validator': (ROOT, ['tools/library.py', 'schemas/agent.schema.json']),
                'catalog': (root, ['schemas/' + name + '.schema.json' for name in
                                  ['common', 'agent', 'skill', 'recipe', 'pack', 'evidence']])}
     files = [{'source': source, 'path': path,
               'sha256': hashlib.sha256(safe_path(base, path).read_bytes()).hexdigest()}
              for source, (base, paths) in sorted(sources.items()) for path in sorted(paths)]
+    permission_keys = ['filesystemScope', 'networkScope', 'requiredTools',
+                       'humanApprovalRequirements', 'requiredControls']
+    components = []
+    for key in closure(records, agent_id):
+        component = records[key]['record']
+        components.append({**{field: component[field] for field in ['kind', 'id', 'version']},
+                           'declaredPermissions': {field: component[field] for field in permission_keys
+                                                   if field in component},
+                           'enforcementStatus': 'unqualified'})
     return {
         'schemaVersion': '1',
         'kind': 'AdapterInspection',
@@ -45,9 +55,8 @@ def inspect_adapter(agent_id, root=ROOT, host='codex', executable=False):
         'lock': lock,
         'generator': {'sourceRevision': 'content-sha256:' + digest(files), 'files': files,
                       'authenticated': False},
-        'declaredPermissions': {key: record[key] for key in
-                                ['filesystemScope', 'networkScope', 'requiredTools',
-                                 'humanApprovalRequirements', 'requiredControls']},
+        'declaredPermissions': {key: record[key] for key in permission_keys},
+        'componentPermissions': components,
         'adapter': report,
     }
 

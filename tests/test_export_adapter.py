@@ -97,6 +97,80 @@ class AdapterInspection(unittest.TestCase):
             with self.assertRaisesRegex(Invalid, 'executable export rejected'):
                 exporter.inspect_adapter(AGENT, root=root, executable=True)
 
+    def test_dependency_permissions_are_complete_distinct_and_never_executable(self):
+        with tempfile.TemporaryDirectory() as parent:
+            root = self.fixture(parent); path = root / 'skills/ios-test-plan/library.json'
+            skill = read_json(path)
+            skill['filesystemScope']['write'] = ['${workspace}/skill-outputs/**']
+            skill['networkScope'] = {'mode': 'allowlist', 'destinations': ['skill.example.invalid'],
+                                     'externalWriteAllowed': True}
+            path.write_bytes(canonical(skill))
+            report = exporter.inspect_adapter(AGENT, root=root)
+            by_id = {item['id']: item for item in report['componentPermissions']}
+            self.assertEqual(set(by_id), {item['id'] for item in report['subject']['components']})
+            for info in load_catalog(root).values():
+                record = info['record']
+                if record['id'] not in by_id:
+                    continue
+                component = by_id[record['id']]
+                self.assertEqual({key: component[key] for key in ['kind', 'id', 'version']},
+                                 {key: record[key] for key in ['kind', 'id', 'version']})
+                self.assertEqual(component['enforcementStatus'], 'unqualified')
+                for key in ['filesystemScope', 'networkScope', 'requiredTools',
+                            'humanApprovalRequirements', 'requiredControls']:
+                    self.assertEqual(key in component['declaredPermissions'], key in record)
+                    if key in record:
+                        self.assertEqual(component['declaredPermissions'][key], record[key])
+            dependency = by_id[skill['id']]['declaredPermissions']
+            self.assertEqual(dependency['filesystemScope'], skill['filesystemScope'])
+            self.assertEqual(dependency['networkScope'], skill['networkScope'])
+            self.assertEqual(report['declaredPermissions']['filesystemScope']['write'], [])
+            self.assertEqual(report['declaredPermissions']['networkScope']['mode'], 'none')
+            self.assertNotIn('requiredControls', dependency)
+            with self.assertRaisesRegex(Invalid, 'executable export rejected'):
+                exporter.inspect_adapter(AGENT, root=root, executable=True)
+            skill['requiredTools'] = ['shell.exec']; path.write_bytes(canonical(skill))
+            with self.assertRaises(Invalid): exporter.inspect_adapter(AGENT, root=root)
+
+    def test_separate_tool_and_catalog_schema_roots_bind_without_mocks(self):
+        with tempfile.TemporaryDirectory() as parent:
+            tool_parent = Path(parent) / 'tool'; tool_parent.mkdir()
+            catalog_parent = Path(parent) / 'catalog'; catalog_parent.mkdir()
+            tools = self.fixture(tool_parent); catalog = self.fixture(catalog_parent)
+            script = ('import sys; sys.path.insert(0, sys.argv[1]); '
+                      'from export_adapter import inspect_adapter; from library import canonical; '
+                      'sys.stdout.buffer.write(canonical(inspect_adapter(sys.argv[3],root=sys.argv[2])))')
+            def inspect():
+                result = subprocess.run([sys.executable, '-B', '-c', script,
+                                         str(tools / 'tools'), str(catalog), AGENT],
+                                        capture_output=True, timeout=15)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                return json.loads(result.stdout)
+            before = inspect()
+            self.assertEqual(before, inspect())
+            sources = {(item['source'], item['path']): item['sha256']
+                       for item in before['generator']['files']}
+            for source, root in [('validator', tools), ('catalog', catalog)]:
+                self.assertEqual(sources[source, 'schemas/agent.schema.json'],
+                                 hashlib.sha256((root / 'schemas/agent.schema.json').read_bytes()).hexdigest())
+            for root in [tools, catalog]:
+                schema = root / 'schemas/agent.schema.json'; value = read_json(schema)
+                value['description'] = 'Synthetic separate-root schema amendment.'
+                schema.write_bytes(canonical(value))
+                after = inspect()
+                self.assertNotEqual(before['generator']['sourceRevision'], after['generator']['sourceRevision'])
+                self.assertEqual(before['subject'], after['subject'])
+                before = after
+            generator = tools / 'tools/export_adapter.py'
+            generator.write_text(generator.read_text() + '\n# Synthetic separate-root tool amendment.\n')
+            self.assertNotEqual(before['generator']['sourceRevision'], inspect()['generator']['sourceRevision'])
+            schema = tools / 'schemas/agent.schema.json'; outside = Path(parent) / 'outside.json'
+            outside.write_bytes(schema.read_bytes()); schema.unlink(); schema.symlink_to(outside)
+            result = subprocess.run([sys.executable, '-B', '-c', script,
+                                     str(tools / 'tools'), str(catalog), AGENT], capture_output=True, timeout=15)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(result.stdout, b'')
+
     def test_nonstring_ids_reject(self):
         for value in [None, [], {}, True]:
             with self.subTest(value=value), self.assertRaises(Invalid):

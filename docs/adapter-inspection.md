@@ -17,6 +17,12 @@ No host configuration or executable adapter file is generated. Caller shell redi
 used, is the caller's file write; no adapter file is written. Normal Python imports
 may create ignored `__pycache__` files; these are not host configuration or Agent exports.
 
+`declaredPermissions` and `adapter` describe the selected root Agent. `componentPermissions`
+retains every exact kind/id/version in its dependency closure, including the root, with each
+component's own permission declarations and unqualified enforcement status. Absent fields
+stay absent; Skill declarations are not converted into fabricated Agent control requirements.
+No effective-permission union, intersection or enforcement mapping is computed.
+
 ## Acceptance criteria for this slice
 
 - Exact Agent IDs only; reject unknown IDs, non-Agent objects and unsupported hosts.
@@ -26,7 +32,10 @@ may create ignored `__pycache__` files; these are not host configuration or Agen
 - Bind running exporter/validator source bytes, consumed schemas and dependency lock separately
   from the object closure. Changed generator bytes invalidate its revision. Hashes do not
   authenticate the generator or prove that installed dependency bytes match the lock.
-- Preserve every declared scope/tool/approval requirement and list mandatory controls as
+- When the catalog is a separate root, inventory both its schemas and the tool-side Agent
+  schema consumed by adapter validation. Label exporter/lock, validator and catalog sources
+  separately; changes to either consumed schema root invalidate the generator revision.
+- Preserve every component's declared scope/tool/approval requirement and list Agent mandatory controls as
   unsupported. Executable export always rejects, including any forged qualification assertion.
 - Leave host version null/unobserved and runtimeQualified false. No environment inspection,
   host launch, permission change, execution authority or trusted-evidence claim.
