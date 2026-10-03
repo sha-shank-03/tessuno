@@ -74,3 +74,7 @@ See [adapter inspection](docs/adapter-inspection.md); executable exports always 
 Try the [Xcode build-diagnosis reference workflow](docs/xcode-build-diagnosis.md):
 `python tools/evaluate_build_diagnosis.py --examples` checks authored structured answers
 against three original synthetic logs. It invokes neither Xcode nor a model and applies no fixes.
+
+Inspect the [release-readiness evidence workflow](docs/release-readiness-evidence.md)
+for an operator procedure and original synthetic packets. Its deterministic inventory
+checker reports gaps; even a complete packet leaves release BLOCKED and grants no authority.

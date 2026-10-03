@@ -11,9 +11,12 @@ class Contracts(unittest.TestCase):
  def test_schemas_valid(self):
   for p in (ROOT/'schemas').glob('*.json'):Draft202012Validator.check_schema(read_json(p))
  def test_original_and_build_diagnosis_objects(self):
-  records=load_catalog();self.assertEqual(len(records),7)
+  records=load_catalog();self.assertEqual(len(records),10)
   self.assertEqual(records['core/xcode-build-diagnostician']['record']['kind'],'Agent')
   self.assertEqual(records['core/xcode-build-diagnosis']['record']['kind'],'Skill')
+ def test_original_and_release_objects(self):
+  records=load_catalog();self.assertEqual(len(records),10)
+  self.assertEqual(records['core/release-readiness-evidence']['record']['kind'],'Skill')
  def test_root_alias_preserves_digests_builds_and_symlink_rejection(self):
   import build as builder
   with tempfile.TemporaryDirectory() as d:
