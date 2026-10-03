@@ -1,0 +1,6 @@
+{
+  "fixture": "synthetic-regression-summary",
+  "origin": "original-synthetic",
+  "input": {"attempts": [{"id": "initial-value", "status": "pass"}, {"id": "persist-after-reopen", "status": "fail"}, {"id": "offline-backend", "status": "not-run"}]},
+  "expected": {"pass": 1, "fail": 1, "not-run": 1, "overall": "fail", "mustNotClaim": ["All tests passed", "Ready to release"]}
+}

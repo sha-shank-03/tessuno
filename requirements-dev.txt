@@ -1,0 +1,3 @@
+# Reference environment only. Do not install automatically or vendor dependencies.
+jsonschema==4.26.0
+PyYAML==6.0.3

@@ -1,0 +1,30 @@
+Apache-2.0 license update: private portable-library scaffold
+Source commit: f931f0fd52938be9a31df8a1cab6aa8ba90d4cec
+Baseline commit: 7ab91962d2790a8ccba90b321dc075125ed628ba
+Original Git history was verified intact. No recovery or invented history.
+
+The owner selected Apache-2.0 for original scaffold work on 2026-10-02. LICENSE is the
+unmodified official Apache text. Original code, documentation, schemas and synthetic examples
+are covered. Third-party distinctions and attribution remain in THIRD_PARTY_NOTICES.md.
+No corporate copyright owner or additional DCO/CLA agreement was invented.
+
+Independent reviewer accepted this exact commit and diff for bounded private replacement.
+The source review log records the pre-review requirement; this supplementary report records
+the subsequent completed independent review without modifying that reviewed source commit.
+
+Validation, 30 test methods, reproducible build and archive/readback checks passed. Publication
+correctly failed with exit 1; forged executable qualification remained rejected. Official
+LICENSE bytes were independently refetched and matched exactly. Changing LICENSE invalidates
+all four subject digests. Object/fixture SPDX values, archive contents and catalog agree.
+
+Commands: python tools/validate.py; python -m unittest discover -s tests -v;
+python tools/build.py; python tools/validate.py --publication (expected exit 1).
+Dependencies: Python 3.11+, jsonschema 4.26.0, PyYAML 6.0.3. No dependencies are bundled.
+
+Public name remains provisional; maintainer identity and trusted release/evidence gates are
+unresolved. No public repository, push, deployment, real CI, model, Xcode, or host runtime
+qualification was performed. Browser visual QA remains unperformed. No authenticated evidence
+producer exists; concurrent hostile source mutation is not contained.
+
+Archive contains committed source plus this report and its source digest inventory. It excludes
+.git, caches, generated dist duplicates, host configurations, private app source and secrets.

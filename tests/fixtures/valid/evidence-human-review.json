@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1",
+  "id": "fixture-only",
+  "subject": {
+    "id": "core/synthetic",
+    "version": "0.1.0",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "sourceRevision": "synthetic-not-a-git-run",
+    "lockDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "adapterDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "components": [
+      {
+        "id": "core/synthetic",
+        "version": "0.1.0",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ]
+  },
+  "producer": {
+    "type": "human",
+    "identity": "synthetic-untrusted-reviewer",
+    "reviewUrl": "https://example.invalid/not-a-review"
+  },
+  "check": {
+    "name": "fixture-only",
+    "suiteDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "fixtureDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "configDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "status": "pass",
+  "artifacts": [],
+  "createdAt": "2026-01-01T00:00:00Z",
+  "limitations": [
+    "SYNTHETIC SCHEMA FIXTURE. No real execution, review or enforcement occurred."
+  ],
+  "category": "human-review",
+  "details": {
+    "decision": "approve",
+    "reviewType": "content-review",
+    "candidateDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "scopeDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "actions": [
+      "Synthetic review fixture"
+    ],
+    "rationale": "Synthetic schema fixture only"
+  }
+}

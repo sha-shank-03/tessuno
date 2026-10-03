@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "maintainer": {
+    "name": "Pending owner assignment",
+    "contact": "UNDECIDED"
+  },
+  "stacks": [
+    "ios",
+    "swift"
+  ],
+  "kind": "Recipe",
+  "id": "core/ios-change-review",
+  "title": "Review an iOS Change",
+  "purpose": "Produce a test plan and independent review without executing application code.",
+  "inputs": [
+    "Scoped synthetic change",
+    "Supplied evidence"
+  ],
+  "outputs": [
+    "Test plan",
+    "Review report"
+  ],
+  "steps": [
+    {
+      "id": "plan-tests",
+      "uses": {
+        "kind": "Skill",
+        "id": "core/ios-test-plan",
+        "version": "0.1.0"
+      },
+      "expectedArtifacts": [
+        "Test plan"
+      ],
+      "verificationCriteria": [
+        "Each supplied requirement has a case or explicit gap."
+      ]
+    },
+    {
+      "id": "review",
+      "uses": {
+        "kind": "Agent",
+        "id": "core/ios-quality-reviewer",
+        "version": "0.1.0"
+      },
+      "expectedArtifacts": [
+        "Review report"
+      ],
+      "verificationCriteria": [
+        "Findings cite supplied sources or are labeled assumptions."
+      ],
+      "humanCheckpoint": {
+        "reason": "A person determines evidence adequacy.",
+        "requiredDecision": "Accept review or request further evidence."
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "maintainer": {
+    "name": "Pending owner assignment",
+    "contact": "UNDECIDED"
+  },
+  "stacks": [
+    "ios",
+    "swift"
+  ],
+  "kind": "Skill",
+  "id": "core/ios-test-plan",
+  "title": "iOS Test Plan",
+  "purpose": "Plan checks for a supplied synthetic change without claiming test execution.",
+  "entry": "SKILL.md",
+  "filesystemScope": {
+    "read": [
+      "${workspace}/inputs/**"
+    ],
+    "write": [],
+    "deny": [
+      "${workspace}/secrets/**",
+      "${workspace}/.env*"
+    ]
+  },
+  "networkScope": {
+    "mode": "none",
+    "destinations": [],
+    "externalWriteAllowed": false
+  },
+  "requiredTools": [
+    "repository.read"
+  ],
+  "inputs": [
+    "Supplied change and acceptance criteria"
+  ],
+  "outputs": [
+    "Test plan and explicit evidence gaps"
+  ],
+  "exampleTasks": [
+    "Plan checks for a synthetic settings toggle."
+  ],
+  "knownLimitations": [
+    "Planning does not execute tests or prove release readiness."
+  ]
+}

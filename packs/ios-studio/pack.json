@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "maintainer": {
+    "name": "Pending owner assignment",
+    "contact": "UNDECIDED"
+  },
+  "stacks": [
+    "ios",
+    "swift"
+  ],
+  "kind": "Pack",
+  "id": "core/ios-studio",
+  "title": "iOS Studio: Review Slice",
+  "purpose": "Compose bounded planning and review capabilities; no release or account authority.",
+  "members": [
+    {
+      "kind": "Skill",
+      "id": "core/ios-test-plan",
+      "version": "0.1.0"
+    },
+    {
+      "kind": "Agent",
+      "id": "core/ios-quality-reviewer",
+      "version": "0.1.0"
+    },
+    {
+      "kind": "Recipe",
+      "id": "core/ios-change-review",
+      "version": "0.1.0"
+    }
+  ]
+}
