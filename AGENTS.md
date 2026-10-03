@@ -1,6 +1,6 @@
 # Repository development rules
 
-This is a private, synthetic portable-library prototype. It grants no execution authority.
+This is the unpublished Tessuno development candidate, based on a reviewed synthetic portable-library prototype. It grants no execution authority.
 Keep library objects inert: no installer, runtime, remote calls, provider calls, or secret access.
 Use original synthetic fixtures only. Never copy private application code, account identifiers,
 bundle identifiers, credentials, host agent configuration, or private test artifacts here.

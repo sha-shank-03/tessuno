@@ -1,4 +1,4 @@
-# Contribution process (private prototype)
+# Tessuno contribution process (prepublication candidate)
 
 Original scaffold work is licensed Apache-2.0. The license governs contributions to the extent
 applicable; no separate DCO, CLA or additional contribution agreement is adopted here. External
@@ -11,4 +11,4 @@ Review schemas, adapters, build tooling, security gates and proposed workflows i
 Never treat contributor-provided pass records, signatures, generated archives, or model-written
 reviews as verified provenance. Protected checks must come from a reviewed trusted revision.
 After a change to covered content or action scope, prior approvals are stale. Review the exact
-new digest. Public name, maintainer, reporting route and release authority still need owner decisions.
+new digest. Tessuno is the selected public name. Maintainer, reporting route and release authority still need owner decisions.

@@ -1,6 +1,6 @@
-# Security boundary
+# Tessuno security boundary
 
-This prototype is private and is not a security product or safety certification.
+This development candidate is unpublished and is not a security product or safety certification.
 No public reporting mailbox has been established. Report concerns privately to the project owner
 in the same authorized conversation; do not create a public issue containing sensitive details.
 A real private reporting route, response ownership and revocation process are launch blockers.

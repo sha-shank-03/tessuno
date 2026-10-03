@@ -22,3 +22,17 @@ Protected review lane:
 Enforcing runner isolation and offline dependencies has not been implemented. A hosted runner's
 network defaults do not prove network denial. Enable nothing until a real environment and controls
 are independently reviewed. A YAML job that merely runs these scripts would not establish trust.
+
+## Tessuno activation diff to prepare later
+
+Keep this proposal disabled. A later bounded change should add a reviewed dependency
+lock with hashes and an offline runner image; bind validator/harness/scorer to a
+protected digest; and add a pull_request-only job after isolation is demonstrated.
+Pin checkout to a reviewed immutable commit, set persist-credentials: false, and
+use contents: read only for acquisition with all other permissions empty. Remove
+acquisition credentials and deny network before any candidate code executes. Bound
+time and resources; run validation, negative tests, deterministic build and readback.
+Do not add pull_request_target, workflow_run, secrets, write tokens, artifact consumers,
+comments, Pages, deployments, signing, package publishing or production environments.
+Ordinary hosted-runner YAML does not enforce the required offline boundary. The runner
+implementation, dependency license inventory and protected configuration remain blockers.
