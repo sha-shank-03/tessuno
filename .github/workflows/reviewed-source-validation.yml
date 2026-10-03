@@ -26,7 +26,7 @@ jobs:
       run:
         shell: bash
     env:
-      REVIEWED_SOURCE_SHA: ade193beda810f85ac38fa008f25f7261c272b23
+      REVIEWED_SOURCE_SHA: f0ff1194370305d89d28dbe56d44f0c90434575d
       PYTHONDONTWRITEBYTECODE: '1'
       PIP_DISABLE_PIP_VERSION_CHECK: '1'
     steps:
@@ -35,7 +35,7 @@ jobs:
         timeout-minutes: 2
         with:
           repository: sha-shank-03/tessuno
-          ref: ade193beda810f85ac38fa008f25f7261c272b23
+          ref: f0ff1194370305d89d28dbe56d44f0c90434575d
           fetch-depth: 1
           persist-credentials: false
           submodules: false
