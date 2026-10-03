@@ -22,6 +22,15 @@ The catalog displays raw metadata, dependency source and content digest. It impo
 records and cannot award a tested/verified badge. All source is escaped; source downloads use .txt.
 Local checks are structure/semantics, not a trusted scanner, model eval or runtime qualification.
 
+Catalog network/write summaries include every component in the exact dependency closure,
+including indirect Skill references through Agents and Recipes. Write is `declared` when any
+component has a nonempty write declaration; network is `allowlist` when any component declares
+that mode. Otherwise each summary is `none`. The page and search index retain every component's
+separate declarations, including deny paths and approval requirements. These summaries describe
+declared capabilities, not combined permissions, deny precedence, enforcement or qualification.
+Filesystem scope paths are validated against the normalized supplied catalog root, independent
+of the tool checkout's filesystem state.
+
 All consumed inputs use repository-relative regular-file checks; symlinks in path components,
 including schema and asset directories, are rejected. These checks are offline validation, not
 an OS containment mechanism. Concurrent hostile filesystem mutation (TOCTOU) is not prevented;

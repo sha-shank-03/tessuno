@@ -3,11 +3,18 @@
 from pathlib import Path
 import html,json,zipfile
 from urllib.parse import quote
-from library import ROOT,load_catalog,subject_manifest,canonical,digest,Invalid,safe_path,read_json
+from library import ROOT,load_catalog,subject_manifest,canonical,digest,Invalid,safe_path,read_json,closure
 
 def write(path,data):
  path.parent.mkdir(parents=True,exist_ok=True)
  path.write_bytes(data if isinstance(data,bytes) else data.encode())
+def declared_controls(records,id):
+ keys=['filesystemScope','networkScope','requiredTools','humanApprovalRequirements','requiredControls']
+ components=[]
+ for key in closure(records,id):
+  item=records[key]['record']
+  components.append({**{field:item[field] for field in ['kind','id','version']},'declaredPermissions':{field:item[field] for field in keys if field in item}})
+ return {'basis':'exact-dependency-closure','enforcementStatus':'unqualified','components':components}
 def build(out=None):
  root=Path(ROOT).resolve();records=load_catalog();out=out or root/'dist'
  previous={}
@@ -30,13 +37,16 @@ def build(out=None):
  for id,info in sorted(records.items()):
   item=info['record'];slug=id.replace('/','--');subject,manifest,lock,adapters=subject_manifest(root,records,id)
   bundle[id]={'subject':subject,'manifest':manifest,'lock':lock,'adapters':adapters}
-  fields={'kind':item['kind'],'stack':' '.join(item['stacks']),'platform':' '.join(x['host'] for x in item.get('supportedPlatforms',[])) or 'unqualified','origin':'original-synthetic','support':'declared-only','network':item.get('networkScope',{}).get('mode','composed'),'write':'none' if not item.get('filesystemScope',{}).get('write') else 'declared'}
-  index.append({'id':id,'title':item['title'],'purpose':item['purpose'],**fields,'sha256':subject['sha256']})
+  controls=declared_controls(records,id);permissions=[component['declaredPermissions'] for component in controls['components']]
+  fields={'kind':item['kind'],'stack':' '.join(item['stacks']),'platform':' '.join(x['host'] for x in item.get('supportedPlatforms',[])) or 'unqualified','origin':'original-synthetic','support':'declared-only','network':'allowlist' if any(p.get('networkScope',{}).get('mode')=='allowlist' for p in permissions) else 'none','write':'declared' if any(p.get('filesystemScope',{}).get('write') for p in permissions) else 'none'}
+  index.append({'id':id,'title':item['title'],'purpose':item['purpose'],**fields,'declaredControls':controls,'sha256':subject['sha256']})
   source=info['path'].relative_to(root).as_posix()
   sources=[]
   for entry in manifest['files']:
    path=entry['path'];dest='source/'+path+'.txt';write(out/dest,safe_path(root,path).read_bytes());sources.append(f'<li><a href="{html.escape(quote(dest,safe="/"),quote=True)}">{html.escape(path)}</a></li>')
-  cards.append('<article data-kind="'+html.escape(item['kind'],quote=True)+'" data-stacks="'+html.escape(json.dumps(item['stacks']),quote=True)+'" data-search="'+html.escape(' '.join([id,item['title'],item['purpose'],*fields.values()]),quote=True)+'">'+f'<p class="eyebrow">{html.escape(item["kind"])} · v{item["version"]}</p><h2>{html.escape(item["title"])}</h2><p>{html.escape(item["purpose"])}</p><p class="status">Declared-only · no runtime qualification · license {html.escape(item["license"])}</p><p>Validation: local structural checks only. Security scan, independent review, host execution, and enforcement: no trusted evidence.</p><p>Exact content digest: <code>{subject["sha256"]}</code></p><details><summary>Inspect full contract</summary><pre>'+html.escape(json.dumps(item,indent=2))+'</pre></details><details><summary>Inspect source and dependency closure</summary><ul>'+''.join(sources)+'</ul></details></article>')
+  search=' '.join([id,item['title'],item['purpose'],*fields.values(),'network:'+fields['network'],'write:'+fields['write']])
+  scope=f'<p>Declared scope summary across the exact dependency closure: network: {fields["network"]}; write: {fields["write"]}. Component declarations imply no enforcement or combined permission policy.</p><details><summary>Inspect declared controls across dependencies</summary><pre>'+html.escape(json.dumps(controls,indent=2))+'</pre></details>'
+  cards.append('<article data-kind="'+html.escape(item['kind'],quote=True)+'" data-stacks="'+html.escape(json.dumps(item['stacks']),quote=True)+'" data-search="'+html.escape(search,quote=True)+'">'+f'<p class="eyebrow">{html.escape(item["kind"])} · v{item["version"]}</p><h2>{html.escape(item["title"])}</h2><p>{html.escape(item["purpose"])}</p><p class="status">Declared-only · no runtime qualification · license {html.escape(item["license"])}</p><p>Validation: local structural checks only. Security scan, independent review, host execution, and enforcement: no trusted evidence.</p>'+scope+f'<p>Exact content digest: <code>{subject["sha256"]}</code></p><details><summary>Inspect full contract</summary><pre>'+html.escape(json.dumps(item,indent=2))+'</pre></details><details><summary>Inspect source and dependency closure</summary><ul>'+''.join(sources)+'</ul></details></article>')
  kinds=sorted({info['record']['kind'] for info in records.values()})
  stacks=sorted({stack for info in records.values() for stack in info['record']['stacks']})
  def options(values):
