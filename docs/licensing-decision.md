@@ -15,7 +15,11 @@ Scope is original scaffold work only. THIRD_PARTY_NOTICES.md retains dependency/
 distinctions; selecting this license does not relicense arbitrary third-party Skills, dependencies,
 Apple content, private applications or unrelated artifacts. No separate DCO or CLA is adopted.
 
-The public name remains provisional. Maintainer identity, security reporting route, release policy,
-comprehensive SPDX validation and trusted host/evidence qualification remain unresolved. The
-assistant has no authorization to publish remotely, enable CI or deploy from this license choice.
-Publication and executable-qualification gates continue to fail closed.
+Tessuno is the name selected by the owner on 2026-10-03; GitHub account `sha-shank-03`
+is the maintainer. The owner's public OSS and autonomous setup instructions authorize
+the bounded source-preview scope in source-preview-policy.md, after exact candidate review.
+Repository creation/push and security reporting settings are not yet verified. License
+selection alone does not authorize runtime execution, CI activation or deployment.
+Comprehensive SPDX validation and trusted host/evidence qualification remain roadmap work.
+The existing qualified-publication and executable-qualification gates continue to fail closed;
+making source inspectable does not satisfy them.

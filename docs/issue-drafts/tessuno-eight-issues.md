@@ -6,6 +6,11 @@ Not created on GitHub. Each section is a candidate issue title and body.
 
 Original roadmap item 1; Tessuno and Apache-2.0 are now selected.
 
+Completed preparation: `sha-shank-03` is maintainer and contribution/security triage owner;
+the intended personal repository target and source-preview policy are documented.
+Remaining setup: verify repository creation/push and native private reporting settings
+and notification behavior before advertising a reporting route. No response SLA is promised.
+
 Scope: Record the accountable maintainer, external contribution process and private vulnerability reporting route. Confirm a repository target without claiming the exact Tessuno organization or domain ownership.
 
 Acceptance: Document ownership and source-only release policy; private reports have a tested route and response owner; contributor guidance preserves attribution and adopts no unrequested CLA/DCO.
@@ -65,6 +70,12 @@ Boundaries: No privileged events, release/deploy/signing path or trusted artifac
 ## 7. Review the exact Tessuno development candidate
 
 Original roadmap item 6.
+
+Completed engineering review: independent review accepted exact commit
+`f6cea23fcdf462a6f9459ef447667ef74c3178cf`, resolving root aliases, setup instructions
+and dependency locking. That acceptance covers the engineering snapshot, not later
+launch-document changes. Remaining: review the exact launch diff, license inventory
+and settings/content readback. Do not carry predecessor approval forward implicitly.
 
 Scope: Review the verified source import, reversible Tessuno diff, archive readback and license inventory as an unpublished candidate.
 

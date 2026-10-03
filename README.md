@@ -1,12 +1,12 @@
 # Tessuno
 
-Tessuno is an Apache-2.0 foundation for inspectable, reusable Agents, native Agent Skills,
-Recipes and Packs. The initial slice is iOS Studio; cross-stack support is a future roadmap.
-This v0.1 development candidate is prepared for public open-source collaboration but remains
-unpublished. The owner selected Tessuno on 2026-10-03; maintainer and reporting ownership
-still require decisions before launch.
+Tessuno is an inspectable Apache-2.0 development source scaffold for reusable Agents,
+native Agent Skills, Recipes and Packs, maintained by GitHub account
+[sha-shank-03](https://github.com/sha-shank-03). The initial slice is iOS Studio;
+cross-stack support is a future roadmap. Public collaboration is the intended scope.
+This source candidate remains local; repository creation and push have not been verified.
 Original scaffold code, documentation and synthetic examples are licensed **Apache-2.0**; see LICENSE
-and THIRD_PARTY_NOTICES.md. No public repository, publication, installer or executable host adapter exists.
+and THIRD_PARTY_NOTICES.md. No installer or executable host adapter exists.
 
 ## What works locally
 
@@ -34,11 +34,12 @@ No dependency installation, network call or package download is performed by the
 python tools/validate.py
 python -m unittest discover -s tests -v
 python tools/build.py
-python tools/validate.py --publication  # MUST fail: unresolved release gates
+python tools/validate.py --publication  # MUST fail: qualified-release gates are unresolved
 ```
 
 Open dist/index.html to inspect the catalog and source. For same-origin script execution,
-serve dist with a local-only HTTP server. Do not expose it publicly. The search box filters
+serve dist with a local-only HTTP server. Catalog deployment is outside this source preview.
+The search box filters
 kind, stack, platform, origin, declared support, network and write-scope terms. Without scripts,
 all objects and plain-text source links remain visible. Two builds produce identical bytes.
 
@@ -46,10 +47,16 @@ all objects and plain-text source links remain visible. Two builds produce ident
 
 JSON manifests avoid YAML coercion; SKILL.md retains native name/description frontmatter.
 The native validator deliberately supports a narrow subset, not all valid Agent Skills YAML.
-The original-work license and Tessuno name are selected; maintainer identity is still pending. Publication always
-fails closed until a separately reviewed release policy, comprehensive SPDX/license validation, real maintainer,
-producer provenance verifier and actual host qualification exist. No data is silently upgraded
-to a trust badge. No production app code or identifiers are included.
+The original-work license, Tessuno name and maintainer are selected. Public source availability
+permits inspection and contribution; it does not satisfy the qualified-release or execution gates.
+`--publication` remains an unconditional rejection: comprehensive SPDX/license validation,
+trusted producer verification and actual host qualification are still unavailable. Source-only
+review is distinct from authenticated runtime evidence or a verified agent release. No data is
+silently upgraded to a trust badge. No production app code or identifiers are included.
+
+See [source-preview policy](docs/source-preview-policy.md), [contribution process](CONTRIBUTING.md)
+and [security reporting status](SECURITY.md). Do not disclose vulnerabilities or secrets in public
+issues or pull requests; no private reporting channel is advertised until settings are verified.
 
 See docs/architecture.md, docs/compatibility.md, docs/trust-and-evidence.md,
 docs/licensing-decision.md and docs/issue-drafts/roadmap.md. Safe CI is a disabled proposal

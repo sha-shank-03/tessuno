@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate an inert private catalog and deterministic archive; never publish or install."""
+"""Generate an inert source-inspection catalog and deterministic archive; never publish or install."""
 from pathlib import Path
 import html,json,zipfile
 from urllib.parse import quote
@@ -40,7 +40,7 @@ def build(out=None):
  write(out/'search-index.json',canonical(index));write(out/'content-manifests.json',canonical(bundle))
  css=safe_path(root,'site/assets/style.css').read_text();js=safe_path(root,'site/assets/search.js').read_text()
  write(out/'style.css',css);write(out/'search.js',js)
- page='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'"><title>Tessuno · development catalog</title><link rel="stylesheet" href="style.css"></head><body><main><header><p class="eyebrow">TESSUNO / DEVELOPMENT FOUNDATION / v0.1</p><h1>Tessuno.<br>Inspectable capabilities.</h1><p>Four original synthetic objects for a bounded iOS review workflow.</p><p class="notice">Not published. Original work: Apache-2.0. Tessuno name selected; maintainer unresolved. Nothing here installs, executes, or qualifies a host.</p></header><section class="search"><label for="search">Search type, stack, platform, origin, support, network or write scope</label><input id="search" type="search" placeholder="Try Skill, ios, codex, declared-only, none"><p id="count" role="status">4 objects</p><noscript>All objects and source links are available below without JavaScript.</noscript></section>'''+''.join(cards)+'''<footer><p>No trusted evidence is imported. Valid evidence syntax never awards a badge.</p><p><a href="content-manifests.json">Content manifests and exact locks</a> · <a href="search-index.json">Search index</a> · <a href="prototype.zip">Synthetic source archive</a></p></footer></main><script src="search.js"></script></body></html>'''
+ page='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'"><title>Tessuno · development catalog</title><link rel="stylesheet" href="style.css"></head><body><main><header><p class="eyebrow">TESSUNO / DEVELOPMENT FOUNDATION / v0.1</p><h1>Tessuno.<br>Inspectable capabilities.</h1><p>Four original synthetic objects for a bounded iOS review workflow.</p><p class="notice">Source inspection preview. Original work: Apache-2.0. Maintainer: sha-shank-03. Compatibility is declared-only; no authenticated runtime evidence or security qualification. Nothing here installs, executes, or qualifies a host.</p></header><section class="search"><label for="search">Search type, stack, platform, origin, support, network or write scope</label><input id="search" type="search" placeholder="Try Skill, ios, codex, declared-only, none"><p id="count" role="status">4 objects</p><noscript>All objects and source links are available below without JavaScript.</noscript></section>'''+''.join(cards)+'''<footer><p>No trusted evidence is imported. Valid evidence syntax never awards a badge.</p><p><a href="content-manifests.json">Content manifests and exact locks</a> · <a href="search-index.json">Search index</a> · <a href="prototype.zip">Synthetic source archive</a></p></footer></main><script src="search.js"></script></body></html>'''
  write(out/'index.html',page)
  archive_files={}
  for info in records.values():
@@ -50,7 +50,7 @@ def build(out=None):
  archive_files['content-manifests.json']=canonical(bundle)
  archive_files['LICENSE']=safe_path(root,'LICENSE').read_bytes()
  archive_files['THIRD_PARTY_NOTICES.md']=safe_path(root,'THIRD_PARTY_NOTICES.md').read_bytes()
- archive_files['LICENSE-STATUS.txt']=b'Apache-2.0 for original scaffold work. See LICENSE and THIRD_PARTY_NOTICES.md. Private delivery does not authorize the assistant to publish remotely.\n'
+ archive_files['LICENSE-STATUS.txt']=b'Apache-2.0 for original scaffold work. See LICENSE and THIRD_PARTY_NOTICES.md. Inspectable source availability grants no executable qualification or verified-release authority.\n'
  with zipfile.ZipFile(out/'prototype.zip','w',compression=zipfile.ZIP_STORED) as z:
   for path,data in sorted(archive_files.items()):
    zi=zipfile.ZipInfo(path,(1980,1,1,0,0,0));zi.external_attr=0o100644<<16;zi.create_system=3;z.writestr(zi,data)

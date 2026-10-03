@@ -1,8 +1,11 @@
-# Tessuno development candidate
+# Tessuno preparation history and source preview
 
 The owner selected Tessuno on 2026-10-03. This preparation preserves the reviewed
 Apache-2.0 scaffold rather than creating a replacement implementation. It starts with
 iOS Studio and leaves cross-stack execution, adapters and qualification on the roadmap.
+The initial unpublished preparation and subsequent engineering review are historical
+stages. Maintainer and contribution/security triage owner is GitHub account `sha-shank-03`.
+Public source scope and planned settings are recorded in source-preview-policy.md.
 
 ## Source and local history
 
@@ -60,19 +63,26 @@ python tools/build.py
 python tools/validate.py --publication
 ```
 
-The last command must fail closed. Local tests and deterministic generation do not
-qualify a host, authenticate evidence, establish runtime containment or authorize
-publication. No executable host adapter, live CI, model eval or Xcode run exists.
+The last command must fail closed: it is the unchanged qualified-release/execution gate.
+Local tests and deterministic generation do not qualify a host, authenticate evidence or
+establish runtime containment. The owner's separate public source instructions authorize
+the bounded reviewed source preview, not a verified agent release. No executable host
+adapter, live CI, model eval or Xcode run exists.
 
 ## Publication and review boundaries
 
-The candidate remains local with no remote configured. Independently review the exact
-diff and candidate content before any GitHub creation or push. Resolve maintainer
-ownership, private vulnerability reporting, contribution handling and a source-only
-release policy. Implement comprehensive SPDX/license validation and trusted producer,
-integrity, expiry and revocation checks before qualification or release claims.
-The existing publication gate remains an unconditional rejection and cannot be
-bypassed by selecting a name or passing tests.
+The candidate remains local with no remote configured; repository creation/push and private
+reporting settings are not yet verified. Independently review the exact launch diff before
+the bounded source-only setup. Maintainer ownership and contribution process are documented;
+SECURITY.md records the private reporting route as unverified and withholds a reporting URL.
+Only settings/content readback can justify updating launch status. No monitored-reporting
+claim may be made without notification verification, and no response SLA is promised.
+
+Implement comprehensive SPDX/license validation and trusted producer, integrity, expiry,
+revocation and host checks before qualification or verified-release claims. The existing
+publication gate remains an unconditional rejection; inspectable public source never
+bypasses it. docs/ci-proposal.md remains disabled, and the new dependency lock is not a
+qualified runner. No catalog deployment or GitHub mutation is performed by these docs.
 
 The eight issue texts are drafts only. CI activation is a separate reviewed and
 authorized change described in docs/ci-proposal.md. No secrets, credentials, private
