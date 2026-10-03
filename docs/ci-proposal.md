@@ -1,7 +1,31 @@
 # CI policy: scoped Lane A; disabled Lane B
 
-Lane A is limited to the conditional exception below. Lane B remains disabled.
-At preparation on 2026-10-03, Actions was disabled and no GitHub run had occurred.
+Lane A is limited to the exact reviewed-source controller below. Lane B remains disabled.
+The original activation plan is retained after this dated execution record; it does not
+authorize another dispatch or validation of a newer source revision.
+
+## Recorded Lane A execution: 2026-10-03
+
+[PR 18](https://github.com/sha-shank-03/tessuno/pull/18) merged only the approved two-file
+bootstrap. Controller/main commit `a865822680cc390e9e5e5ec807f5d0dc6d33a8b2` retains
+workflow SHA256 `aa96215d825cc9e801e6dc155160a6b1044b66fe02d35bd64549d1dc534819d9`.
+The owner-authorized [single run, attempt 1](https://github.com/sha-shank-03/tessuno/actions/runs/37121608051)
+succeeded against only `ade193beda810f85ac38fa008f25f7261c272b23`: 91 tests, zero skips,
+10 objects, 45 generated outputs, expected publication rejection and clean source status.
+The one job took 82 seconds with Python 3.12.15 and Node 24.21.0. No artifacts were uploaded.
+
+Final settings readbacks confirmed selected actions limited to the three SHA refs below,
+SHA pinning required, broad GitHub-owned/verified exceptions false, read-only defaults,
+PR approval false and `all_external_contributors` fork approval. The API required a
+temporary stricter `local_only` mode before selecting the exact list; no dispatch occurred
+during configuration, and all final readbacks passed before dispatch and after completion.
+These are recorded settings, not a guarantee against a future trusted writer changing them.
+
+The current local integration candidate adds source viewers and exact-controller admission
+tests. Its 98 tests are offline checks on this Mac; the run above did not check these changes.
+The controller still selects the original literal source SHA. PR 17 remains unmerged; no
+rerun, automatic PR lane, deployment or runtime qualification follows from the receipt.
+Supported Chrome verification of the new viewers remains pending.
 
 ## Disabled Lane B design
 
@@ -24,7 +48,7 @@ Protected review lane:
 - Publication is separate owner-authorized work and remains blocked by identity and trusted-release decisions
 
 Enforcing runner isolation and offline dependencies has not been implemented. A hosted runner's
-network defaults do not prove network denial. Enable nothing until a real environment and controls
+network defaults do not prove network denial. Enable no Lane B execution until a real environment and controls
 are independently reviewed. A YAML job that merely runs these scripts would not establish trust.
 
 ## Lane B activation diff to prepare later
@@ -43,10 +67,10 @@ implementation, dependency license inventory and protected configuration remain 
 
 ## Reviewed-source Lane A exception; untrusted Lane B remains disabled
 
-**Activation condition:** This bootstrap adopts only the reviewed-source Lane A exception
-when the owner authorizes its exact merge to main, the scoped repository settings and one
-manual run, subject to the readbacks below. Until that authorization and setup, this local
-activation candidate grants no remote execution authority. The original requirements above
+**Historical activation condition (the approved one-run bundle is complete):** This bootstrap adopted only the reviewed-source Lane A exception
+after owner authorization of its exact merge to main, the scoped repository settings and one
+manual run, subject to the readbacks below. That authorization has been consumed by the
+recorded run; this local integration candidate grants no further execution authority. The original requirements above
 remain effective for Lane B. Their all-activation blocker has only this documented A exception;
 no Agent, Skill, Recipe, Pack, evidence, publication or release contract changes.
 
@@ -111,8 +135,8 @@ allowlist or an implemented branch-protection guarantee.
 
 The 2026-10-03 read-only inventory found Actions disabled, zero registered workflows,
 zero runs and no `.github/workflows` files across all nine same-repository branch heads
-and open-PR heads (nine distinct commit trees; no tags). The fork policy is currently
-`first_time_contributors`. Before enabling Actions, recheck this inventory and change
+and open-PR heads (nine distinct commit trees; no tags). At that preparation snapshot the fork policy was
+`first_time_contributors`. The approved activation plan required rechecking the inventory and changing
 the policy to **Require approval for all external contributors**
 (`all_external_contributors`); read back the effective value. Prior contribution can
 bypass first-time-only approval. Leave all untrusted fork runs unapproved under A.
@@ -125,7 +149,8 @@ Select and assert [Python 3.12.15](https://www.python.org/downloads/release/pyth
 the 2026-09-30 security release. The official
 [Python versions manifest](https://github.com/actions/python-versions/blob/main/versions-manifest.json)
 listed a Linux 24.04 x64 build at preparation time. Local foundation checks used the
-existing Python 3.12.13 environment; no 3.12.15 runner check or action execution has occurred.
+existing Python 3.12.13 environment; the later recorded Lane A run used 3.12.15 and
+executed the three pinned actions. That run grants no vulnerability clearance.
 
 | Action | Exact commit |
 | --- | --- |
@@ -176,7 +201,7 @@ Neither lane alone authenticates evidence or establishes Agent/runtime/enforceme
 qualification. `trust_evidence`, `qualify` and `publication_gate` remain rejecting.
 Raw-source/browser, real iOS/app/model/producer and release qualification gates stay open.
 
-### One bundled owner approval and conditional execution
+### Historical bundled owner approval and execution plan
 
 One explicit owner approval covers this exact two-file bootstrap, A's hosted-runner
 assumptions and documented one-run residual advisory disposition, the scoped repository
@@ -212,10 +237,14 @@ resolution/review; this approval does not authorize reruns or scope expansion.
    failures, timeouts or partial checks provide no validation verdict. This is not a required
    PR 17-head status check. No source merge, deployment, release or qualification follows.
 
-The checked source's current tests forbid any live workflow in that source snapshot.
-They remain unchanged for the pinned first run. Before validating a later source that
-contains CI, explicitly review a narrow workflow allowlist and negative tests; do not
-silently delete that assertion or imply the bootstrap validates newer source revisions.
+The pinned checked source forbids all live workflows in its own snapshot; those tests
+were unchanged for the recorded run. This local integration candidate replaces that
+blanket assertion with admission of at most the exact approved controller filename and
+whole-file SHA256 above. Absent workflows remain accepted for source-only fixtures.
+Changed controller bytes, extra paths, directories and symlinks reject before admission.
+Negative tests cover trigger, permission, source/action pin, extra-file and symlink changes.
+This contributed consistency check is not protected policy or a malicious-code security
+verifier. It grants no dispatch authority and never accepts a newer source in the controller.
 
 Public standard runner minutes are currently free; the proposal uses no larger runner,
 cache/artifact storage, deployment or model call. Budget: one job per explicit dispatch,
@@ -235,3 +264,90 @@ Sources checked during proposal preparation:
 - [Hash-checked wheel installation](https://pip.pypa.io/en/stable/topics/secure-installs/)
 - [Public standard-runner billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions)
 - [Workflow cancellation behavior](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation)
+
+## Issue 6 inactive candidate
+
+Review `docs/ci/validation.yml.disabled`. It is outside `.github/workflows`, has an
+inert suffix, disables its only job with `if: false`, and places an unconditional
+exit1 before any prospective dependency install or candidate execution. Actions
+was disabled when this Lane B draft was prepared; the later scoped Lane A activation
+is recorded above. Lane B's template remains unchanged and has never been run.
+Do not move/rename this file or remove these stops during review.
+
+The template permits only pull_request for main, default empty permissions and
+contents:read for acquisition; no secrets references, deployment, environment,
+uploads, privileged events or self-hosted runner. Checkout has credentials,
+submodules and LFS disabled. Merge-ref number is used only as a structured action
+input, not interpolated shell code. Candidate checkout remains untrusted.
+Official immutable references observed via GitHub API:
+checkout v4.2.2 `11bd71901bbe5b1630ceea73d27597364c9af683`;
+setup-python v5.6.0 `a26af69be951a213d495a4c3e4e4022e16d87065`.
+Pinning is identity evidence, not complete action-source/security/license review.
+Python3.12.13 is exact-version selected; ubuntu-24.04 and setup-python's acquisition
+are not an immutable reviewed offline runtime image. Those remain activation gaps.
+
+Dependencies reuse the existing seven-package full hash lock. Prospective offline
+installation requires wheels only, --no-index and --require-hashes from the
+protected lock, never the contributed lock. `/opt/tessuno-reviewed/wheels` is a
+proposed location, NOT an existing/verified image or wheelhouse. Protected source
+is pinned to historical main `f19a87ab6d1a390f0c1848b2338b21301163494e`, which does
+not contain this parity tool.
+A later protected harness revision must be independently bound before activation.
+No cache/save/restore or artifact consumer is introduced.
+
+### Command parity and coverage
+
+`python tools/check_ci_proposal.py` parses inert YAML with duplicate-key rejection
+and checks selected policy constraints. It is a consistency checker, not an Actions
+schema validator, complete malicious-YAML auditor or isolation verifier. No
+GitHub actionlint binary/dependency was acquired. Activation requires authoritative
+workflow validation in the protected review environment as well.
+
+`python tools/ci_checks.py` executes local source-hygiene, schema/semantic validation,
+the current discovered unittest suite (98 cases in this local integration candidate)
+and static build, then requires publication to exit1. Its tests
+include negative schema/path/duplicate-key/manifest/evidence gates, deterministic
+archive/build/readback and synthetic fixture oracles. Format check means Python
+syntax, JSON validity/duplicate rejection, UTF8/LF/final-newline/trailing-whitespace
+checks on code/schema files; it is not an opinionated formatter or JS runtime audit.
+This local candidate explicitly combines the reviewed PR 17 adapter/export, diagnosis,
+Xcode fixture and catalog features with current main and the new source viewers.
+The recorded external Lane A run checked only the earlier 91-test source SHA, not this
+candidate. The initial Issue 6 parity snapshot had 36 tests; that is a historical count.
+
+All current cases remain structural/synthetic fixture checks. They do not demonstrate
+network denial, secret absence, token removal, host sandbox enforcement, signing,
+macOS/Xcode compile/runtime, real Agent/model evaluation or trusted evidence.
+The local parity helper executes candidate scripts/tests with a direct-process
+120second timeout (publication30seconds). It does not constrain descendant
+processes, memory, filesystem, egress or logs and must NOT be mistaken for an
+isolation harness. In an eventual untrusted lane, a protected external orchestrator
+must run fixed commands against the candidate; contributed ci_checks.py/test output
+cannot determine the trusted policy or award acceptance.
+
+### Resource plan and concrete activation gates
+
+The initial local 36-test Issue 6 snapshot took 3.364 seconds; this is historical, not
+a performance measurement of the current suite. No portable memory/disk/CPU peak is measured.
+Plan one disposable job, no matrix, ten-minute job limit; protected isolation target
+2vCPU,1GiB RAM,1GiB scratch and10MiB retained logs, with acquisition separately
+bounded. These are proposed budgets, not enforced by this YAML or local helper.
+Owner must review actual measured limits/runner cost before Lane B activation. No spending.
+
+Before any Lane B activation: independently review exact candidate/action/dependency
+sources and license inventory; supply immutable runner/image/Python/wheelhouse and
+protected harness digests; demonstrate denied egress after acquisition and absent
+secrets/write tokens/host mounts/socket/credential material before candidate code;
+test adversarial fork/same-repository PRs, shell injection, oversized output,
+timeouts/child cancellation, memory/disk exhaustion and artifact poisoning in that
+isolation; preserve every attempt/skipped check with redaction and exact digests;
+validate workflow grammar/policy and protected branch/reviewer ownership; obtain
+separate owner authorization to replace Lane B blockers and permit its execution. A hosted-runner
+YAML alone meets none of the offline enforcement gates. No privileged consumer.
+Issue6 remains open; independent security review is required even for draft push.
+
+The bounded review fixes freeze protected/candidate checkout refs and paths plus
+the intended runner label; reject continue-on-error and step-condition overrides;
+and reject scanned source-directory symlinks before file reads. Synthetic negative
+tests cover each change. Root aliases resolve consistently. These remain limited
+consistency/hygiene checks, not a general malicious-YAML auditor or host sandbox.

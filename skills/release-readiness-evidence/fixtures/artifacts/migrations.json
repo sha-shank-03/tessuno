@@ -1,0 +1,10 @@
+{
+  "synthetic": true,
+  "domain": "migrations",
+  "version": "1.0.0",
+  "build": "42",
+  "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+  "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+  "observedAt": "2026-10-01T00:00:00Z",
+  "summary": "Authored fictional inventory entry; no app, portal, crash feed, tester or migration observed."
+}

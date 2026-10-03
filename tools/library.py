@@ -60,12 +60,12 @@ def validate_schema(record, schema_name=None, root=ROOT):
     errors = sorted(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(record), key=lambda e: str(e.path))
     if errors: raise Invalid('; '.join(f'{list(e.path)}: {e.message}' for e in errors))
 
-def scope_check(record):
+def scope_check(record, root=ROOT):
     for mode, paths in record.get('filesystemScope', {}).items():
         for value in paths:
             prefix = '${workspace}/'
             if not value.startswith(prefix): raise Invalid('scope must be workspace-relative')
-            safe_path(ROOT, value[len(prefix):], must_exist=False)
+            safe_path(root, value[len(prefix):], must_exist=False)
     net = record.get('networkScope')
     if net and net['mode'] == 'allowlist':
         if not net['destinations']: raise Invalid('empty network allowlist')
@@ -114,7 +114,7 @@ def load_catalog(root=ROOT):
             item = read_json(path); validate_schema(item, root=root)
             if item['kind'] != kind: raise Invalid('kind/directory mismatch')
             if item['id'] in records: raise Invalid('duplicate object id')
-            scope_check(item)
+            scope_check(item, root=root)
             if kind == 'Agent': safe_path(path.parent, item['instructions'])
             if kind == 'Skill': native_skill(safe_path(path.parent, item['entry']))
             ids = [x['id'] for x in item.get('steps', [])]

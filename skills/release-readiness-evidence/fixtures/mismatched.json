@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1",
+  "synthetic": true,
+  "asOf": "2026-10-01T00:00:00Z",
+  "candidate": {
+    "version": "1.0.0",
+    "build": "42",
+    "subject": {
+      "id": "core/synthetic-release",
+      "version": "1.0.0",
+      "sha256": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+      "sourceRevision": "synthetic-release-not-a-git-run",
+      "lockDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "adapterDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "components": [
+        {
+          "id": "core/synthetic-release",
+          "version": "1.0.0",
+          "sha256": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3"
+        }
+      ]
+    },
+    "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3"
+  },
+  "plannedTests": {
+    "synthetic-unit": 3,
+    "synthetic-regression": 2
+  },
+  "sections": [
+    {
+      "domain": "version-build",
+      "artifact": "skills/release-readiness-evidence/fixtures/artifacts/version-build.json",
+      "sha256": "03429dc6313ae2171cd1b56868ea65be57fb62cf92ab1cd56455bef7b3443a10",
+      "version": "1.0.0",
+      "build": "42",
+      "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+      "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+      "observedAt": "2026-10-01T00:00:00Z",
+      "outcome": "reported-pass"
+    },
+    {
+      "domain": "tests",
+      "artifact": "skills/release-readiness-evidence/fixtures/artifacts/tests.json",
+      "sha256": "e02f73eb27cdc03adfee3cb80330b016a48aaa2e6c9b5bbfa315c7ef4ce4aeea",
+      "version": "1.0.0",
+      "build": "41",
+      "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+      "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+      "observedAt": "2026-10-01T00:00:00Z",
+      "outcome": "reported-pass"
+    },
+    {
+      "domain": "review",
+      "artifact": "skills/release-readiness-evidence/fixtures/artifacts/review.json",
+      "sha256": "596834937c4c03e69544b3b7173d0efd44818353d029b1c5169ae021a32ee7be",
+      "version": "1.0.0",
+      "build": "42",
+      "candidateDigest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+      "observedAt": "2026-10-01T00:00:00Z",
+      "outcome": "reported-pass"
+    },
+    {
+      "domain": "testflight-feedback",
+      "artifact": "skills/release-readiness-evidence/fixtures/artifacts/testflight-feedback.json",
+      "sha256": "aaf985f48384b81264cc414e85ebae2481aa469f46e9114009342f54b576b1b1",
+      "version": "1.0.0",
+      "build": "42",
+      "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+      "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+      "observedAt": "2026-10-01T00:00:00Z",
+      "outcome": "reported-pass"
+    },
+    {
+      "domain": "crashes",
+      "artifact": "skills/release-readiness-evidence/fixtures/artifacts/crashes.json",
+      "sha256": "bcb03a4c7a38acb4b9762721229b0e2d77a2e2617b1919769ee4ca10f932e5a0",
+      "version": "1.0.0",
+      "build": "42",
+      "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+      "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+      "observedAt": "2026-10-01T00:00:00Z",
+      "outcome": "reported-pass"
+    },
+    {
+      "domain": "metadata-privacy",
+      "artifact": "skills/release-readiness-evidence/fixtures/artifacts/metadata-privacy.json",
+      "sha256": "cbfe5f8d27907866bbcc1426104f0040eb916b187180280181eb78ada485cc29",
+      "version": "1.0.0",
+      "build": "42",
+      "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+      "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+      "observedAt": "2026-10-01T00:00:00Z",
+      "outcome": "reported-pass"
+    },
+    {
+      "domain": "migrations",
+      "artifact": "skills/release-readiness-evidence/fixtures/artifacts/migrations.json",
+      "sha256": "637a64955a42812c61aeecaa99bcaa983720356e5a379dd34ad51a8b453c69a5",
+      "version": "1.0.0",
+      "build": "42",
+      "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+      "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+      "observedAt": "2026-10-01T00:00:00Z",
+      "outcome": "reported-pass"
+    },
+    {
+      "domain": "mitigation",
+      "artifact": "skills/release-readiness-evidence/fixtures/artifacts/mitigation.json",
+      "sha256": "861d805c8cccfe171d41734282226bc30ce8817270f802eec4199985bfc1201c",
+      "version": "1.0.0",
+      "build": "42",
+      "candidateDigest": "e479f9798aa819f3a44a874af59e56b124927acf970c11d16b18a92faaed62b3",
+      "scopeDigest": "0976a3568f1710ada3507f532bceb0ecf957de24342d8e836889025be3f48bc3",
+      "observedAt": "2026-10-01T00:00:00Z",
+      "outcome": "reported-pass"
+    }
+  ]
+}

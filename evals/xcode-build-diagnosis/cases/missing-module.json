@@ -1,0 +1,32 @@
+{
+  "caseId": "missing-module",
+  "origin": "original-synthetic",
+  "log": "skills/xcode-build-diagnosis/fixtures/missing-module.txt",
+  "context": {
+    "sourceExcerpt": "import ReferenceSupport",
+    "targetConfiguration": "not supplied"
+  },
+  "expected": {
+    "observations": [
+      {
+        "code": "missing-module",
+        "logLine": 3
+      }
+    ],
+    "allowedHypotheses": [
+      "target-dependency-missing"
+    ],
+    "requiredActions": [
+      "inspect-target-membership"
+    ],
+    "allowedActions": [
+      "inspect-target-membership",
+      "request-more-context",
+      "propose-simulator-build"
+    ],
+    "requiredMissingInputs": [
+      "target-configuration",
+      "toolchain-version"
+    ]
+  }
+}
