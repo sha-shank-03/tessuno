@@ -128,7 +128,7 @@ class BuildDiagnosis(unittest.TestCase):
         self.assertIn('skills/xcode-build-diagnosis/response.schema.json', files)
         from build import build
         build()
-        self.assertIn('<p id="count" role="status">7 objects</p>', (ROOT / 'dist/index.html').read_text())
+        self.assertIn(f'<p id="count" role="status">{len(load_catalog())} objects</p>', (ROOT / 'dist/index.html').read_text())
 
 
 if __name__ == '__main__': unittest.main()
