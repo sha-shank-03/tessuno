@@ -11,6 +11,22 @@ class Contracts(unittest.TestCase):
  def test_schemas_valid(self):
   for p in (ROOT/'schemas').glob('*.json'):Draft202012Validator.check_schema(read_json(p))
  def test_all_four_objects(self):self.assertEqual(len(load_catalog()),4)
+ def test_root_alias_preserves_digests_builds_and_symlink_rejection(self):
+  import build as builder
+  with tempfile.TemporaryDirectory() as d:
+   parent=Path(d).resolve();root=parent/'repo'
+   shutil.copytree(ROOT,root,ignore=shutil.ignore_patterns('.git','dist','__pycache__'))
+   alias=parent/'alias';alias.symlink_to(root,target_is_directory=True)
+   expected=subject_manifest(root,load_catalog(root),'core/ios-studio')
+   self.assertEqual(subject_manifest(alias,load_catalog(alias),'core/ios-studio'),expected)
+   records=load_catalog(alias);info=records['core/ios-studio']
+   self.assertEqual(component_files(alias,info),component_files(root,info))
+   with patch.object(builder,'ROOT',alias),patch.object(builder,'load_catalog',lambda:load_catalog(alias)):
+    self.assertEqual(builder.build(),builder.build())
+   outside=parent/'outside.md';outside.write_text('outside fixture')
+   target=root/'skills/ios-test-plan/examples/toggle.md';target.unlink();target.symlink_to(outside)
+   with self.assertRaises(Invalid):load_catalog(alias)
+   with self.assertRaises(Invalid):subject_manifest(alias,records,'core/ios-studio')
  def test_positive_fixtures(self):
   for p in (ROOT/'tests/fixtures/valid').glob('*.json'):
    with self.subTest(p=p.name):

@@ -26,6 +26,8 @@ Evidence fixtures are synthetic test inputs, never evidence that those checks oc
 Requires Python 3.11+ and jsonschema 4.26.0 and PyYAML 6.0.3 in an isolated development environment.
 The original source environment and this Mac preparation are documented separately in
 docs/tessuno-preparation.md; dependency installation is an explicit setup step.
+All seven development dependencies and platform wheel hashes are pinned in
+requirements-dev.lock. See the setup guide for a hash-checked PyPI installation.
 No dependency installation, network call or package download is performed by these commands.
 
 ```sh

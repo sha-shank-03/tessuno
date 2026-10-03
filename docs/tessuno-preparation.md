@@ -16,23 +16,42 @@ are preserved historical receipts for the original source, not the modified cand
 Do not describe their old hashes or review as approval of this Tessuno diff.
 
 Branding changes touch development guidance, contribution/security documentation and
-catalog presentation. Canonical schemas, object identifiers, fixtures, validation,
-publication behavior, LICENSE and third-party notices are unchanged. No domain or
+catalog presentation. Subsequent review fixes normalize caller roots consistently and
+pin development dependencies, without changing canonical schemas, object identifiers,
+fixtures, publication behavior, LICENSE or third-party notices. No domain or
 GitHub organization ownership is claimed. The owner reports tessuno.com registered;
 tessuno.dev and the exact GitHub handle remain unverified. No purchase is proposed.
 
 ## Mac development setup
 
-This task uses Python 3.12 in a task-local virtual environment outside the repository.
-The exact top-level dependencies in requirements-dev.txt were explicitly installed
-for local validation. Dependencies are not vendored, and transitive versions are not
-yet a reviewed CI lock. Validation and build commands then operate offline:
+Use Python 3.11+ in a virtual environment outside the source tree. From the repository
+directory, explicit setup is:
 
-On this Mac, the default temporary directory aliases `/var` to `/private/var`.
-Four unchanged baseline tests encounter a lexical/resolved path mismatch there.
-Use an absolute task-local directory without symlink aliases for `TMPDIR` when
-running the suite. With that environment setting, both baseline and candidate
-pass all 30 tests; no validator, test or security boundary was changed.
+```sh
+python3 -m venv ../.tessuno-venv
+. ../.tessuno-venv/bin/activate
+python -m pip --isolated install --require-hashes -r requirements-dev.txt
+```
+
+On Windows, activate `..\\.tessuno-venv\\Scripts\\Activate.ps1` in PowerShell.
+The lock pins all seven packages and the published release hashes for platform-specific
+wheels from official PyPI. Binary-only installation fails closed if no matching wheel
+exists; it never builds an unreviewed source distribution. No dependencies are vendored.
+This is a development dependency lock, not a protected offline runner or CI qualification.
+
+macOS aliases `/var` to `/private/var` and `/tmp` to `/private/tmp`. The original source
+had a lexical/resolved root mismatch. Roots now normalize consistently before relative
+path operations, so ordinary tests work with the default temporary directory. Descendant
+symlinks remain rejected. If a separate test scratch directory is desired, use:
+
+```sh
+mkdir -p ../.tessuno-test-tmp
+export TMPDIR="$(cd ../.tessuno-test-tmp && pwd -P)"
+```
+
+Always keep `TMPDIR` outside this repository. Tests copy the source tree into temporary
+fixtures; putting scratch beneath the source would recursively copy the fixtures.
+Validation and build commands then operate offline:
 
 ```sh
 python tools/validate.py

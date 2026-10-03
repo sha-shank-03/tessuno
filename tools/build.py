@@ -9,10 +9,10 @@ def write(path,data):
  path.parent.mkdir(parents=True,exist_ok=True)
  path.write_bytes(data if isinstance(data,bytes) else data.encode())
 def build(out=None):
- records=load_catalog();out=out or ROOT/'dist'
+ root=Path(ROOT).resolve();records=load_catalog();out=out or root/'dist'
  previous={}
  if out.exists():
-  if out.is_symlink() or out.resolve()!=ROOT/'dist':raise Invalid('unsafe output directory')
+  if out.is_symlink() or out.resolve()!=root/'dist':raise Invalid('unsafe output directory')
   # Only overwrite or remove unchanged outputs named in the prior generated receipt.
   receipt=safe_path(out,'checksums.json')
   if not receipt.is_file(): raise Invalid('existing output lacks generated receipt')
@@ -28,28 +28,28 @@ def build(out=None):
  out.mkdir(exist_ok=True)
  cards=[];index=[];bundle={}
  for id,info in sorted(records.items()):
-  item=info['record'];slug=id.replace('/','--');subject,manifest,lock,adapters=subject_manifest(ROOT,records,id)
+  item=info['record'];slug=id.replace('/','--');subject,manifest,lock,adapters=subject_manifest(root,records,id)
   bundle[id]={'subject':subject,'manifest':manifest,'lock':lock,'adapters':adapters}
   fields={'kind':item['kind'],'stack':' '.join(item['stacks']),'platform':' '.join(x['host'] for x in item.get('supportedPlatforms',[])) or 'unqualified','origin':'original-synthetic','support':'declared-only','network':item.get('networkScope',{}).get('mode','composed'),'write':'none' if not item.get('filesystemScope',{}).get('write') else 'declared'}
   index.append({'id':id,'title':item['title'],'purpose':item['purpose'],**fields,'sha256':subject['sha256']})
-  source=info['path'].relative_to(ROOT).as_posix()
+  source=info['path'].relative_to(root).as_posix()
   sources=[]
   for entry in manifest['files']:
-   path=entry['path'];dest='source/'+path+'.txt';write(out/dest,safe_path(ROOT,path).read_bytes());sources.append(f'<li><a href="{html.escape(quote(dest,safe="/"),quote=True)}">{html.escape(path)}</a></li>')
+   path=entry['path'];dest='source/'+path+'.txt';write(out/dest,safe_path(root,path).read_bytes());sources.append(f'<li><a href="{html.escape(quote(dest,safe="/"),quote=True)}">{html.escape(path)}</a></li>')
   cards.append('<article data-search="'+html.escape(' '.join([id,item['title'],item['purpose'],*fields.values()]),quote=True)+'">'+f'<p class="eyebrow">{html.escape(item["kind"])} · v{item["version"]}</p><h2>{html.escape(item["title"])}</h2><p>{html.escape(item["purpose"])}</p><p class="status">Declared-only · no runtime qualification · license {html.escape(item["license"])}</p><p>Validation: local structural checks only. Security scan, independent review, host execution, and enforcement: no trusted evidence.</p><p>Exact content digest: <code>{subject["sha256"]}</code></p><details><summary>Inspect full contract</summary><pre>'+html.escape(json.dumps(item,indent=2))+'</pre></details><details><summary>Inspect source and dependency closure</summary><ul>'+''.join(sources)+'</ul></details></article>')
  write(out/'search-index.json',canonical(index));write(out/'content-manifests.json',canonical(bundle))
- css=safe_path(ROOT,'site/assets/style.css').read_text();js=safe_path(ROOT,'site/assets/search.js').read_text()
+ css=safe_path(root,'site/assets/style.css').read_text();js=safe_path(root,'site/assets/search.js').read_text()
  write(out/'style.css',css);write(out/'search.js',js)
  page='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'"><title>Tessuno · development catalog</title><link rel="stylesheet" href="style.css"></head><body><main><header><p class="eyebrow">TESSUNO / DEVELOPMENT FOUNDATION / v0.1</p><h1>Tessuno.<br>Inspectable capabilities.</h1><p>Four original synthetic objects for a bounded iOS review workflow.</p><p class="notice">Not published. Original work: Apache-2.0. Tessuno name selected; maintainer unresolved. Nothing here installs, executes, or qualifies a host.</p></header><section class="search"><label for="search">Search type, stack, platform, origin, support, network or write scope</label><input id="search" type="search" placeholder="Try Skill, ios, codex, declared-only, none"><p id="count" role="status">4 objects</p><noscript>All objects and source links are available below without JavaScript.</noscript></section>'''+''.join(cards)+'''<footer><p>No trusted evidence is imported. Valid evidence syntax never awards a badge.</p><p><a href="content-manifests.json">Content manifests and exact locks</a> · <a href="search-index.json">Search index</a> · <a href="prototype.zip">Synthetic source archive</a></p></footer></main><script src="search.js"></script></body></html>'''
  write(out/'index.html',page)
  archive_files={}
  for info in records.values():
   for p in info['path'].parent.rglob('*'):
-   if p.is_file():archive_files[p.relative_to(ROOT).as_posix()]=safe_path(ROOT,p.relative_to(ROOT).as_posix()).read_bytes()
- for p in sorted((ROOT/'schemas').glob('*.json')):archive_files[p.relative_to(ROOT).as_posix()]=safe_path(ROOT,p.relative_to(ROOT).as_posix()).read_bytes()
+   if p.is_file():archive_files[p.relative_to(root).as_posix()]=safe_path(root,p.relative_to(root).as_posix()).read_bytes()
+ for p in sorted((root/'schemas').glob('*.json')):archive_files[p.relative_to(root).as_posix()]=safe_path(root,p.relative_to(root).as_posix()).read_bytes()
  archive_files['content-manifests.json']=canonical(bundle)
- archive_files['LICENSE']=safe_path(ROOT,'LICENSE').read_bytes()
- archive_files['THIRD_PARTY_NOTICES.md']=safe_path(ROOT,'THIRD_PARTY_NOTICES.md').read_bytes()
+ archive_files['LICENSE']=safe_path(root,'LICENSE').read_bytes()
+ archive_files['THIRD_PARTY_NOTICES.md']=safe_path(root,'THIRD_PARTY_NOTICES.md').read_bytes()
  archive_files['LICENSE-STATUS.txt']=b'Apache-2.0 for original scaffold work. See LICENSE and THIRD_PARTY_NOTICES.md. Private delivery does not authorize the assistant to publish remotely.\n'
  with zipfile.ZipFile(out/'prototype.zip','w',compression=zipfile.ZIP_STORED) as z:
   for path,data in sorted(archive_files.items()):

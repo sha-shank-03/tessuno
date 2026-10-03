@@ -143,7 +143,7 @@ def closure(records, id):
     visit(id);return sorted(seen)
 
 def component_files(root, info):
-    files=[]
+    root=Path(root).resolve();files=[]
     for path in sorted(info['path'].parent.rglob('*')):
         if path.is_symlink():raise Invalid('symlink in component closure')
         if not path.is_dir() and not path.is_file(): raise Invalid('nonregular component resource')
@@ -169,7 +169,7 @@ def qualify(record, report):
     raise Invalid('executable qualification unavailable: trusted host enforcement verification is not implemented')
 
 def subject_manifest(root, records, id):
-    root=Path(root);components=[];files=[]
+    root=Path(root).resolve();components=[];files=[]
     for key in closure(records,id):
         info=records[key];part=component_files(root,info);files+=part
         components.append({'id':key,'version':info['record']['version'],'sha256':digest(part)})
