@@ -16,6 +16,8 @@ and THIRD_PARTY_NOTICES.md. No installer or executable host adapter exists.
 - Deterministic validation, closure hashes, lock/license inventory, static source-inspection catalog,
   inert synthetic archive, and offline positive/negative tests
 - Adapter loss reports explicitly refuse executable qualification; no Codex TOML is generated
+- [Offline native-Skill portability inspection](docs/native-skill-portability.md) inventories
+  native bytes and canonical field losses for four documented hosts without installing a Skill
 
 Compatibility is declared-only. No Codex, Xcode, simulator, device, model, security scanner,
 GitHub CI, external producer, or human approval has been qualified by this repository.

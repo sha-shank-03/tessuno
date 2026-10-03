@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1",
+  "reviewedOn": "2026-10-03",
+  "standardReference": "https://agentskills.io/specification",
+  "hosts": {
+    "codex": {
+      "documentation": "https://learn.chatgpt.com/docs/build-skills",
+      "projectSkillRoots": [".agents/skills"],
+      "invocationNote": "Explicit mention or description-based selection; duplicate names are not merged."
+    },
+    "claude-code": {
+      "documentation": "https://code.claude.com/docs/en/skills",
+      "projectSkillRoots": [".claude/skills"],
+      "invocationNote": "Slash invocation or description-based selection; body substitutions and dynamic context are host extensions."
+    },
+    "cursor": {
+      "documentation": "https://cursor.com/docs/skills",
+      "projectSkillRoots": [".agents/skills", ".cursor/skills"],
+      "invocationNote": "Slash invocation or context-based selection; invocation lifecycle depends on the host mode."
+    },
+    "gemini-cli": {
+      "documentation": "https://geminicli.com/docs/cli/skills/",
+      "projectSkillRoots": [".agents/skills", ".gemini/skills"],
+      "invocationNote": "Description-based activation with a consent prompt; the shared alias takes precedence within a discovery tier."
+    }
+  }
+}
