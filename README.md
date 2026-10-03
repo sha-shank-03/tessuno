@@ -64,3 +64,7 @@ in docs/ci-proposal.md; no live GitHub workflow or remote issues are created.
 
 See docs/tessuno-preparation.md for source provenance and repository preparation boundaries,
 and docs/issue-drafts/tessuno-eight-issues.md for eight bounded proposed GitHub issues.
+
+Inspect the [release-readiness evidence workflow](docs/release-readiness-evidence.md)
+for an operator procedure and original synthetic packets. Its deterministic inventory
+checker reports gaps; even a complete packet leaves release BLOCKED and grants no authority.

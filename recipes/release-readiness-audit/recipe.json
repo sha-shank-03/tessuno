@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "maintainer": {
+    "name": "sha-shank-03",
+    "contact": "https://github.com/sha-shank-03"
+  },
+  "stacks": [
+    "ios",
+    "swift"
+  ],
+  "kind": "Recipe",
+  "id": "core/release-readiness-audit",
+  "title": "Audit Release Readiness Evidence",
+  "purpose": "Prepare a source-linked gap report and human handoff; release remains blocked.",
+  "inputs": [
+    "Sanitized candidate identity and release evidence packet"
+  ],
+  "outputs": [
+    "Requirement-level evidence gaps, inspected claims and collection plan"
+  ],
+  "steps": [
+    {
+      "id": "inventory",
+      "uses": {
+        "kind": "Skill",
+        "id": "core/release-readiness-evidence",
+        "version": "0.1.0"
+      },
+      "expectedArtifacts": [
+        "Candidate identity and domain evidence inventory"
+      ],
+      "verificationCriteria": [
+        "Each of eight domains cites supplied artifacts or an explicit gap."
+      ]
+    },
+    {
+      "id": "audit",
+      "uses": {
+        "kind": "Agent",
+        "id": "core/release-evidence-auditor",
+        "version": "0.1.0"
+      },
+      "expectedArtifacts": [
+        "Evidence gap report and bounded collection plan"
+      ],
+      "verificationCriteria": [
+        "Missing/stale/mismatched/failed/not-run evidence stays visible; no checklist grants release authority."
+      ],
+      "humanCheckpoint": {
+        "reason": "Owner determines next verification scope; no submission or release is authorized.",
+        "requiredDecision": "Review gaps and authorize one bounded evidence-collection task separately."
+      }
+    }
+  ]
+}

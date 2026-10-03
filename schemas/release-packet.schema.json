@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "synthetic",
+    "asOf",
+    "candidate",
+    "plannedTests",
+    "sections"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "asOf": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "candidate": {
+      "type": "object",
+      "required": [
+        "version",
+        "build",
+        "subject",
+        "scopeDigest"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "build": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject": {
+          "type": "object"
+        },
+        "scopeDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "plannedTests": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "domain",
+          "artifact",
+          "sha256",
+          "version",
+          "build",
+          "candidateDigest",
+          "scopeDigest",
+          "observedAt",
+          "outcome"
+        ],
+        "properties": {
+          "domain": {
+            "enum": [
+              "version-build",
+              "tests",
+              "review",
+              "testflight-feedback",
+              "crashes",
+              "metadata-privacy",
+              "migrations",
+              "mitigation"
+            ]
+          },
+          "artifact": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "build": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidateDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "scopeDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "outcome": {
+            "enum": [
+              "reported-pass",
+              "reported-fail",
+              "not-run",
+              "not-applicable"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
