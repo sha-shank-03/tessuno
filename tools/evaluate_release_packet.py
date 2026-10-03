@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from library import (ROOT, Invalid, safe_path, read_json, checked_schema, evidence_check,
-                     validate_schema, Draft202012Validator, FormatChecker, digest)
+                     Draft202012Validator, FormatChecker, digest)
 
 DOMAINS = ('version-build', 'tests', 'review', 'testflight-feedback', 'crashes',
            'metadata-privacy', 'migrations', 'mitigation')
@@ -12,7 +12,13 @@ FIXTURES = 'skills/release-readiness-evidence/fixtures/'
 
 
 def utc(value):
-    return datetime.fromisoformat(value.replace('Z', '+00:00')).astimezone(timezone.utc)
+    try:
+        parsed = datetime.fromisoformat(value.upper().replace('Z', '+00:00'))
+        if parsed.tzinfo is None:
+            raise ValueError('timestamp must include a timezone')
+        return parsed.astimezone(timezone.utc)
+    except (AttributeError, TypeError, ValueError, OverflowError) as error:
+        raise Invalid('unsupported timestamp') from error
 
 
 def evaluate(packet_path, root=ROOT):
@@ -27,10 +33,14 @@ def evaluate(packet_path, root=ROOT):
         raise Invalid('duplicate release domain')
     candidate = packet['candidate']
     as_of = utc(packet['asOf'])
-    # Validate expected subject with canonical envelope schema, not a second subject validator.
-    probe = read_json(safe_path(root, FIXTURES + 'artifacts/tests.json'))
-    probe['subject'] = candidate['subject']
-    validate_schema(probe, 'evidence', root=root)
+    # Reuse canonical subject definitions directly; no unrelated fixture is required.
+    evidence_schema = checked_schema(root, 'evidence')
+    subject_schema = {'$schema': evidence_schema['$schema'], '$defs': evidence_schema['$defs'],
+                      **evidence_schema['properties']['subject']}
+    subject_errors = list(Draft202012Validator(subject_schema, format_checker=FormatChecker())
+                          .iter_errors(candidate['subject']))
+    if subject_errors:
+        raise Invalid('invalid candidate subject: ' + '; '.join(e.message for e in subject_errors))
     if candidate['subject']['version'] != candidate['version']:
         raise Invalid('candidate version and subject version disagree')
     config_digest = digest({key: candidate[key] for key in ('version', 'build', 'scopeDigest')})
@@ -69,7 +79,7 @@ def evaluate(packet_path, root=ROOT):
                             evidence_check(artifact, expected_subject=candidate['subject'],
                                 scope_digest=candidate['scopeDigest'],
                                 expected_attempts=packet['plannedTests'] if domain == 'tests' else None)
-                            if artifact['createdAt'] != entry['observedAt']:
+                            if utc(artifact['createdAt']) != utc(entry['observedAt']):
                                 gap('observation-time-mismatch')
                             if artifact['check']['configDigest'] != config_digest:
                                 gap('build-config-mismatch')
@@ -78,8 +88,9 @@ def evaluate(packet_path, root=ROOT):
                         else:
                             expected = {'synthetic': True, 'domain': domain, 'version': entry['version'],
                                         'build': entry['build'], 'candidateDigest': entry['candidateDigest'],
-                                        'scopeDigest': entry['scopeDigest'], 'observedAt': entry['observedAt']}
-                            if any(artifact.get(key) != value for key, value in expected.items()):
+                                        'scopeDigest': entry['scopeDigest']}
+                            if (any(artifact.get(key) != value for key, value in expected.items())
+                                    or utc(artifact.get('observedAt')) != utc(entry['observedAt'])):
                                 gap('artifact-identity-mismatch')
                 except Invalid:
                     gap('missing-unsafe-or-invalid-evidence')

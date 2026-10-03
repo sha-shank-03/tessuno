@@ -3,6 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -87,3 +88,49 @@ class ReleasePacket(unittest.TestCase):
             outside = Path(parent) / 'outside.json'; outside.write_bytes(target.read_bytes())
             target.unlink(); target.symlink_to(outside)
             self.assertIn('missing-unsafe-or-invalid-evidence', self.row(evaluate(FIXTURES + 'complete.json', root=root), 'version-build')['gaps'])
+
+    def test_missing_and_renamed_test_artifacts_do_not_hide_other_domains(self):
+        with tempfile.TemporaryDirectory() as parent:
+            root = self.fixture(parent)
+            tests = root / f'{FIXTURES}artifacts/tests.json'
+            renamed = tests.with_name('alternate-tests.json')
+            tests.rename(renamed)
+            missing = evaluate(FIXTURES + 'complete.json', root=root)
+            self.assertEqual(len(missing['domains']), len(DOMAINS))
+            self.assertIn('missing-unsafe-or-invalid-evidence', self.row(missing, 'tests')['gaps'])
+            self.assertEqual(self.row(missing, 'review')['inventoryStatus'], 'declared-evidence-present')
+            self.assertEqual(missing['releaseVerdict'], 'BLOCKED')
+            cli = subprocess.run([sys.executable, 'tools/evaluate_release_packet.py', FIXTURES + 'complete.json'],
+                                 cwd=root, capture_output=True, text=True, timeout=10)
+            self.assertEqual(cli.returncode, 1, cli.stderr)
+            self.assertEqual(len(json.loads(cli.stdout)['domains']), len(DOMAINS))
+            packet = self.packet()
+            packet['sections'][1]['artifact'] = renamed.relative_to(root).as_posix()
+            result = self.run_packet(root, packet)
+            self.assertEqual(result['inventoryStatus'], 'complete')
+            self.assertEqual(result['releaseVerdict'], 'BLOCKED')
+            cli = subprocess.run([sys.executable, 'tools/evaluate_release_packet.py', FIXTURES + 'case.json'],
+                                 cwd=root, capture_output=True, text=True, timeout=10)
+            self.assertEqual(cli.returncode, 0, cli.stderr)
+            self.assertEqual(json.loads(cli.stdout)['releaseVerdict'], 'BLOCKED')
+
+    def test_lowercase_timestamps_and_unsupported_parser_values(self):
+        from evaluate_release_packet import utc
+        with tempfile.TemporaryDirectory() as parent:
+            root = self.fixture(parent)
+            packet = self.packet(); packet['asOf'] = '2026-10-01t00:00:00z'
+            for entry in packet['sections']:
+                entry['observedAt'] = entry['observedAt'].lower()
+            result = self.run_packet(root, packet)
+            self.assertEqual(result['inventoryStatus'], 'complete')
+            self.assertEqual(result['releaseVerdict'], 'BLOCKED')
+            cli = subprocess.run([sys.executable, 'tools/evaluate_release_packet.py', FIXTURES + 'case.json'],
+                                 cwd=root, capture_output=True, text=True, timeout=10)
+            self.assertEqual(cli.returncode, 0, cli.stderr)
+            self.assertEqual(json.loads(cli.stdout)['releaseVerdict'], 'BLOCKED')
+            packet['candidate']['subject']['sha256'] = 'not-a-digest'
+            with self.assertRaises(Invalid):
+                self.run_packet(root, packet)
+        for value in ('not-a-date', '2026-10-01T00:00:00', None):
+            with self.subTest(value=value), self.assertRaises(Invalid):
+                utc(value)
