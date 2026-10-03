@@ -6,6 +6,9 @@ iOS Studio and leaves cross-stack execution, adapters and qualification on the r
 The initial unpublished preparation and subsequent engineering review are historical
 stages. Maintainer and contribution/security triage owner is GitHub account `sha-shank-03`.
 Public source scope and planned settings are recorded in source-preview-policy.md.
+The repository is now public; the later two-file CI bootstrap and one fixed-source run
+are recorded in ci-proposal.md. The preparation facts below retain their historical scope.
+The newer combined candidate remains local for review and has not been checked by hosted CI.
 
 ## Source and local history
 
@@ -67,12 +70,14 @@ The last command must fail closed: it is the unchanged qualified-release/executi
 Local tests and deterministic generation do not qualify a host, authenticate evidence or
 establish runtime containment. The owner's separate public source instructions authorize
 the bounded reviewed source preview, not a verified agent release. No executable host
-adapter, live CI, model eval or Xcode run exists.
+adapter, model eval or Xcode run was established by this initial preparation. The later
+manual CI run checked reviewed source only and established no runtime qualification.
 
 ## Publication and review boundaries
 
-The candidate remains local with no remote configured; repository creation/push and private
-reporting settings are not yet verified. Independently review the exact launch diff before
+At initial preparation the candidate was local with no remote configured, and creation/push
+were unverified. Repository creation and the later bounded CI bootstrap are now recorded;
+private reporting settings remain unverified here. Independently review the exact launch diff before
 the bounded source-only setup. Maintainer ownership and contribution process are documented;
 SECURITY.md records the private reporting route as unverified and withholds a reporting URL.
 Only settings/content readback can justify updating launch status. No monitored-reporting
@@ -81,9 +86,9 @@ claim may be made without notification verification, and no response SLA is prom
 Implement comprehensive SPDX/license validation and trusted producer, integrity, expiry,
 revocation and host checks before qualification or verified-release claims. The existing
 publication gate remains an unconditional rejection; inspectable public source never
-bypasses it. docs/ci-proposal.md remains disabled, and the new dependency lock is not a
+bypasses it. Lane B in docs/ci-proposal.md remains disabled, and the development lock is not a
 qualified runner. No catalog deployment or GitHub mutation is performed by these docs.
 
-The eight issue texts are drafts only. CI activation is a separate reviewed and
-authorized change described in docs/ci-proposal.md. No secrets, credentials, private
+The eight issue texts record the original drafts. The subsequent CI bootstrap was a separately
+reviewed and authorized change described in docs/ci-proposal.md. No secrets, credentials, private
 application details, unrelated projects or cancelled studio services belong here.

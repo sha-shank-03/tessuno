@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "maintainer": {
+    "name": "sha-shank-03",
+    "contact": "https://github.com/sha-shank-03"
+  },
+  "stacks": [
+    "ios",
+    "swift"
+  ],
+  "kind": "Skill",
+  "id": "core/release-readiness-evidence",
+  "title": "Release Readiness Evidence",
+  "purpose": "Inventory supplied release evidence and identify exact-candidate gaps without authorizing a release.",
+  "entry": "SKILL.md",
+  "filesystemScope": {
+    "read": [
+      "${workspace}/inputs/**"
+    ],
+    "write": [],
+    "deny": [
+      "${workspace}/secrets/**",
+      "${workspace}/.env*"
+    ]
+  },
+  "networkScope": {
+    "mode": "none",
+    "destinations": [],
+    "externalWriteAllowed": false
+  },
+  "requiredTools": [
+    "repository.read"
+  ],
+  "inputs": [
+    "Sanitized candidate identity and release evidence packet"
+  ],
+  "outputs": [
+    "Requirement-level evidence gaps, inspected claims and collection plan"
+  ],
+  "exampleTasks": [
+    "Audit an original synthetic release packet with stale test evidence."
+  ],
+  "knownLimitations": [
+    "Filled packets and structural checks do not prove app or release readiness; no runtime, account or model execution."
+  ]
+}

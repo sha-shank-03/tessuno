@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1",
+  "caseId": "missing-module",
+  "observations": [
+    {
+      "code": "missing-module",
+      "logLine": 3,
+      "quote": "Sources/Preview.swift:2:8: error: no such module 'ReferenceSupport'"
+    }
+  ],
+  "hypotheses": [
+    {
+      "code": "target-dependency-missing",
+      "evidenceLines": [
+        3
+      ],
+      "status": "unconfirmed"
+    }
+  ],
+  "nextSteps": [
+    {
+      "action": "inspect-target-membership",
+      "status": "proposed",
+      "requiresHumanReview": true
+    }
+  ],
+  "missingInputs": [
+    "target-configuration",
+    "toolchain-version"
+  ],
+  "execution": {
+    "build": "not-run",
+    "tests": "not-run",
+    "fixes": "not-applied"
+  }
+}

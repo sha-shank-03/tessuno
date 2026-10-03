@@ -4,7 +4,8 @@ Tessuno is an inspectable Apache-2.0 development source scaffold for reusable Ag
 native Agent Skills, Recipes and Packs, maintained by GitHub account
 [sha-shank-03](https://github.com/sha-shank-03). The initial slice is iOS Studio;
 cross-stack support is a future roadmap. Public collaboration is the intended scope.
-This source candidate remains local; repository creation and push have not been verified.
+The public source repository is [sha-shank-03/tessuno](https://github.com/sha-shank-03/tessuno).
+This combined development candidate remains local and awaits independent review.
 Original scaffold code, documentation and synthetic examples are licensed **Apache-2.0**; see LICENSE
 and THIRD_PARTY_NOTICES.md. No installer or executable host adapter exists.
 
@@ -16,9 +17,11 @@ and THIRD_PARTY_NOTICES.md. No installer or executable host adapter exists.
 - Deterministic validation, closure hashes, lock/license inventory, static source-inspection catalog,
   inert synthetic archive, and offline positive/negative tests
 - Adapter loss reports explicitly refuse executable qualification; no Codex TOML is generated
+- [Offline native-Skill portability inspection](docs/native-skill-portability.md) inventories
+  native bytes and canonical field losses for four documented hosts without installing a Skill
 
 Compatibility is declared-only. No Codex, Xcode, simulator, device, model, security scanner,
-GitHub CI, external producer, or human approval has been qualified by this repository.
+external producer, or human approval has been qualified by this repository.
 Evidence fixtures are synthetic test inputs, never evidence that those checks occurred.
 
 ## Run offline
@@ -41,7 +44,9 @@ Open dist/index.html to inspect the catalog and source. For same-origin script e
 serve dist with a local-only HTTP server. Catalog deployment is outside this source preview.
 The search box filters
 kind, stack, platform, origin, declared support, network and write-scope terms. Without scripts,
-all objects and plain-text source links remain visible. Two builds produce identical bytes.
+all objects and source links remain visible. Source and JSON metadata inspection use
+static HTML text viewers with original-byte hashes, raw-file links and a repository link.
+Viewer content is escaped data and requires no JavaScript. Two builds produce identical bytes.
 
 ## Boundaries
 
@@ -59,8 +64,24 @@ and [security reporting status](SECURITY.md). Do not disclose vulnerabilities or
 issues or pull requests; no private reporting channel is advertised until settings are verified.
 
 See docs/architecture.md, docs/compatibility.md, docs/trust-and-evidence.md,
-docs/licensing-decision.md and docs/issue-drafts/roadmap.md. Safe CI is a disabled proposal
-in docs/ci-proposal.md; no live GitHub workflow or remote issues are created.
+docs/licensing-decision.md and docs/issue-drafts/roadmap.md. The bounded manual source CI
+controller is active; its [one approved run](https://github.com/sha-shank-03/tessuno/actions/runs/37121608051)
+passed 91 tests against the fixed reviewed source `ade193beda810f85ac38fa008f25f7261c272b23`.
+It did not validate this newer local candidate or qualify an Agent. Untrusted Lane B stays
+disabled; see [CI scope and recorded execution](docs/ci-proposal.md). Further dispatch needs
+separate authorization.
 
 See docs/tessuno-preparation.md for source provenance and repository preparation boundaries,
 and docs/issue-drafts/tessuno-eight-issues.md for eight bounded proposed GitHub issues.
+
+For offline inspection of declared permissions and unsupported host controls, run
+`python tools/export_adapter.py --agent core/ios-quality-reviewer`.
+See [adapter inspection](docs/adapter-inspection.md); executable exports always reject.
+
+Try the [Xcode build-diagnosis reference workflow](docs/xcode-build-diagnosis.md):
+`python tools/evaluate_build_diagnosis.py --examples` checks authored structured answers
+against three original synthetic logs. It invokes neither Xcode nor a model and applies no fixes.
+
+Inspect the [release-readiness evidence workflow](docs/release-readiness-evidence.md)
+for an operator procedure and original synthetic packets. Its deterministic inventory
+checker reports gaps; even a complete packet leaves release BLOCKED and grants no authority.
