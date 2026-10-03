@@ -31,14 +31,21 @@ def check(text):
     if set(data['jobs']) != {'inspect'}:
         raise ValueError('unexpected jobs')
     job = data['jobs']['inspect']
-    if job['if'] != '${{ false }}' or job['permissions'] != {'contents': 'read'} or job['timeout-minutes'] != 10:
-        raise ValueError('disabled/read-only/time bound changed')
+    if (job['if'] != '${{ false }}' or job['permissions'] != {'contents': 'read'}
+            or job['timeout-minutes'] != 10 or job['runs-on'] != 'ubuntu-24.04'):
+        raise ValueError('disabled/read-only/time/runner bound changed')
     steps = job['steps']
     if len(steps) != 6 or [s.get('uses') for s in steps[:3]] != [CHECKOUT, CHECKOUT, PYTHON]:
         raise ValueError('immutable acquisition references changed')
-    for step in steps[:2]:
-        if step['with']['persist-credentials'] is not False or step['with']['submodules'] is not False or step['with']['lfs'] is not False:
-            raise ValueError('checkout credential/extra acquisition changed')
+    for step, ref, path in zip(steps[:2],
+                               ('f19a87ab6d1a390f0c1848b2338b21301163494e',
+                                'refs/pull/${{ github.event.pull_request.number }}/merge'),
+                               ('protected', 'candidate')):
+        if step['with'] != {'ref': ref, 'path': path, 'persist-credentials': False,
+                            'submodules': False, 'lfs': False}:
+            raise ValueError('checkout identity/path/credentials changed')
+    if 'continue-on-error' in job or any('continue-on-error' in step or 'if' in step for step in steps):
+        raise ValueError('step failure/condition overrides are forbidden')
     if steps[3]['run'] != "echo 'BLOCKED: no reviewed offline sandbox/image/wheelhouse/protected harness.'\nexit 1\n":
         raise ValueError('hard activation blocker changed')
     if steps[4]['run'].strip() != 'python -m pip --isolated install --no-index --only-binary=:all: --require-hashes --find-links /opt/tessuno-reviewed/wheels -r protected/requirements-dev.lock':

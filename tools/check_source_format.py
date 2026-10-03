@@ -1,17 +1,23 @@
-"""Small dependency-free code/schema hygiene check, not a style formatter."""
+"""Code/schema hygiene using existing dependencies; not a formatter or sandbox."""
 import ast
 from pathlib import Path
 from library import ROOT, read_json
 
 
 def check(root=ROOT):
+    root = Path(root).resolve()
     count = 0
     for folder in ('tools', 'tests', 'schemas', 'site/assets'):
-        for path in sorted((Path(root) / folder).rglob('*')):
-            if path.suffix not in ('.py', '.json', '.js', '.css'):
-                continue
+        scanned = root
+        for part in Path(folder).parts:
+            scanned = scanned / part
+            if scanned.is_symlink():
+                raise ValueError('source directory symlink rejected')
+        for path in sorted(scanned.rglob('*')):
             if path.is_symlink():
                 raise ValueError('source symlink rejected')
+            if path.suffix not in ('.py', '.json', '.js', '.css'):
+                continue
             data = path.read_bytes()
             text = data.decode('utf-8')
             if b'\r' in data or not text.endswith('\n'):

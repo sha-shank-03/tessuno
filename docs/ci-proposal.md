@@ -74,7 +74,7 @@ GitHub actionlint binary/dependency was acquired. Activation requires authoritat
 workflow validation in the protected review environment as well.
 
 `python tools/ci_checks.py` executes local source-hygiene, schema/semantic validation,
-34 unittest cases and static build, then requires publication to exit1. Its tests
+36 unittest cases and static build, then requires publication to exit1. Its tests
 include negative schema/path/duplicate-key/manifest/evidence gates, deterministic
 archive/build/readback and synthetic fixture oracles. Format check means Python
 syntax, JSON validity/duplicate rejection, UTF8/LF/final-newline/trailing-whitespace
@@ -82,7 +82,7 @@ checks on code/schema files; it is not an opinionated formatter or JS runtime au
 Main does not contain the unmerged adapter/export, diagnosis, Xcode or browser-filter
 features. None is silently incorporated. No external runs occurred.
 
-All34 cases are local structural/synthetic fixture checks. They do not demonstrate
+All36 cases are local structural/synthetic fixture checks. They do not demonstrate
 network denial, secret absence, token removal, host sandbox enforcement, signing,
 macOS/Xcode compile/runtime, real Agent/model evaluation or trusted evidence.
 The local parity helper executes candidate scripts/tests with a direct-process
@@ -94,7 +94,7 @@ cannot determine the trusted policy or award acceptance.
 
 ### Resource plan and concrete activation gates
 
-Observed local34-test run took3.504seconds; no portable memory/disk/CPU peak measured.
+Observed local36-test run took3.364seconds; no portable memory/disk/CPU peak measured.
 Plan one disposable job, no matrix, ten-minute job limit; protected isolation target
 2vCPU,1GiB RAM,1GiB scratch and10MiB retained logs, with acquisition separately
 bounded. These are proposed budgets, not enforced by this YAML or local helper.
@@ -111,3 +111,9 @@ validate workflow grammar/policy and protected branch/reviewer ownership; obtain
 separate owner authorization to replace blockers and enable Actions. A hosted-runner
 YAML alone meets none of the offline enforcement gates. No privileged consumer.
 Issue6 remains open; independent security review is required even for draft push.
+
+The bounded review fixes freeze protected/candidate checkout refs and paths plus
+the intended runner label; reject continue-on-error and step-condition overrides;
+and reject scanned source-directory symlinks before file reads. Synthetic negative
+tests cover each change. Root aliases resolve consistently. These remain limited
+consistency/hygiene checks, not a general malicious-YAML auditor or host sandbox.
