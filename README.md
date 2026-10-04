@@ -5,7 +5,8 @@ native Agent Skills, Recipes and Packs, maintained by GitHub account
 [sha-shank-03](https://github.com/sha-shank-03). The initial slice is iOS Studio;
 cross-stack support is a future roadmap. Public collaboration is the intended scope.
 The public source repository is [sha-shank-03/tessuno](https://github.com/sha-shank-03/tessuno).
-This combined development candidate remains local and awaits independent review.
+The reviewed source integration merged in [PR 17](https://github.com/sha-shank-03/tessuno/pull/17)
+on 2026-10-03. Later source changes require their own independent review.
 Original scaffold code, documentation and synthetic examples are licensed **Apache-2.0**; see LICENSE
 and THIRD_PARTY_NOTICES.md. No installer or executable host adapter exists.
 
@@ -64,11 +65,16 @@ and [security reporting status](SECURITY.md). Do not disclose vulnerabilities or
 issues or pull requests; no private reporting channel is advertised until settings are verified.
 
 See docs/architecture.md, docs/compatibility.md, docs/trust-and-evidence.md,
-docs/licensing-decision.md and docs/issue-drafts/roadmap.md. The bounded manual source CI
-controller is active; its [one approved run](https://github.com/sha-shank-03/tessuno/actions/runs/37121608051)
-passed 91 tests against the fixed reviewed source `ade193beda810f85ac38fa008f25f7261c272b23`.
-It did not validate this newer local candidate or qualify an Agent. Untrusted Lane B stays
-disabled; see [CI scope and recorded execution](docs/ci-proposal.md). Further dispatch needs
+docs/licensing-decision.md and docs/issue-drafts/roadmap.md. Recorded main commit
+`a55e9e6f1e3a32882b73e002c5126c71b7706970` has the same Git tree as checked source
+`f0ff1194370305d89d28dbe56d44f0c90434575d`. The later separately approved
+[Lane A run](https://github.com/sha-shank-03/tessuno/actions/runs/37132277113)
+passed 98 tests with zero skips, built 10 objects and 86 outputs, and rejected qualified
+publication as intended. It validates that source snapshot, not Agent/runtime qualification
+or later edits. The active controller was restored to its original literal source pin,
+`ade193beda810f85ac38fa008f25f7261c272b23`; it does not automatically check current main.
+Both bounded run records are retained in [CI scope and history](docs/ci-proposal.md).
+Untrusted Lane B remains disabled. Repointing or dispatching the controller requires
 separate authorization.
 
 See docs/tessuno-preparation.md for source provenance and repository preparation boundaries,
