@@ -85,3 +85,6 @@ against original synthetic logs. It invokes neither Xcode nor a model and applie
 Inspect the [release-readiness evidence workflow](docs/release-readiness-evidence.md)
 for an operator procedure and original synthetic packets. Its deterministic inventory
 checker reports gaps; even a complete packet leaves release BLOCKED and grants no authority.
+
+See [draft integration order](docs/integration-order.md) for the exact source prerequisites
+and separate test baselines of pending PRs 20–23.

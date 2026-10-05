@@ -8,7 +8,13 @@ from jsonschema import Draft202012Validator
 from jsonschema.exceptions import SchemaError
 from library import ROOT, Invalid, canonical, read_json, safe_path
 
-CASES = ('unresolved-symbol', 'missing-module', 'incomplete-log', 'multiple-diagnostics')
+CASES = ('unresolved-symbol', 'missing-module', 'incomplete-log', 'multiple-diagnostics', 'mixed-diagnostics')
+HYPOTHESIS_DIAGNOSTICS = {
+    'symbol-name-mismatch': 'unresolved-symbol',
+    'missing-source-declaration': 'unresolved-symbol',
+    'target-dependency-missing': 'missing-module',
+    'insufficient-context': 'insufficient-log',
+}
 SCHEMA = 'skills/xcode-build-diagnosis/response.schema.json'
 ASSERTIONS = ('response-schema', 'case-id', 'exact-citations', 'complete-observations',
               'bounded-hypotheses', 'bounded-next-steps', 'required-context-gaps')
@@ -43,14 +49,17 @@ def evaluate(case_id, response, root=ROOT):
         expected = case['expected']
         observed = [(item['code'], item['logLine']) for item in response['observations']]
         wanted = [(item['code'], item['logLine']) for item in expected['observations']]
-        evidence_lines = {line for _, line in wanted}
+        matching = set(observed) & set(wanted)
+        evidence_lines = {family: {line for code, line in matching if code == family}
+                          for family in set(HYPOTHESIS_DIAGNOSTICS.values())}
         actions = {item['action'] for item in response['nextSteps']}
         checks = [
             response['caseId'] == case_id,
             all(1 <= item['logLine'] <= len(log) and item['quote'] == log[int(item['logLine']) - 1]
                 for item in response['observations']),
             len(observed) == len(set(observed)) and set(observed) == set(wanted),
-            all(item['code'] in expected['allowedHypotheses'] and set(item['evidenceLines']) <= evidence_lines
+            all(item['code'] in expected['allowedHypotheses'] and set(item['evidenceLines']) <=
+                evidence_lines.get(HYPOTHESIS_DIAGNOSTICS.get(item['code']), set())
                 for item in response['hypotheses']),
             set(expected['requiredActions']) <= actions <= set(expected['allowedActions']),
             set(expected['requiredMissingInputs']) <= set(response['missingInputs']),

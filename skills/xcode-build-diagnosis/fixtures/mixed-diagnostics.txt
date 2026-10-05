@@ -1,0 +1,5 @@
+ORIGINAL SYNTHETIC FIXTURE. No Xcode/compiler/model was run to create this text.
+CompileSwift Sources/Settings.swift Sources/Preview.swift
+Sources/Settings.swift:8:19: error: cannot find 'storedToggle' in scope
+Sources/Preview.swift:2:8: error: no such module 'ReferenceSupport'
+** BUILD FAILED **
