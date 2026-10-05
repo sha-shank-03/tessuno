@@ -132,11 +132,15 @@ function start(hash) {
     card.scrollIntoView=options=>actions.push(['scroll',card.id,options.block]);
   }
   const window = {location:{hash},handlers:{},addEventListener(e,f){this.handlers[e]=f}};
-  vm.runInNewContext(fs.readFileSync(process.argv[1],'utf8'),{window,document:{
+  const pending = new Map(); let timerId=0;
+  const setTimeout=fn=>{pending.set(++timerId,fn);return timerId;};
+  const clearTimeout=id=>pending.delete(id);
+  const flush=()=>{const callbacks=[...pending.values()];pending.clear();for(const fn of callbacks)fn();};
+  vm.runInNewContext(fs.readFileSync(process.argv[1],'utf8'),{window,setTimeout,clearTimeout,document:{
     querySelector:s=>controls[s.slice(1)],querySelectorAll:()=>cards}});
-  return {controls,cards,window,actions};
+  return {controls,cards,window,actions,pending,flush};
 }
-const {controls,cards,window,actions} = start('');
+const {controls,cards,window,actions,pending,flush} = start('');
 controls.search.value='ios'; controls.kind.value='Skill'; controls.stack.value='ios';
 controls.search.handlers.input(); assert.equal(cards[1].hidden,true);
 window.location.hash='#object-core%2Freviewer'; window.handlers.hashchange();
@@ -155,16 +159,33 @@ assert.equal(initial.cards[0].hidden,false);
 window.location.hash='#object-core/reviewer'; window.handlers.hashchange();
 assert.equal(cards[1].hidden,false); assert.equal(controls.empty.hidden,true);
 controls.search.value='ios'; controls.search.handlers.input(); assert.equal(cards[1].hidden,true);
-window.handlers.pageshow({persisted:false}); assert.equal(cards[1].hidden,true);
+window.handlers.pageshow({persisted:false}); assert.equal(cards[1].hidden,true); flush();
+assert.equal(controls.search.value,''); assert.equal(cards[1].hidden,false);
+controls.search.value='ios'; controls.search.handlers.input(); assert.equal(cards[1].hidden,true);
 const beforeRestore=actions.length;
 window.handlers.pageshow({persisted:true});
+assert.equal(actions.length,beforeRestore); // browser restoration has not finished
+controls.kind.value='Skill'; // browser restores form values after pageshow
+window.handlers.popstate(); assert.equal(pending.size,1); flush();
 assert.equal(controls.search.value,''); assert.equal(cards[1].hidden,false);
+assert.equal(controls.kind.value,'');
 assert.equal(actions.length,beforeRestore+2);
 assert.equal(actions[beforeRestore][1],'object-core/reviewer');
 controls.search.value='no-match'; controls.search.handlers.input();
 window.location.hash='#unknown'; window.handlers.pageshow({persisted:true});
+flush();
 assert.equal(controls.search.value,'no-match'); assert.equal(cards[1].hidden,true);
-console.log('PASS: direct load, filtered target, encoded/raw IDs, invalid fragments, cached history; mocked DOM only');
+// A later navigation cancels an obsolete target; deferred work reads current state.
+window.location.hash='#object-core/skill'; window.handlers.popstate();
+window.location.hash='#unknown'; window.handlers.pageshow({persisted:false});
+const beforeCancel=actions.length; assert.equal(pending.size,1); flush();
+assert.equal(actions.length,beforeCancel); assert.equal(controls.search.value,'no-match');
+// With no known fragment, restored filters must agree with cards/count after history.
+window.location.hash=''; window.handlers.pageshow({persisted:false});
+controls.search.value=''; controls.kind.value='Skill'; controls.stack.value='ios'; flush();
+assert.equal(cards[0].hidden,false); assert.equal(cards[1].hidden,true);
+assert.equal(controls.count.textContent,'1 of 2 objects');
+console.log('PASS: fragments, invalid targets, deferred history/form restoration and cancellation; mocked DOM only');
 '''
         result = subprocess.run([shutil.which('node'), '-e', harness, str(ROOT / 'site/assets/search.js')],
                                 capture_output=True, text=True, timeout=10)

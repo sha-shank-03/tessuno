@@ -28,18 +28,28 @@ reset.addEventListener('click', () => {
 function revealFragment() {
   let id;
   try { id = decodeURIComponent(window.location.hash.slice(1)); }
-  catch { return; }
+  catch { return false; }
   const card = targets.get(id);
-  if (!card) return;
+  if (!card) return false;
   search.value = kind.value = stack.value = '';
   update();
   card.focus();
   card.scrollIntoView({block: 'start'});
+  return true;
+}
+let historyRefresh;
+function refreshFromHistory() {
+  // History traversal can restore form values and scroll after pageshow/popstate.
+  // Read the current fragment when the browser has finished that restoration.
+  clearTimeout(historyRefresh);
+  historyRefresh = setTimeout(() => {
+    historyRefresh = undefined;
+    if (!revealFragment()) update();
+  }, 0);
 }
 window.addEventListener('hashchange', revealFragment);
-window.addEventListener('pageshow', event => {
-  if (event.persisted) revealFragment();
-});
+window.addEventListener('pageshow', refreshFromHistory);
+window.addEventListener('popstate', refreshFromHistory);
 for (const control of [search, kind, stack, reset]) control.disabled = false;
 update();
 revealFragment();
