@@ -72,6 +72,103 @@ class BuildDiagnosis(unittest.TestCase):
         self.assertEqual(result['assertions'][4]['status'], 'fail')
         self.assertEqual(result['assertions'][5]['status'], 'fail')
 
+    def test_multiple_diagnostics_keep_distinct_lines_and_allow_reordering(self):
+        response = self.response('multiple-diagnostics')
+        self.assertEqual(len(response['observations']), 2)
+        self.assertEqual({item['code'] for item in response['observations']}, {'unresolved-symbol'})
+        self.assertEqual({item['logLine'] for item in response['observations']}, {3, 4})
+        original = evaluate('multiple-diagnostics', response)
+        response['observations'].reverse()
+        reordered = evaluate('multiple-diagnostics', response)
+        self.assertEqual(original['assertions'], reordered['assertions'])
+        self.assertEqual(reordered['status'], 'pass')
+        self.assertNotEqual(original['identity']['responseSha256'], reordered['identity']['responseSha256'])
+
+    def test_multiple_diagnostics_require_both_errors_not_failure_wrapper(self):
+        variants = []
+        for index in (0, 1):
+            response = self.response('multiple-diagnostics')
+            response['observations'].pop(index); variants.append(response)
+        response = self.response('multiple-diagnostics')
+        response['observations'] = [{'code': 'insufficient-log', 'logLine': 5, 'quote': '** BUILD FAILED **'}]
+        variants.append(response)
+        for response in variants:
+            with self.subTest(observations=response['observations']):
+                result = evaluate('multiple-diagnostics', response)
+                assertions = {item['id']: item['status'] for item in result['assertions']}
+                self.assertEqual(result['status'], 'fail')
+                self.assertEqual(result['assertionsExecuted'], 7)
+                self.assertEqual(assertions['exact-citations'], 'pass')
+                self.assertEqual(assertions['complete-observations'], 'fail')
+                self.assertFalse(result['modelInvokedByScorer']); self.assertFalse(result['xcodeInvokedByScorer'])
+
+    def test_multiple_diagnostics_bind_each_quote_to_its_exact_line(self):
+        response = self.response('multiple-diagnostics')
+        one, two = response['observations']
+        one['quote'], two['quote'] = two['quote'], one['quote']
+        result = evaluate('multiple-diagnostics', response)
+        assertions = {item['id']: item['status'] for item in result['assertions']}
+        self.assertEqual(result['status'], 'fail')
+        self.assertEqual(assertions['complete-observations'], 'pass')
+        self.assertEqual(assertions['exact-citations'], 'fail')
+
+    def test_mixed_hypotheses_require_their_own_diagnostic_family(self):
+        for index, lines in [(0, [4]), (1, [3]), (0, [3, 4]), (1, [3, 4]), (0, [5]), (1, [99])]:
+            with self.subTest(hypothesis=index, lines=lines):
+                response = self.response('mixed-diagnostics')
+                response['hypotheses'][index]['evidenceLines'] = lines
+                result = evaluate('mixed-diagnostics', response)
+                self.assertEqual(result['status'], 'fail')
+                self.assertEqual(result['assertionsExecuted'], 7)
+                self.assertEqual(result['assertionsPassed'], 6)
+                self.assertEqual(result['assertions'][4]['status'], 'fail')
+        response = self.response('mixed-diagnostics')
+        response['hypotheses'][0]['code'] = 'symbol-name-mismatch'
+        self.assertEqual(evaluate('mixed-diagnostics', response)['status'], 'pass')
+
+    def test_hypotheses_cannot_cite_omitted_or_misclassified_observations(self):
+        for index in (0, 1):
+            response = self.response('mixed-diagnostics')
+            response['observations'].pop(index)
+            result = evaluate('mixed-diagnostics', response)
+            self.assertEqual(result['assertions'][3]['status'], 'fail')
+            self.assertEqual(result['assertions'][4]['status'], 'fail')
+        response = self.response('mixed-diagnostics')
+        response['observations'][0]['code'] = 'missing-module'
+        result = evaluate('mixed-diagnostics', response)
+        self.assertEqual(result['assertions'][4]['status'], 'fail')
+
+    def test_mixed_diagnostics_require_both_action_and_context_families(self):
+        for field, values, assertion in [
+            ('nextSteps', ['inspect-symbol-definition', 'inspect-target-membership'], 5),
+            ('missingInputs', ['source-definitions', 'target-configuration', 'toolchain-version'], 6),
+        ]:
+            for value in values:
+                with self.subTest(field=field, omitted=value):
+                    response = self.response('mixed-diagnostics')
+                    response[field] = [item for item in response[field]
+                                       if (item['action'] if field == 'nextSteps' else item) != value]
+                    result = evaluate('mixed-diagnostics', response)
+                    self.assertEqual(result['status'], 'fail')
+                    self.assertEqual(result['assertionsPassed'], 6)
+                    self.assertEqual(result['assertions'][assertion]['status'], 'fail')
+
+    def test_mixed_cli_reports_cross_family_failure_without_execution(self):
+        with tempfile.TemporaryDirectory() as parent:
+            root = self.fixture(parent)
+            response = self.response('mixed-diagnostics')
+            response['hypotheses'][1]['evidenceLines'] = [3]
+            (root / 'response.json').write_bytes(canonical(response))
+            run = subprocess.run([sys.executable, str(root / 'tools/evaluate_build_diagnosis.py'),
+                                  '--case', 'mixed-diagnostics', '--diagnosis', 'response.json'],
+                                 capture_output=True, timeout=15)
+            self.assertEqual(run.returncode, 1, run.stderr)
+            report, = json.loads(run.stdout)
+            self.assertEqual((report['status'], report['assertionsExecuted'], report['assertionsPassed']),
+                             ('fail', 7, 6))
+            self.assertEqual(report['assertions'][4]['status'], 'fail')
+            self.assertFalse(report['modelInvokedByScorer']); self.assertFalse(report['xcodeInvokedByScorer'])
+
     def test_hostile_log_is_data_and_changes_input_identity(self):
         with tempfile.TemporaryDirectory() as parent:
             root = self.fixture(parent); response = self.response('missing-module')
@@ -103,7 +200,7 @@ class BuildDiagnosis(unittest.TestCase):
         one = subprocess.run(command, capture_output=True, timeout=15)
         two = subprocess.run(command, capture_output=True, timeout=15)
         self.assertEqual(one.returncode, 0, one.stderr); self.assertEqual(one.stdout, two.stdout)
-        self.assertEqual(len(json.loads(one.stdout)), 3)
+        self.assertEqual(len(json.loads(one.stdout)), len(CASES))
         with tempfile.TemporaryDirectory() as parent:
             root = self.fixture(parent); candidate = root / 'response.json'
             candidate.write_text('{"caseId":"a","caseId":"b"}')

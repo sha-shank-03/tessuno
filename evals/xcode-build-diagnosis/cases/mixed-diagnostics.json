@@ -1,0 +1,43 @@
+{
+  "caseId": "mixed-diagnostics",
+  "origin": "original-synthetic",
+  "log": "skills/xcode-build-diagnosis/fixtures/mixed-diagnostics.txt",
+  "context": {
+    "sourceExcerpts": [
+      "let current = storedToggle",
+      "import ReferenceSupport"
+    ],
+    "targetConfiguration": "not supplied"
+  },
+  "expected": {
+    "observations": [
+      {
+        "code": "unresolved-symbol",
+        "logLine": 3
+      },
+      {
+        "code": "missing-module",
+        "logLine": 4
+      }
+    ],
+    "allowedHypotheses": [
+      "symbol-name-mismatch",
+      "missing-source-declaration",
+      "target-dependency-missing"
+    ],
+    "requiredActions": [
+      "inspect-symbol-definition",
+      "inspect-target-membership"
+    ],
+    "allowedActions": [
+      "inspect-symbol-definition",
+      "inspect-target-membership",
+      "request-more-context"
+    ],
+    "requiredMissingInputs": [
+      "source-definitions",
+      "target-configuration",
+      "toolchain-version"
+    ]
+  }
+}

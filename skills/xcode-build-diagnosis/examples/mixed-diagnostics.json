@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1",
+  "caseId": "mixed-diagnostics",
+  "observations": [
+    {
+      "code": "unresolved-symbol",
+      "logLine": 3,
+      "quote": "Sources/Settings.swift:8:19: error: cannot find 'storedToggle' in scope"
+    },
+    {
+      "code": "missing-module",
+      "logLine": 4,
+      "quote": "Sources/Preview.swift:2:8: error: no such module 'ReferenceSupport'"
+    }
+  ],
+  "hypotheses": [
+    {
+      "code": "missing-source-declaration",
+      "evidenceLines": [
+        3
+      ],
+      "status": "unconfirmed"
+    },
+    {
+      "code": "target-dependency-missing",
+      "evidenceLines": [
+        4
+      ],
+      "status": "unconfirmed"
+    }
+  ],
+  "nextSteps": [
+    {
+      "action": "inspect-symbol-definition",
+      "status": "proposed",
+      "requiresHumanReview": true
+    },
+    {
+      "action": "inspect-target-membership",
+      "status": "proposed",
+      "requiresHumanReview": true
+    }
+  ],
+  "missingInputs": [
+    "source-definitions",
+    "target-configuration",
+    "toolchain-version"
+  ],
+  "execution": {
+    "build": "not-run",
+    "tests": "not-run",
+    "fixes": "not-applied"
+  }
+}

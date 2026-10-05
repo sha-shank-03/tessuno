@@ -45,6 +45,6 @@
   ],
   "knownLimitations": [
     "Log-only advice; no build, model evaluation, containment or host qualification.",
-    "Only three original synthetic fixture cases have deterministic oracles; real logs require human review."
+    "Only five original synthetic fixture cases have deterministic oracles; real logs require human review."
   ]
 }
