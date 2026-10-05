@@ -1,0 +1,38 @@
+{
+  "caseId": "multiple-diagnostics",
+  "origin": "original-synthetic",
+  "log": "skills/xcode-build-diagnosis/fixtures/multiple-diagnostics.txt",
+  "context": {
+    "sourceExcerpts": [
+      "let current = storedToggle",
+      "let title = previewLabel"
+    ]
+  },
+  "expected": {
+    "observations": [
+      {
+        "code": "unresolved-symbol",
+        "logLine": 3
+      },
+      {
+        "code": "unresolved-symbol",
+        "logLine": 4
+      }
+    ],
+    "allowedHypotheses": [
+      "symbol-name-mismatch",
+      "missing-source-declaration"
+    ],
+    "requiredActions": [
+      "inspect-symbol-definition"
+    ],
+    "allowedActions": [
+      "inspect-symbol-definition",
+      "request-more-context"
+    ],
+    "requiredMissingInputs": [
+      "source-definitions",
+      "toolchain-version"
+    ]
+  }
+}

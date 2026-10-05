@@ -33,6 +33,7 @@ credentials here; `scratch/` is ignored convenience, not a confidential storage 
 | unresolved-symbol | exact Sources/Settings.swift unresolved-name line | inspect supplied symbol definitions; a suggested name is unconfirmed |
 | missing-module | exact Sources/Preview.swift missing-module line | inspect supplied target/dependency configuration; do not install a package |
 | incomplete-log | failure wrapper lacks a compiler cause | request compiler log and toolchain context; do not guess or rebuild automatically |
+| multiple-diagnostics | two unresolved-name errors on distinct lines | preserve both exact citations; inspect supplied definitions without choosing a confirmed root cause |
 
 Logs live in skills/xcode-build-diagnosis/fixtures; case contexts/oracles are in cases; authored
 answers are in skills/xcode-build-diagnosis/examples. The missing-module log contains an
@@ -44,7 +45,7 @@ core/xcode-build-diagnostician reviews citations and gaps. Recipe core/xcode-bui
 separates diagnosis from review and a human checkpoint. The response schema allows only
 observations with exact line quotes, unconfirmed hypotheses, bounded proposed action codes,
 missing-input codes and explicit not-run/not-applied statuses. No raw command field exists.
-For arbitrary real logs the shape is reusable, but these three fixture oracles cannot score
+For arbitrary real logs the shape is reusable, but these four fixture oracles cannot score
 an unknown case. Unsupported diagnostic families require human review and more context.
 
 ## Objective acceptance and honest limits
@@ -53,8 +54,11 @@ The seven checks are closed response shape (including execution honesty), exact 
 exact line citations, complete expected diagnostic set, allowed unconfirmed hypotheses tied
 to diagnostic lines, required/allowed next steps, and required missing context. Schema failure
 blocks later checks instead of pretending they ran. Complete diagnostics and citations matter;
-finding the trailing BUILD FAILED alone cannot pass a compiler-error case. Alternative
-predeclared unresolved-symbol hypotheses are permitted; free-form narrative is outside this
+finding the trailing BUILD FAILED alone cannot pass a compiler-error case.
+The two-error case also rejects omitting either compiler diagnostic or swapping their
+quoted lines. Observations can be reordered, but same-code errors remain separate when
+their log lines differ. This expands authored fixture coverage without a model or Xcode run.
+Alternative predeclared unresolved-symbol hypotheses are permitted; free-form narrative is outside this
 small machine-scored shape and must receive separate human review.
 
 Accept this slice only if native/canonical validation, positive examples, hostile/incorrect

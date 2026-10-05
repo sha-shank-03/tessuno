@@ -8,7 +8,7 @@ from jsonschema import Draft202012Validator
 from jsonschema.exceptions import SchemaError
 from library import ROOT, Invalid, canonical, read_json, safe_path
 
-CASES = ('unresolved-symbol', 'missing-module', 'incomplete-log')
+CASES = ('unresolved-symbol', 'missing-module', 'incomplete-log', 'multiple-diagnostics')
 SCHEMA = 'skills/xcode-build-diagnosis/response.schema.json'
 ASSERTIONS = ('response-schema', 'case-id', 'exact-citations', 'complete-observations',
               'bounded-hypotheses', 'bounded-next-steps', 'required-context-gaps')
@@ -72,7 +72,7 @@ def evaluate(case_id, response, root=ROOT):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--examples', action='store_true', help='Score all three hand-authored examples')
+    parser.add_argument('--examples', action='store_true', help='Score all hand-authored synthetic examples')
     parser.add_argument('--case', choices=CASES)
     parser.add_argument('--diagnosis', help='Repository-relative JSON response file; symlinks forbidden')
     args = parser.parse_args(argv)

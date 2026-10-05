@@ -72,6 +72,46 @@ class BuildDiagnosis(unittest.TestCase):
         self.assertEqual(result['assertions'][4]['status'], 'fail')
         self.assertEqual(result['assertions'][5]['status'], 'fail')
 
+    def test_multiple_diagnostics_keep_distinct_lines_and_allow_reordering(self):
+        response = self.response('multiple-diagnostics')
+        self.assertEqual(len(response['observations']), 2)
+        self.assertEqual({item['code'] for item in response['observations']}, {'unresolved-symbol'})
+        self.assertEqual({item['logLine'] for item in response['observations']}, {3, 4})
+        original = evaluate('multiple-diagnostics', response)
+        response['observations'].reverse()
+        reordered = evaluate('multiple-diagnostics', response)
+        self.assertEqual(original['assertions'], reordered['assertions'])
+        self.assertEqual(reordered['status'], 'pass')
+        self.assertNotEqual(original['identity']['responseSha256'], reordered['identity']['responseSha256'])
+
+    def test_multiple_diagnostics_require_both_errors_not_failure_wrapper(self):
+        variants = []
+        for index in (0, 1):
+            response = self.response('multiple-diagnostics')
+            response['observations'].pop(index); variants.append(response)
+        response = self.response('multiple-diagnostics')
+        response['observations'] = [{'code': 'insufficient-log', 'logLine': 5, 'quote': '** BUILD FAILED **'}]
+        variants.append(response)
+        for response in variants:
+            with self.subTest(observations=response['observations']):
+                result = evaluate('multiple-diagnostics', response)
+                assertions = {item['id']: item['status'] for item in result['assertions']}
+                self.assertEqual(result['status'], 'fail')
+                self.assertEqual(result['assertionsExecuted'], 7)
+                self.assertEqual(assertions['exact-citations'], 'pass')
+                self.assertEqual(assertions['complete-observations'], 'fail')
+                self.assertFalse(result['modelInvokedByScorer']); self.assertFalse(result['xcodeInvokedByScorer'])
+
+    def test_multiple_diagnostics_bind_each_quote_to_its_exact_line(self):
+        response = self.response('multiple-diagnostics')
+        one, two = response['observations']
+        one['quote'], two['quote'] = two['quote'], one['quote']
+        result = evaluate('multiple-diagnostics', response)
+        assertions = {item['id']: item['status'] for item in result['assertions']}
+        self.assertEqual(result['status'], 'fail')
+        self.assertEqual(assertions['complete-observations'], 'pass')
+        self.assertEqual(assertions['exact-citations'], 'fail')
+
     def test_hostile_log_is_data_and_changes_input_identity(self):
         with tempfile.TemporaryDirectory() as parent:
             root = self.fixture(parent); response = self.response('missing-module')
@@ -103,7 +143,7 @@ class BuildDiagnosis(unittest.TestCase):
         one = subprocess.run(command, capture_output=True, timeout=15)
         two = subprocess.run(command, capture_output=True, timeout=15)
         self.assertEqual(one.returncode, 0, one.stderr); self.assertEqual(one.stdout, two.stdout)
-        self.assertEqual(len(json.loads(one.stdout)), 3)
+        self.assertEqual(len(json.loads(one.stdout)), len(CASES))
         with tempfile.TemporaryDirectory() as parent:
             root = self.fixture(parent); candidate = root / 'response.json'
             candidate.write_text('{"caseId":"a","caseId":"b"}')

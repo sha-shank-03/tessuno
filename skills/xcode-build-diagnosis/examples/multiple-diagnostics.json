@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1",
+  "caseId": "multiple-diagnostics",
+  "observations": [
+    {
+      "code": "unresolved-symbol",
+      "logLine": 3,
+      "quote": "Sources/Settings.swift:8:19: error: cannot find 'storedToggle' in scope"
+    },
+    {
+      "code": "unresolved-symbol",
+      "logLine": 4,
+      "quote": "Sources/Preview.swift:6:17: error: cannot find 'previewLabel' in scope"
+    }
+  ],
+  "hypotheses": [
+    {
+      "code": "missing-source-declaration",
+      "evidenceLines": [
+        3,
+        4
+      ],
+      "status": "unconfirmed"
+    }
+  ],
+  "nextSteps": [
+    {
+      "action": "inspect-symbol-definition",
+      "status": "proposed",
+      "requiresHumanReview": true
+    }
+  ],
+  "missingInputs": [
+    "source-definitions",
+    "toolchain-version"
+  ],
+  "execution": {
+    "build": "not-run",
+    "tests": "not-run",
+    "fixes": "not-applied"
+  }
+}
