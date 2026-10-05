@@ -8,13 +8,21 @@ from library import ROOT,load_catalog,subject_manifest,canonical,digest,Invalid,
 def write(path,data):
  path.parent.mkdir(parents=True,exist_ok=True)
  path.write_bytes(data if isinstance(data,bytes) else data.encode())
-def source_page(path,data,dest,raw):
+def object_anchor(id):
+ return 'object-'+id
+def object_link(id):
+ return '#'+quote(object_anchor(id),safe='')
+def source_page(path,data,dest,raw,objects=()):
  base=posixpath.dirname(dest) or '.'
  def url(target):return html.escape(quote(posixpath.relpath(target,base),safe='/'),quote=True)
  sha=__import__('hashlib').sha256(data).hexdigest()
+ context=''
+ if objects:
+  links=''.join('<li><a href="'+url('index.html')+object_link(id)+'">'+html.escape(title)+'</a> · <code>'+html.escape(id)+'</code></li>' for id,title in objects)
+  context='<section aria-label="Objects including this source"><h2>Objects including this source</h2><p>These catalog objects include this file in their exact dependency closure.</p><ul>'+links+'</ul></section>'
  try:preview='<pre id="source-text"><code>'+html.escape(data.decode('utf-8'))+'</code></pre>'
  except UnicodeDecodeError:preview='<p>UTF-8 text preview unavailable for this file. The raw file retains the original bytes.</p>'
- return '''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; base-uri 'none'; form-action 'none'"><title>Source inspection · Tessuno</title><link rel="stylesheet" href="'''+url('style.css')+'''"></head><body><main class="source-viewer"><nav aria-label="Source navigation"><a href="'''+url('index.html')+'''">Catalog</a> · <a href="'''+url(raw)+'''">Raw bytes</a> · <a href="https://github.com/sha-shank-03/tessuno">Repository</a></nav><header><p class="eyebrow">TESSUNO / SOURCE INSPECTION</p><h1>Inspect source.</h1><p class="source-path"><code>'''+html.escape(path)+'''</code></p><p class="notice">Source text is displayed as data. This page does not run source instructions or establish runtime qualification.</p><p>Original file: '''+str(len(data))+''' bytes · SHA256 <code>'''+sha+'''</code></p></header>'''+preview+'''</main></body></html>'''
+ return '''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; base-uri 'none'; form-action 'none'"><title>'''+html.escape(path)+''' · Tessuno source</title><link rel="stylesheet" href="'''+url('style.css')+'''"></head><body><main class="source-viewer"><nav aria-label="Source navigation"><a href="'''+url('index.html')+'''">Catalog</a> · <a href="'''+url(raw)+'''">Raw bytes</a> · <a href="https://github.com/sha-shank-03/tessuno">Repository</a></nav><header><p class="eyebrow">TESSUNO / SOURCE INSPECTION</p><h1>Inspect source.</h1><p class="source-path"><code>'''+html.escape(path)+'''</code></p><p class="notice">Source text is displayed as data. This page does not run source instructions or establish runtime qualification.</p><p>Original file: '''+str(len(data))+''' bytes · SHA256 <code>'''+sha+'''</code></p></header>'''+context+preview+'''</main></body></html>'''
 def declared_controls(records,id):
  keys=['filesystemScope','networkScope','requiredTools','humanApprovalRequirements','requiredControls']
  components=[]
@@ -40,9 +48,9 @@ def build(out=None):
    if p.is_file() and p.relative_to(out).as_posix() not in set(previous)|{'checksums.json'}:
     raise Invalid('unowned output file; refusing overwrite or cleanup')
  out.mkdir(exist_ok=True)
- cards=[];index=[];bundle={};viewers=set()
+ cards=[];index=[];bundle={};viewers=set();source_objects={}
  for id,info in sorted(records.items()):
-  item=info['record'];slug=id.replace('/','--');subject,manifest,lock,adapters=subject_manifest(root,records,id)
+  item=info['record'];subject,manifest,lock,adapters=subject_manifest(root,records,id)
   bundle[id]={'subject':subject,'manifest':manifest,'lock':lock,'adapters':adapters}
   controls=declared_controls(records,id);permissions=[component['declaredPermissions'] for component in controls['components']]
   fields={'kind':item['kind'],'stack':' '.join(item['stacks']),'platform':' '.join(x['host'] for x in item.get('supportedPlatforms',[])) or 'unqualified','origin':'original-synthetic','support':'declared-only','network':'allowlist' if any(p.get('networkScope',{}).get('mode')=='allowlist' for p in permissions) else 'none','write':'declared' if any(p.get('filesystemScope',{}).get('write') for p in permissions) else 'none'}
@@ -51,11 +59,19 @@ def build(out=None):
   sources=[]
   for entry in manifest['files']:
    path=entry['path'];raw='source/'+path+'.txt';dest='source/'+path+'.html';data=safe_path(root,path).read_bytes()
-   write(out/raw,data);write(out/dest,source_page(path,data,dest,raw));viewers.add(dest)
+   write(out/raw,data);source_objects.setdefault(path,[]).append((id,item['title']));viewers.add(dest)
    sources.append(f'<li><a href="{html.escape(quote(dest,safe="/"),quote=True)}">{html.escape(path)}</a> (<a href="{html.escape(quote(raw,safe="/"),quote=True)}">Raw bytes</a>)</li>')
   search=' '.join([id,item['title'],item['purpose'],*fields.values(),'network:'+fields['network'],'write:'+fields['write']])
   scope=f'<p>Declared scope summary across the exact dependency closure: network: {fields["network"]}; write: {fields["write"]}. Component declarations imply no enforcement or combined permission policy.</p><details><summary>Inspect declared controls across dependencies</summary><pre>'+html.escape(json.dumps(controls,indent=2))+'</pre></details>'
-  cards.append('<article data-kind="'+html.escape(item['kind'],quote=True)+'" data-stacks="'+html.escape(json.dumps(item['stacks']),quote=True)+'" data-search="'+html.escape(search,quote=True)+'">'+f'<p class="eyebrow">{html.escape(item["kind"])} · v{item["version"]}</p><h2>{html.escape(item["title"])}</h2><p>{html.escape(item["purpose"])}</p><p class="status">Declared-only · no runtime qualification · license {html.escape(item["license"])}</p><p>Validation: local structural checks only. Security scan, independent review, host execution, and enforcement: no trusted evidence.</p>'+scope+f'<p>Exact content digest: <code>{subject["sha256"]}</code></p><details><summary>Inspect full contract</summary><pre>'+html.escape(json.dumps(item,indent=2))+'</pre></details><details><summary>Inspect source and dependency closure</summary><ul>'+''.join(sources)+'</ul></details></article>')
+  direct='<a href="'+quote('source/'+source+'.html',safe='/')+'">Inspect contract source</a>'
+  if item['kind']=='Skill':
+   entry=safe_path(info['path'].parent,item['entry']).relative_to(root).as_posix()
+   direct+=' · <a href="'+quote('source/'+entry+'.html',safe='/')+'">Inspect native SKILL.md</a>'
+  navigation='<p class="object-id"><a href="'+object_link(id)+'" aria-label="'+html.escape('Link to '+id,quote=True)+'"><code>'+html.escape(id)+'</code></a></p><p>'+direct+'</p>'
+  cards.append('<article id="'+html.escape(object_anchor(id),quote=True)+'" tabindex="-1" data-kind="'+html.escape(item['kind'],quote=True)+'" data-stacks="'+html.escape(json.dumps(item['stacks']),quote=True)+'" data-search="'+html.escape(search,quote=True)+'">'+f'<p class="eyebrow">{html.escape(item["kind"])} · v{item["version"]}</p><h2>{html.escape(item["title"])}</h2>'+navigation+f'<p>{html.escape(item["purpose"])}</p><p class="status">Declared-only · no runtime qualification · license {html.escape(item["license"])}</p><p>Validation: local structural checks only. Security scan, independent review, host execution, and enforcement: no trusted evidence.</p>'+scope+f'<p>Exact content digest: <code>{subject["sha256"]}</code></p><details><summary>Inspect full contract</summary><pre>'+html.escape(json.dumps(item,indent=2))+'</pre></details><details><summary>Inspect source and dependency closure</summary><ul>'+''.join(sources)+'</ul></details></article>')
+ for path,objects in sorted(source_objects.items()):
+  raw='source/'+path+'.txt';dest='source/'+path+'.html'
+  write(out/dest,source_page(path,(out/raw).read_bytes(),dest,raw,objects))
  kinds=sorted({info['record']['kind'] for info in records.values()})
  stacks=sorted({stack for info in records.values() for stack in info['record']['stacks']})
  def options(values):
