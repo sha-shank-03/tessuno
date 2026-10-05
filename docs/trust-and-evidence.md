@@ -20,3 +20,9 @@ An eventual trusted verifier must authenticate producer/workflow, establish arti
 redaction review, predeclared complete attempts/assertions, host/model/toolchain versions, expiry and
 revocation. It must consume protected configuration, never contributor-authored acceptance policy.
 No live broker, custom runtime, universal score or self-awarded verified label is part of v0.
+
+The separate [evaluation capture inventory checker](evaluation-capture.md) compares supplied
+admission and request/outcome artifacts with a selected policy. It detects byte, sequence and
+timing inconsistencies, but cannot authenticate a producer, prove that all real activity was
+captured or enforce scope. Its consistent-inventory result never changes evidence trust or
+publication gates. Missing historical traces stay unverified; final reports are not substitutes.
