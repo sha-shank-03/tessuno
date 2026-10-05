@@ -1,10 +1,35 @@
 # CI policy: scoped Lane A; disabled Lane B
 
 Lane A is limited to the exact reviewed-source controller below. Lane B remains disabled.
-The original activation plan is retained after this dated execution record; it does not
+The original activation plan and both bounded run records are retained below; they do not
 authorize another dispatch or validation of a newer source revision.
 
-## Recorded Lane A execution: 2026-10-03
+## Recorded source integration and later Lane A run: 2026-10-03
+
+The separately owner-approved [run 37132277113, attempt 1](https://github.com/sha-shank-03/tessuno/actions/runs/37132277113)
+checked source `f0ff1194370305d89d28dbe56d44f0c90434575d` using controller commit
+`cddc1cbab71ceaa9f5366b74edcb716924306da1`, merged in
+[PR 19](https://github.com/sha-shank-03/tessuno/pull/19). All job steps succeeded:
+98 tests, zero skips, 10 objects, 86 generated outputs, expected qualified-publication
+rejection (exit 1), Lane B/exact-controller checks and clean source status. Build root
+digest was `bfd749a67c6ac5022f5eea219cf64159729b0a465aa360aa221b70815aa14dd7`.
+The job took 123 seconds with Python 3.12.15 and Node 24.21.0; no artifacts were uploaded.
+
+After that matching pass, [PR 17](https://github.com/sha-shank-03/tessuno/pull/17) merged
+at recorded main `a55e9e6f1e3a32882b73e002c5126c71b7706970`. Its Git tree,
+`fb17cf1b47b3cf991cae94bec27ff4191aa8ac34`, is identical to the checked source tree.
+The source landing restored the original workflow bytes in a history-preserving
+commit, without a reset, squash, rebase or force push. Workflow SHA256 is again
+`aa96215d825cc9e801e6dc155160a6b1044b66fe02d35bd64549d1dc534819d9`, and the active
+controller selects `ade193beda810f85ac38fa008f25f7261c272b23`, not current main.
+Repository settings were unchanged during this later bundle.
+
+Both one-run authorizations are consumed. Do not repoint or dispatch the controller
+on the strength of these records. Later source edits require their own review and
+validation. Neither run executed a model, Xcode, an Agent host adapter or a release;
+runtime qualification, trusted evidence and untrusted Lane B enforcement remain unresolved.
+
+## Historical first Lane A execution: 2026-10-03
 
 [PR 18](https://github.com/sha-shank-03/tessuno/pull/18) merged only the approved two-file
 bootstrap. Controller/main commit `a865822680cc390e9e5e5ec807f5d0dc6d33a8b2` retains
@@ -21,11 +46,10 @@ temporary stricter `local_only` mode before selecting the exact list; no dispatc
 during configuration, and all final readbacks passed before dispatch and after completion.
 These are recorded settings, not a guarantee against a future trusted writer changing them.
 
-The current local integration candidate adds source viewers and exact-controller admission
-tests. Its 98 tests are offline checks on this Mac; the run above did not check these changes.
-The controller still selects the original literal source SHA. PR 17 remains unmerged; no
-rerun, automatic PR lane, deployment or runtime qualification follows from the receipt.
-Supported Chrome verification of the new viewers remains pending.
+At this first execution, PR 17 was not yet merged and the later source-viewer and
+exact-controller admission changes had only local checks. The first 91-test run did
+not validate them; the later 98-test run above checked their exact accepted source.
+Browser review is separate from these Lane A checks and grants no runtime qualification.
 
 ## Disabled Lane B design
 
@@ -65,12 +89,12 @@ comments, Pages, deployments, signing, package publishing or production environm
 Ordinary hosted-runner YAML does not enforce the required offline boundary. The runner
 implementation, dependency license inventory and protected configuration remain blockers.
 
-## Reviewed-source Lane A exception; untrusted Lane B remains disabled
+## Historical first-bundle Lane A bootstrap; untrusted Lane B remains disabled
 
 **Historical activation condition (the approved one-run bundle is complete):** This bootstrap adopted only the reviewed-source Lane A exception
 after owner authorization of its exact merge to main, the scoped repository settings and one
 manual run, subject to the readbacks below. That authorization has been consumed by the
-recorded run; this local integration candidate grants no further execution authority. The original requirements above
+first recorded run; subsequent source integration grants no further execution authority. The original requirements above
 remain effective for Lane B. Their all-activation blocker has only this documented A exception;
 no Agent, Skill, Recipe, Pack, evidence, publication or release contract changes.
 
@@ -84,10 +108,10 @@ copy is added by this bootstrap. Lane B's separate disabled proposal remains unc
 
 ### Lane A: manually validate one exact reviewed source commit
 
-The first source is `ade193beda810f85ac38fa008f25f7261c272b23`, the independently accepted
-bounded source integration in [draft PR 17](https://github.com/sha-shank-03/tessuno/pull/17).
-This bootstrap starts from main `f19a87ab6d1a390f0c1848b2338b21301163494e`; it does not
-merge that PR or rewrite any existing branch. The workflow controller and checked
+The first checked source was `ade193beda810f85ac38fa008f25f7261c272b23`, the independently accepted
+bounded source integration then proposed in [PR 17](https://github.com/sha-shank-03/tessuno/pull/17).
+That bootstrap started from main `f19a87ab6d1a390f0c1848b2338b21301163494e`; it did not
+merge PR 17 or rewrite any existing branch. The workflow controller and checked
 source are separate identities, both recorded in run logs.
 
 Bounded Lane A configuration:
@@ -108,7 +132,8 @@ Bounded Lane A configuration:
   cancellation of a running attempt. Preserve failed, timed-out and skipped run records.
 - Run the reviewed source-hygiene, validation, unittest and deterministic-build commands;
   require publication rejection, check the still-inert lane B proposal and source status.
-  The accepted source has 91 local structural/synthetic tests. CI does not call Xcode,
+  That first checked source had 91 structural/synthetic tests; the later accepted source has 98.
+  CI does not call Xcode,
   Apple services, a model, an Agent host adapter or any deployment service.
 
 "No secrets" excludes application/repository secrets, not every platform credential.
@@ -238,7 +263,7 @@ resolution/review; this approval does not authorize reruns or scope expansion.
    PR 17-head status check. No source merge, deployment, release or qualification follows.
 
 The pinned checked source forbids all live workflows in its own snapshot; those tests
-were unchanged for the recorded run. This local integration candidate replaces that
+were unchanged for the first recorded run. The merged source integration replaces that
 blanket assertion with admission of at most the exact approved controller filename and
 whole-file SHA256 above. Absent workflows remain accepted for source-only fixtures.
 Changed controller bytes, extra paths, directories and symlinks reject before admission.
@@ -304,16 +329,16 @@ GitHub actionlint binary/dependency was acquired. Activation requires authoritat
 workflow validation in the protected review environment as well.
 
 `python tools/ci_checks.py` executes local source-hygiene, schema/semantic validation,
-the current discovered unittest suite (98 cases in this local integration candidate)
+the discovered unittest suite (98 cases in the recorded merged source)
 and static build, then requires publication to exit1. Its tests
 include negative schema/path/duplicate-key/manifest/evidence gates, deterministic
 archive/build/readback and synthetic fixture oracles. Format check means Python
 syntax, JSON validity/duplicate rejection, UTF8/LF/final-newline/trailing-whitespace
 checks on code/schema files; it is not an opinionated formatter or JS runtime audit.
-This local candidate explicitly combines the reviewed PR 17 adapter/export, diagnosis,
-Xcode fixture and catalog features with current main and the new source viewers.
-The recorded external Lane A run checked only the earlier 91-test source SHA, not this
-candidate. The initial Issue 6 parity snapshot had 36 tests; that is a historical count.
+The merged PR 17 source combines the reviewed adapter/export, diagnosis, Xcode fixture,
+catalog and source-viewer features with the scoped controller. The later recorded Lane A
+run checked this exact 98-test source; the earlier run checked only the 91-test source.
+The initial Issue 6 parity snapshot had 36 tests; that is a historical count.
 
 All current cases remain structural/synthetic fixture checks. They do not demonstrate
 network denial, secret absence, token removal, host sandbox enforcement, signing,

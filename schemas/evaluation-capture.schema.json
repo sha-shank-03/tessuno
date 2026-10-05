@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "sha256": {"type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[a-f0-9]{64}$"},
+    "id": {"type": "string", "minLength": 1, "maxLength": 256},
+    "time": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,6})?Z(?![\\s\\S])"},
+    "artifact": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      },
+      "additionalProperties": false
+    },
+    "optionalArtifact": {"anyOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]},
+    "optionalTime": {"anyOf": [{"$ref": "#/$defs/time"}, {"type": "null"}]},
+    "policy": {
+      "type": "object",
+      "required": ["schemaVersion", "kind", "evaluationId", "candidateSha256", "scopeSha256", "startedAt", "budgetSeconds", "maxBuildInvocations", "maxBuildSeconds", "model", "contextMode"],
+      "properties": {
+        "schemaVersion": {"const": "1"},
+        "kind": {"const": "evaluation-policy"},
+        "evaluationId": {"$ref": "#/$defs/id"},
+        "candidateSha256": {"$ref": "#/$defs/sha256"},
+        "scopeSha256": {"$ref": "#/$defs/sha256"},
+        "startedAt": {"$ref": "#/$defs/time"},
+        "budgetSeconds": {"type": "integer", "minimum": 1, "maximum": 86400},
+        "maxBuildInvocations": {"type": "integer", "minimum": 0, "maximum": 500},
+        "maxBuildSeconds": {"type": "integer", "minimum": 1, "maximum": 86400},
+        "model": {"$ref": "#/$defs/id"},
+        "contextMode": {"enum": ["fresh", "inherited"]}
+      },
+      "additionalProperties": false
+    },
+    "manifest": {
+      "type": "object",
+      "required": ["schemaVersion", "kind", "evaluationId", "policySha256", "admission", "transcript", "eventCount"],
+      "properties": {
+        "schemaVersion": {"const": "1"},
+        "kind": {"const": "capture-manifest"},
+        "evaluationId": {"$ref": "#/$defs/id"},
+        "policySha256": {"$ref": "#/$defs/sha256"},
+        "admission": {"$ref": "#/$defs/optionalArtifact"},
+        "transcript": {"$ref": "#/$defs/optionalArtifact"},
+        "eventCount": {"type": "integer", "minimum": 0, "maximum": 500}
+      },
+      "additionalProperties": false
+    },
+    "admission": {
+      "type": "object",
+      "required": ["schemaVersion", "kind", "evaluationId", "policySha256", "taskId", "turnId", "startedAt", "model", "contextMode"],
+      "properties": {
+        "schemaVersion": {"const": "1"},
+        "kind": {"const": "task-admission"},
+        "evaluationId": {"$ref": "#/$defs/id"},
+        "policySha256": {"$ref": "#/$defs/sha256"},
+        "taskId": {"$ref": "#/$defs/id"},
+        "turnId": {"$ref": "#/$defs/id"},
+        "startedAt": {"$ref": "#/$defs/time"},
+        "model": {"$ref": "#/$defs/id"},
+        "contextMode": {"enum": ["fresh", "inherited"]}
+      },
+      "additionalProperties": false
+    },
+    "event": {
+      "type": "object",
+      "required": ["sequence", "requestId", "tool", "operation", "requestedAt", "completedAt", "outcome", "request", "response"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 500},
+        "requestId": {"$ref": "#/$defs/id"},
+        "tool": {"$ref": "#/$defs/id"},
+        "operation": {"enum": ["read", "edit", "build", "other"]},
+        "requestedAt": {"$ref": "#/$defs/time"},
+        "completedAt": {"$ref": "#/$defs/optionalTime"},
+        "outcome": {"enum": ["success", "failure", "denied", "cancelled", "incomplete"]},
+        "request": {"$ref": "#/$defs/artifact"},
+        "response": {"$ref": "#/$defs/optionalArtifact"}
+      },
+      "additionalProperties": false
+    },
+    "transcript": {
+      "type": "object",
+      "required": ["schemaVersion", "kind", "evaluationId", "policySha256", "taskId", "turnId", "captureStatus", "closedAt", "events"],
+      "properties": {
+        "schemaVersion": {"const": "1"},
+        "kind": {"const": "tool-transcript"},
+        "evaluationId": {"$ref": "#/$defs/id"},
+        "policySha256": {"$ref": "#/$defs/sha256"},
+        "taskId": {"$ref": "#/$defs/id"},
+        "turnId": {"$ref": "#/$defs/id"},
+        "captureStatus": {"enum": ["complete", "incomplete"]},
+        "closedAt": {"$ref": "#/$defs/optionalTime"},
+        "events": {"type": "array", "maxItems": 500, "items": {"$ref": "#/$defs/event"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/policy"},
+    {"$ref": "#/$defs/manifest"},
+    {"$ref": "#/$defs/admission"},
+    {"$ref": "#/$defs/transcript"}
+  ]
+}

@@ -51,10 +51,12 @@ const assert = require('node:assert/strict');
 function control() { return {value:'', disabled:true, handlers:{}, addEventListener(e,f){this.handlers[e]=f}, focus(){this.focused=true}}; }
 const controls = Object.fromEntries(['search','kind','stack','reset','count','empty'].map(id=>[id,control()]));
 const cards = [
- {dataset:{kind:'Skill',stacks:'["ios","swift"]',search:'Skill ios swift test plan'}},
- {dataset:{kind:'Agent',stacks:'["ios"]',search:'Agent ios review'}},
- {dataset:{kind:'Skill',stacks:'["web"]',search:'Skill web review'}}];
-vm.runInNewContext(fs.readFileSync(process.argv[1],'utf8'),{document:{querySelector:s=>controls[s.slice(1)],querySelectorAll:()=>cards}});
+ {id:'object-core/test-plan',dataset:{kind:'Skill',stacks:'["ios","swift"]',search:'Skill ios swift test plan'}},
+ {id:'object-core/reviewer',dataset:{kind:'Agent',stacks:'["ios"]',search:'Agent ios review'}},
+ {id:'object-core/web',dataset:{kind:'Skill',stacks:'["web"]',search:'Skill web review'}}];
+const window = {location:{hash:''},handlers:{},addEventListener(e,f){this.handlers[e]=f}};
+for(const card of cards) { card.focus=()=>card.focused=true; card.scrollIntoView=()=>card.scrolled=true; }
+vm.runInNewContext(fs.readFileSync(process.argv[1],'utf8'),{window,document:{querySelector:s=>controls[s.slice(1)],querySelectorAll:()=>cards}});
 const visible=()=>cards.filter(c=>!c.hidden).length;
 assert.equal(visible(),3); assert.equal(controls.count.textContent,'3 of 3 objects');
 for(const id of ['search','kind','stack','reset']) assert.equal(controls[id].disabled,false);
