@@ -5,6 +5,27 @@ import html,json,posixpath,zipfile
 from urllib.parse import quote
 from library import ROOT,load_catalog,subject_manifest,canonical,digest,Invalid,safe_path,read_json,closure
 
+KIT_SUPPORT = {
+ 'README.md':'docs/source-workflow.md',
+ 'docs/source-workflow.md':'docs/source-workflow.md',
+ 'docs/release-checklist.md':'docs/release-checklist.md',
+ 'requirements-dev.lock':'requirements-dev.lock',
+ **{path:path for path in (
+  'tools/library.py','tools/validate.py','tools/evaluate_build_diagnosis.py',
+  'tools/evaluate_release_packet.py','tools/export_adapter.py',
+  'tools/inspect_skill_portability.py','tools/skill-host-profiles.json',
+  'site/assets/style.css','site/assets/search.js')},
+}
+
+def kit_support(root):
+ """Explicit source allowlist; no host configuration or automatic execution."""
+ files={target:safe_path(root,source).read_bytes() for target,source in KIT_SUPPORT.items()}
+ from evaluate_build_diagnosis import CASES
+ for case in CASES:
+  path='evals/xcode-build-diagnosis/cases/'+case+'.json'
+  files[path]=safe_path(root,path).read_bytes()
+ return files
+
 def write(path,data):
  path.parent.mkdir(parents=True,exist_ok=True)
  path.write_bytes(data if isinstance(data,bytes) else data.encode())
@@ -32,6 +53,8 @@ def declared_controls(records,id):
  return {'basis':'exact-dependency-closure','enforcementStatus':'unqualified','components':components}
 def build(out=None):
  root=Path(ROOT).resolve();records=load_catalog();out=out or root/'dist'
+ support=kit_support(root)
+ start=safe_path(root,'site/source-workflow.html').read_bytes()
  previous={}
  if out.exists():
   if out.is_symlink() or out.resolve()!=root/'dist':raise Invalid('unsafe output directory')
@@ -80,9 +103,16 @@ def build(out=None):
  write(out/'search-index.json',canonical(index));write(out/'content-manifests.json',canonical(bundle))
  for name in ['content-manifests','search-index']:
   dest=name+'.html';write(out/dest,source_page(name+'.json',(out/(name+'.json')).read_bytes(),dest,name+'.json'));viewers.add(dest)
+ extra_raw=[]
+ for path in ('docs/source-workflow.md','docs/release-checklist.md'):
+  raw='source/'+path+'.txt';dest='source/'+path+'.html';data=support[path]
+  write(out/raw,data);write(out/dest,source_page(path,data,dest,raw));viewers.add(dest);extra_raw.append(raw)
+ write(out/'source-workflow.html',start)
  css=safe_path(root,'site/assets/style.css').read_text();js=safe_path(root,'site/assets/search.js').read_text()
  write(out/'style.css',css);write(out/'search.js',js)
  page='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'"><title>Tessuno · development catalog</title><link rel="stylesheet" href="style.css"></head><body><main><header><p class="eyebrow">TESSUNO / DEVELOPMENT FOUNDATION / v0.1</p><h1>Tessuno.<br>Inspectable capabilities.</h1><p>Original synthetic objects for bounded iOS review, build-diagnosis and release-evidence workflows.</p><p class="notice">Source inspection preview. Original work: Apache-2.0. Maintainer: sha-shank-03. Compatibility is declared-only; no authenticated runtime evidence or security qualification. Nothing here installs, executes, or qualifies a host.</p></header><section class="search"><label for="search">Search type, stack, platform, origin, support, network or write scope</label><input id="search" type="search" placeholder="Try Skill, ios, codex, declared-only, none" disabled>'''+filters+'''<p id="count" role="status">4 objects</p><noscript>All objects and source links are available below without JavaScript.</noscript></section>'''+''.join(cards)+'''<footer><p>No trusted evidence is imported. Valid evidence syntax never awards a badge.</p><p><a href="content-manifests.html">Content manifests and exact locks</a> · <a href="search-index.html">Search index</a> · <a href="prototype.zip">Synthetic source archive</a></p></footer></main><script src="search.js"></script></body></html>'''
+ page=page.replace('</header><section class="search">','</header><nav aria-label="Getting started"><a href="source-workflow.html">Start with a source workflow</a> · <a href="prototype.zip" download>Download offline inspection kit</a></nav><section class="search">')
+ page=page.replace('Synthetic source archive','Offline inspection kit')
  write(out/'index.html',page.replace('<p id="count" role="status">4 objects</p>',f'<p id="count" role="status">{len(records)} objects</p>'))
  archive_files={}
  for info in records.values():
@@ -93,10 +123,19 @@ def build(out=None):
  archive_files['LICENSE']=safe_path(root,'LICENSE').read_bytes()
  archive_files['THIRD_PARTY_NOTICES.md']=safe_path(root,'THIRD_PARTY_NOTICES.md').read_bytes()
  archive_files['LICENSE-STATUS.txt']=b'Apache-2.0 for original scaffold work. See LICENSE and THIRD_PARTY_NOTICES.md. Inspectable source availability grants no executable qualification or verified-release authority.\n'
+ archive_files.update(support)
+ inventory={'schemaVersion':'1','kind':'OfflineInspectionKit','status':'source-only',
+            'runtimeQualified':False,'trustedEvidence':False,'installationPerformed':False,
+            'files':[{'path':path,'sha256':__import__('hashlib').sha256(data).hexdigest()}
+                     for path,data in sorted(archive_files.items())]}
+ archive_files['inspection-kit.json']=canonical(inventory)
+ write(out/'inspection-kit.json',canonical(inventory))
+ write(out/'inspection-kit.html',source_page('inspection-kit.json',canonical(inventory),'inspection-kit.html','inspection-kit.json'))
+ viewers.add('inspection-kit.html')
  with zipfile.ZipFile(out/'prototype.zip','w',compression=zipfile.ZIP_STORED) as z:
   for path,data in sorted(archive_files.items()):
    zi=zipfile.ZipInfo(path,(1980,1,1,0,0,0));zi.external_attr=0o100644<<16;zi.create_system=3;z.writestr(zi,data)
- generated=['index.html','style.css','search.js','search-index.json','content-manifests.json','prototype.zip']+sorted(viewers)+['source/'+e['path']+'.txt' for b in bundle.values() for e in b['manifest']['files']]
+ generated=['index.html','style.css','search.js','search-index.json','content-manifests.json','prototype.zip','source-workflow.html','inspection-kit.json']+extra_raw+sorted(viewers)+['source/'+e['path']+'.txt' for b in bundle.values() for e in b['manifest']['files']]
  checks={p:__import__('hashlib').sha256((out/p).read_bytes()).hexdigest() for p in sorted(set(generated))}
  for stale in sorted(set(previous)-set(checks)):
   safe_path(out,stale).unlink()  # Only prior generated bytes verified unchanged above.
