@@ -20,6 +20,8 @@ and THIRD_PARTY_NOTICES.md. No installer or executable host adapter exists.
 - Adapter loss reports explicitly refuse executable qualification; no Codex TOML is generated
 - [Offline native-Skill portability inspection](docs/native-skill-portability.md) inventories
   native bytes and canonical field losses for four documented hosts without installing a Skill
+- [Offline evaluation capture inspection](docs/evaluation-capture.md) detects gaps in supplied
+  admission/transcript inventories; matching records remain unauthenticated and unqualified
 
 Compatibility is declared-only. No Codex, Xcode, simulator, device, model, security scanner,
 external producer, or human approval has been qualified by this repository.
