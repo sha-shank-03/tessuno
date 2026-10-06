@@ -54,7 +54,10 @@ def checked_schema(root, name):
     return schema
 
 def validate_schema(record, schema_name=None, root=ROOT):
-    name = schema_name or record.get('kind', '').lower()
+    if not isinstance(record, dict): raise Invalid('record must be a JSON object')
+    kind = record.get('kind', '')
+    if not schema_name and not isinstance(kind, str): raise Invalid('record kind must be a string')
+    name = schema_name or kind.lower()
     if name not in ('agent','skill','recipe','pack','evidence'): raise Invalid('unknown record kind')
     schema = checked_schema(root,name)
     errors = sorted(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(record), key=lambda e: str(e.path))
