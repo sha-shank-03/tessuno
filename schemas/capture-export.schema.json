@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,6})?Z(?![\\s\\S])"
+    },
+    "artifact": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "optionalArtifact": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/artifact"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "optionalTime": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "exportRequest": {
+      "type": "object",
+      "required": [
+        "requestIndex",
+        "requestId",
+        "toolName",
+        "operationClaim",
+        "requestedAt",
+        "completedAt",
+        "outcome",
+        "requestArtifact",
+        "responseArtifact"
+      ],
+      "properties": {
+        "requestIndex": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "requestId": {
+          "$ref": "#/$defs/id"
+        },
+        "toolName": {
+          "$ref": "#/$defs/id"
+        },
+        "operationClaim": {
+          "enum": [
+            "read",
+            "edit",
+            "build",
+            "other"
+          ]
+        },
+        "requestedAt": {
+          "$ref": "#/$defs/time"
+        },
+        "completedAt": {
+          "$ref": "#/$defs/optionalTime"
+        },
+        "outcome": {
+          "enum": [
+            "success",
+            "failure",
+            "denied",
+            "cancelled",
+            "incomplete"
+          ]
+        },
+        "requestArtifact": {
+          "$ref": "#/$defs/artifact"
+        },
+        "responseArtifact": {
+          "$ref": "#/$defs/optionalArtifact"
+        }
+      },
+      "additionalProperties": false
+    },
+    "redactionClaim": {
+      "type": "object",
+      "required": [
+        "rawSha256",
+        "sanitizedSha256",
+        "review"
+      ],
+      "properties": {
+        "rawSha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sanitizedSha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "review": {
+          "enum": [
+            "unknown",
+            "declared-reviewed",
+            "unreviewed"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "exportClaims": {
+      "type": "object",
+      "required": [
+        "producerId",
+        "harnessSha256",
+        "candidateSha256",
+        "scopeSha256",
+        "terminalSequence",
+        "approval",
+        "redaction",
+        "expiresAt",
+        "revoked"
+      ],
+      "properties": {
+        "producerId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "harnessSha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "candidateSha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeSha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "terminalSequence": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "approval": {
+          "enum": [
+            "unknown",
+            "claimed-approved",
+            "claimed-denied"
+          ]
+        },
+        "redaction": {
+          "$ref": "#/$defs/redactionClaim"
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/optionalTime"
+        },
+        "revoked": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "origin",
+    "evaluationId",
+    "policySha256",
+    "taskId",
+    "turnId",
+    "startedAt",
+    "model",
+    "contextMode",
+    "captureStatus",
+    "closedAt",
+    "requests",
+    "claims"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1"
+    },
+    "kind": {
+      "const": "synthetic-capture-export"
+    },
+    "origin": {
+      "const": "original-synthetic"
+    },
+    "evaluationId": {
+      "$ref": "#/$defs/id"
+    },
+    "policySha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "taskId": {
+      "$ref": "#/$defs/id"
+    },
+    "turnId": {
+      "$ref": "#/$defs/id"
+    },
+    "startedAt": {
+      "$ref": "#/$defs/time"
+    },
+    "model": {
+      "$ref": "#/$defs/id"
+    },
+    "contextMode": {
+      "enum": [
+        "fresh",
+        "inherited"
+      ]
+    },
+    "captureStatus": {
+      "enum": [
+        "complete",
+        "incomplete"
+      ]
+    },
+    "closedAt": {
+      "$ref": "#/$defs/optionalTime"
+    },
+    "requests": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/exportRequest"
+      }
+    },
+    "claims": {
+      "$ref": "#/$defs/exportClaims"
+    }
+  },
+  "additionalProperties": false
+}

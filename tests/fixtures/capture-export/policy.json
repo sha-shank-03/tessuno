@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1",
+  "kind": "evaluation-policy",
+  "evaluationId": "synthetic-export-demo",
+  "candidateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "scopeSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "startedAt": "2030-01-01T00:00:00Z",
+  "budgetSeconds": 300,
+  "maxBuildInvocations": 5,
+  "maxBuildSeconds": 60,
+  "model": "synthetic-model",
+  "contextMode": "fresh"
+}
