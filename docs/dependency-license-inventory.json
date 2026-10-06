@@ -1,0 +1,567 @@
+{
+  "schemaVersion": "1",
+  "kind": "FactualDependencyLicenseInventory",
+  "recordedDate": "2026-10-06",
+  "basis": {
+    "sourceRemoteCommit": "30ec037426f09f014c9d60f081dac8e278af1d09",
+    "sourceTree": "403e1739593802ff9179645409e88a7b1c8e4aaf",
+    "lockPath": "requirements-dev.lock",
+    "lockSha256": "0a27a482e9218cf597810076317aef72e30eddad2d4b8cb30ea5240b1e70ca0e",
+    "selection": "One cached wheel for each exact pin: five py3-none-any wheels and the CPython 3.12 macOS 11 arm64 PyYAML/rpds-py wheels. No installation or dependency code execution was used to inspect these bytes."
+  },
+  "scope": {
+    "dependenciesVendored": false,
+    "dependencyBinariesIncludedInRepositoryOrKit": false,
+    "licenseTextCopiesIncludedInRepository": true,
+    "allPlatformWheelsInspected": false,
+    "compiledTransitiveAttributionComplete": false,
+    "legalCompatibilityAssessed": false,
+    "admissionPolicyChanged": false,
+    "accountOrContactAuthenticated": false,
+    "qualifiedPublicationAllowed": false
+  },
+  "dependencies": [
+    {
+      "name": "attrs",
+      "normalizedName": "attrs",
+      "version": "26.1.0",
+      "developmentRole": "transitive",
+      "declaredLicenseExpression": "MIT",
+      "legacyLicenseField": null,
+      "declaredLicenseFiles": [
+        "LICENSE"
+      ],
+      "artifact": {
+        "filename": "attrs-26.1.0-py3-none-any.whl",
+        "url": "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl",
+        "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+        "bytes": 67548,
+        "uploadTime": "2026-03-19T14:22:23.645947Z",
+        "wheelTags": [
+          "py3-none-any"
+        ],
+        "matchesLock": true
+      },
+      "releaseMetadata": {
+        "url": "https://pypi.org/pypi/attrs/26.1.0/json",
+        "observedAt": "2026-10-06T04:38:19.296496+00:00",
+        "sha256": "a882bf941fb4a0bb748d0194df544121cc130f5fb15a710ab6b804c17d2899b7",
+        "status": 200
+      },
+      "wheelMetadata": {
+        "path": "attrs-26.1.0.dist-info/METADATA",
+        "sha256": "4cd40e690f23bf37cbcad34efd6758e062df1df07c86833f7e3ce95bf1fa38cc",
+        "recordPath": "attrs-26.1.0.dist-info/RECORD",
+        "recordSha256": "ece8bf0367609a064951bcf56a1697d8c61b674d0ce7a7d57e0a93777d86b4af",
+        "recordHashedFilesVerified": 34
+      },
+      "licenseText": {
+        "wheelPath": "attrs-26.1.0.dist-info/licenses/LICENSE",
+        "repositoryPath": "docs/dependency-licenses/attrs/LICENSE",
+        "sha256": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f",
+        "bytes": 1109,
+        "copyrightLines": [
+          "Copyright (c) 2015 Hynek Schlawack and the attrs contributors"
+        ],
+        "exactUpstreamBytesMatch": true
+      },
+      "upstreamSource": {
+        "repository": "https://github.com/python-attrs/attrs",
+        "releaseTag": "26.1.0",
+        "commit": "7bfc49e9b22d5ba25b6e429524c3d49fee27cb36",
+        "licensePath": "LICENSE",
+        "licenseUrl": "https://raw.githubusercontent.com/python-attrs/attrs/7bfc49e9b22d5ba25b6e429524c3d49fee27cb36/LICENSE",
+        "browserUrl": "https://github.com/python-attrs/attrs/blob/7bfc49e9b22d5ba25b6e429524c3d49fee27cb36/LICENSE",
+        "tagCollectionUrl": "https://api.github.com/repos/python-attrs/attrs/tags?per_page=100",
+        "tagCollectionSha256": "0519a81377246470b5c80333d083c2705f8d1f7c93d7eb34eeef2d97dc5592e7",
+        "observedAt": "2026-10-06T04:39:58.668309+00:00"
+      },
+      "noticeFileSearch": {
+        "scope": "All non-directory entry basenames in this selected wheel containing LICENSE, COPYING, NOTICE or AUTHORS, case-insensitively",
+        "matchedPaths": [
+          "attrs-26.1.0.dist-info/licenses/LICENSE"
+        ],
+        "separateNoticeFileFound": false
+      },
+      "retentionClauses": [
+        {
+          "section": "MIT notice-retention paragraph",
+          "observedRequirement": "The copyright and permission notices are included in copies or substantial portions of the software."
+        }
+      ],
+      "nativeExtensionPaths": [],
+      "ambiguities": []
+    },
+    {
+      "name": "jsonschema",
+      "normalizedName": "jsonschema",
+      "version": "4.26.0",
+      "developmentRole": "direct",
+      "declaredLicenseExpression": "MIT",
+      "legacyLicenseField": null,
+      "declaredLicenseFiles": [
+        "COPYING"
+      ],
+      "artifact": {
+        "filename": "jsonschema-4.26.0-py3-none-any.whl",
+        "url": "https://files.pythonhosted.org/packages/69/90/f63fb5873511e014207a475e2bb4e8b2e570d655b00ac19a9a0ca0a385ee/jsonschema-4.26.0-py3-none-any.whl",
+        "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+        "bytes": 90630,
+        "uploadTime": "2026-01-07T13:41:05.306692Z",
+        "wheelTags": [
+          "py3-none-any"
+        ],
+        "matchesLock": true
+      },
+      "releaseMetadata": {
+        "url": "https://pypi.org/pypi/jsonschema/4.26.0/json",
+        "observedAt": "2026-10-06T04:38:19.598131+00:00",
+        "sha256": "d0c9ccdfa30c3cdc57b048c2be21123dfb0c2f4d6bef2e8324dcb4eac985cfcf",
+        "status": 200
+      },
+      "wheelMetadata": {
+        "path": "jsonschema-4.26.0.dist-info/METADATA",
+        "sha256": "05b189866ca98a96da3934bf6b83687ced3ff85325273b77e16b705f6d8b26d2",
+        "recordPath": "jsonschema-4.26.0.dist-info/RECORD",
+        "recordSha256": "382a461bc5151888cac603114697e4522c3cd6ee2622e4c23929e372556ae180",
+        "recordHashedFilesVerified": 42
+      },
+      "licenseText": {
+        "wheelPath": "jsonschema-4.26.0.dist-info/licenses/COPYING",
+        "repositoryPath": "docs/dependency-licenses/jsonschema/COPYING",
+        "sha256": "4f92a015a13c4d1a040bef018aa13430b4f1bc73b41b16bb846c346766de7439",
+        "bytes": 1057,
+        "copyrightLines": [
+          "Copyright (c) 2013 Julian Berman"
+        ],
+        "exactUpstreamBytesMatch": true
+      },
+      "upstreamSource": {
+        "repository": "https://github.com/python-jsonschema/jsonschema",
+        "releaseTag": "v4.26.0",
+        "commit": "a7277432b0f7bcd0551f6e589d30457017125df4",
+        "licensePath": "COPYING",
+        "licenseUrl": "https://raw.githubusercontent.com/python-jsonschema/jsonschema/a7277432b0f7bcd0551f6e589d30457017125df4/COPYING",
+        "browserUrl": "https://github.com/python-jsonschema/jsonschema/blob/a7277432b0f7bcd0551f6e589d30457017125df4/COPYING",
+        "tagCollectionUrl": "https://api.github.com/repos/python-jsonschema/jsonschema/tags?per_page=100",
+        "tagCollectionSha256": "deef8daa6b09eb9eb1ab948dc360c7e827d837b652b45fdd96e259fec89e1cb5",
+        "observedAt": "2026-10-06T04:39:59.649558+00:00"
+      },
+      "noticeFileSearch": {
+        "scope": "All non-directory entry basenames in this selected wheel containing LICENSE, COPYING, NOTICE or AUTHORS, case-insensitively",
+        "matchedPaths": [
+          "jsonschema-4.26.0.dist-info/licenses/COPYING"
+        ],
+        "separateNoticeFileFound": false
+      },
+      "retentionClauses": [
+        {
+          "section": "MIT notice-retention paragraph",
+          "observedRequirement": "The copyright and permission notices are included in copies or substantial portions of the software."
+        }
+      ],
+      "nativeExtensionPaths": [],
+      "ambiguities": []
+    },
+    {
+      "name": "jsonschema-specifications",
+      "normalizedName": "jsonschema-specifications",
+      "version": "2025.9.1",
+      "developmentRole": "transitive",
+      "declaredLicenseExpression": "MIT",
+      "legacyLicenseField": null,
+      "declaredLicenseFiles": [
+        "COPYING"
+      ],
+      "artifact": {
+        "filename": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+        "url": "https://files.pythonhosted.org/packages/41/45/1a4ed80516f02155c51f51e8cedb3c1902296743db0bbc66608a0db2814f/jsonschema_specifications-2025.9.1-py3-none-any.whl",
+        "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+        "bytes": 18437,
+        "uploadTime": "2025-09-08T01:34:57.871954Z",
+        "wheelTags": [
+          "py3-none-any"
+        ],
+        "matchesLock": true
+      },
+      "releaseMetadata": {
+        "url": "https://pypi.org/pypi/jsonschema-specifications/2025.9.1/json",
+        "observedAt": "2026-10-06T04:38:20.013108+00:00",
+        "sha256": "91810d8f79384375ad0c0cf631e06903e2790b030d3fad2f1ad657b20ddd839e",
+        "status": 200
+      },
+      "wheelMetadata": {
+        "path": "jsonschema_specifications-2025.9.1.dist-info/METADATA",
+        "sha256": "35abd41757f32b4ea24756920ded47b70173d77cbc052a5a6d3ab583b2e8d89d",
+        "recordPath": "jsonschema_specifications-2025.9.1.dist-info/RECORD",
+        "recordSha256": "497d6b8e47548e7fb8e66a8fcefcb717ed1458602e09662719066ce7dfc017dd",
+        "recordHashedFilesVerified": 27
+      },
+      "licenseText": {
+        "wheelPath": "jsonschema_specifications-2025.9.1.dist-info/licenses/COPYING",
+        "repositoryPath": "docs/dependency-licenses/jsonschema-specifications/COPYING",
+        "sha256": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c",
+        "bytes": 1057,
+        "copyrightLines": [
+          "Copyright (c) 2022 Julian Berman"
+        ],
+        "exactUpstreamBytesMatch": true
+      },
+      "upstreamSource": {
+        "repository": "https://github.com/python-jsonschema/jsonschema-specifications",
+        "releaseTag": "v2025.9.1",
+        "commit": "3b846010c34ce254d8ced23023451d1d64de37f5",
+        "licensePath": "COPYING",
+        "licenseUrl": "https://raw.githubusercontent.com/python-jsonschema/jsonschema-specifications/3b846010c34ce254d8ced23023451d1d64de37f5/COPYING",
+        "browserUrl": "https://github.com/python-jsonschema/jsonschema-specifications/blob/3b846010c34ce254d8ced23023451d1d64de37f5/COPYING",
+        "tagCollectionUrl": "https://api.github.com/repos/python-jsonschema/jsonschema-specifications/tags?per_page=100",
+        "tagCollectionSha256": "e1358eeddca9bf9883b3ba89a6a9a3c0f21347a95d8e69a215b1f2ffa19bb173",
+        "observedAt": "2026-10-06T04:40:00.560891+00:00"
+      },
+      "noticeFileSearch": {
+        "scope": "All non-directory entry basenames in this selected wheel containing LICENSE, COPYING, NOTICE or AUTHORS, case-insensitively",
+        "matchedPaths": [
+          "jsonschema_specifications-2025.9.1.dist-info/licenses/COPYING"
+        ],
+        "separateNoticeFileFound": false
+      },
+      "retentionClauses": [
+        {
+          "section": "MIT notice-retention paragraph",
+          "observedRequirement": "The copyright and permission notices are included in copies or substantial portions of the software."
+        }
+      ],
+      "nativeExtensionPaths": [],
+      "ambiguities": []
+    },
+    {
+      "name": "PyYAML",
+      "normalizedName": "pyyaml",
+      "version": "6.0.3",
+      "developmentRole": "direct",
+      "declaredLicenseExpression": null,
+      "legacyLicenseField": "MIT",
+      "declaredLicenseFiles": [
+        "LICENSE"
+      ],
+      "artifact": {
+        "filename": "pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl",
+        "url": "https://files.pythonhosted.org/packages/89/a0/6cf41a19a1f2f3feab0e9c0b74134aa2ce6849093d5517a0c550fe37a648/pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl",
+        "sha256": "fc09d0aa354569bc501d4e787133afc08552722d3ab34836a80547331bb5d4a0",
+        "bytes": 173973,
+        "uploadTime": "2025-09-25T21:32:12.492377Z",
+        "wheelTags": [
+          "cp312-cp312-macosx_11_0_arm64"
+        ],
+        "matchesLock": true
+      },
+      "releaseMetadata": {
+        "url": "https://pypi.org/pypi/pyyaml/6.0.3/json",
+        "observedAt": "2026-10-06T04:38:20.108706+00:00",
+        "sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def",
+        "status": 200
+      },
+      "wheelMetadata": {
+        "path": "pyyaml-6.0.3.dist-info/METADATA",
+        "sha256": "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34",
+        "recordPath": "pyyaml-6.0.3.dist-info/RECORD",
+        "recordSha256": "715146d21711444bc73c3137d18cffb6e38ace40e8998c5a9dfa69bd7dc46e3e",
+        "recordHashedFilesVerified": 23
+      },
+      "licenseText": {
+        "wheelPath": "pyyaml-6.0.3.dist-info/licenses/LICENSE",
+        "repositoryPath": "docs/dependency-licenses/pyyaml/LICENSE",
+        "sha256": "8d3928f9dc4490fd635707cb88eb26bd764102a7282954307d3e5167a577e8a4",
+        "bytes": 1101,
+        "copyrightLines": [
+          "Copyright (c) 2017-2021 Ingy döt Net",
+          "Copyright (c) 2006-2016 Kirill Simonov"
+        ],
+        "exactUpstreamBytesMatch": true
+      },
+      "upstreamSource": {
+        "repository": "https://github.com/yaml/pyyaml",
+        "releaseTag": "6.0.3",
+        "commit": "49790e73684bebad1df05ef8d828fa12f685bffb",
+        "licensePath": "LICENSE",
+        "licenseUrl": "https://raw.githubusercontent.com/yaml/pyyaml/49790e73684bebad1df05ef8d828fa12f685bffb/LICENSE",
+        "browserUrl": "https://github.com/yaml/pyyaml/blob/49790e73684bebad1df05ef8d828fa12f685bffb/LICENSE",
+        "tagCollectionUrl": "https://api.github.com/repos/yaml/pyyaml/tags?per_page=100",
+        "tagCollectionSha256": "4c8472a54d696a399d946e09a4b767e101e15bace99d920005bc9c9a9cea943f",
+        "observedAt": "2026-10-06T04:40:01.594382+00:00"
+      },
+      "noticeFileSearch": {
+        "scope": "All non-directory entry basenames in this selected wheel containing LICENSE, COPYING, NOTICE or AUTHORS, case-insensitively",
+        "matchedPaths": [
+          "pyyaml-6.0.3.dist-info/licenses/LICENSE"
+        ],
+        "separateNoticeFileFound": false
+      },
+      "retentionClauses": [
+        {
+          "section": "MIT notice-retention paragraph",
+          "observedRequirement": "The copyright and permission notices are included in copies or substantial portions of the software."
+        }
+      ],
+      "nativeExtensionPaths": [
+        "yaml/_yaml.cpython-312-darwin.so"
+      ],
+      "ambiguities": [
+        "A native extension is present. The single shipped project license file and exact upstream match do not establish complete attribution or license applicability for compiled/bundled transitive components."
+      ]
+    },
+    {
+      "name": "referencing",
+      "normalizedName": "referencing",
+      "version": "0.37.0",
+      "developmentRole": "transitive",
+      "declaredLicenseExpression": "MIT",
+      "legacyLicenseField": null,
+      "declaredLicenseFiles": [
+        "COPYING"
+      ],
+      "artifact": {
+        "filename": "referencing-0.37.0-py3-none-any.whl",
+        "url": "https://files.pythonhosted.org/packages/2c/58/ca301544e1fa93ed4f80d724bf5b194f6e4b945841c5bfd555878eea9fcb/referencing-0.37.0-py3-none-any.whl",
+        "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+        "bytes": 26766,
+        "uploadTime": "2025-10-13T15:30:47.625937Z",
+        "wheelTags": [
+          "py3-none-any"
+        ],
+        "matchesLock": true
+      },
+      "releaseMetadata": {
+        "url": "https://pypi.org/pypi/referencing/0.37.0/json",
+        "observedAt": "2026-10-06T04:38:20.408535+00:00",
+        "sha256": "a67968d8e03aa45e650fc2ff0d07796676db1a7841ce8e810bf2dba5af689464",
+        "status": 200
+      },
+      "wheelMetadata": {
+        "path": "referencing-0.37.0.dist-info/METADATA",
+        "sha256": "c93b00e6ab1524fd60848376604c189a114374776475c25a31d57be47b29de6a",
+        "recordPath": "referencing-0.37.0.dist-info/RECORD",
+        "recordSha256": "4cff26d74dfce1cd571ccbee5f58e2dabf748bbe7de1fcc8e4ff487b3a1711f1",
+        "recordHashedFilesVerified": 18
+      },
+      "licenseText": {
+        "wheelPath": "referencing-0.37.0.dist-info/licenses/COPYING",
+        "repositoryPath": "docs/dependency-licenses/referencing/COPYING",
+        "sha256": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c",
+        "bytes": 1057,
+        "copyrightLines": [
+          "Copyright (c) 2022 Julian Berman"
+        ],
+        "exactUpstreamBytesMatch": true
+      },
+      "upstreamSource": {
+        "repository": "https://github.com/python-jsonschema/referencing",
+        "releaseTag": "v0.37.0",
+        "commit": "944ed5a20bc5125f2349156cbdc365daac0e67e6",
+        "licensePath": "COPYING",
+        "licenseUrl": "https://raw.githubusercontent.com/python-jsonschema/referencing/944ed5a20bc5125f2349156cbdc365daac0e67e6/COPYING",
+        "browserUrl": "https://github.com/python-jsonschema/referencing/blob/944ed5a20bc5125f2349156cbdc365daac0e67e6/COPYING",
+        "tagCollectionUrl": "https://api.github.com/repos/python-jsonschema/referencing/tags?per_page=100",
+        "tagCollectionSha256": "3a0cbcd17c7b723c6090582574dd462126fc6c63dd7eb65c3d1a470b6829cbc0",
+        "observedAt": "2026-10-06T04:40:02.820544+00:00"
+      },
+      "noticeFileSearch": {
+        "scope": "All non-directory entry basenames in this selected wheel containing LICENSE, COPYING, NOTICE or AUTHORS, case-insensitively",
+        "matchedPaths": [
+          "referencing-0.37.0.dist-info/licenses/COPYING"
+        ],
+        "separateNoticeFileFound": false
+      },
+      "retentionClauses": [
+        {
+          "section": "MIT notice-retention paragraph",
+          "observedRequirement": "The copyright and permission notices are included in copies or substantial portions of the software."
+        }
+      ],
+      "nativeExtensionPaths": [],
+      "ambiguities": []
+    },
+    {
+      "name": "rpds-py",
+      "normalizedName": "rpds-py",
+      "version": "2026.6.3",
+      "developmentRole": "transitive",
+      "declaredLicenseExpression": "MIT",
+      "legacyLicenseField": null,
+      "declaredLicenseFiles": [
+        "LICENSE"
+      ],
+      "artifact": {
+        "filename": "rpds_py-2026.6.3-cp312-cp312-macosx_11_0_arm64.whl",
+        "url": "https://files.pythonhosted.org/packages/a4/73/319dfa745dd668efe89309141ded489126461fcecd2b8f3a3cda185129b6/rpds_py-2026.6.3-cp312-cp312-macosx_11_0_arm64.whl",
+        "sha256": "538949e262e46caa31ac01bdb3c1e8f642622922cacbabbae6a8445d9dc33eaf",
+        "bytes": 338542,
+        "uploadTime": "2026-06-30T07:15:16.267430Z",
+        "wheelTags": [
+          "cp312-cp312-macosx_11_0_arm64"
+        ],
+        "matchesLock": true
+      },
+      "releaseMetadata": {
+        "url": "https://pypi.org/pypi/rpds-py/2026.6.3/json",
+        "observedAt": "2026-10-06T04:38:20.729085+00:00",
+        "sha256": "c791bb0eaf9f18668ca978bd500d8dd8e25cdf692cf5bc92229d1c2854e8d852",
+        "status": 200
+      },
+      "wheelMetadata": {
+        "path": "rpds_py-2026.6.3.dist-info/METADATA",
+        "sha256": "f8be7b17da3980b2c48596941411a43c70ac41b1e2d530aa531f2c15eab2eb1c",
+        "recordPath": "rpds_py-2026.6.3.dist-info/RECORD",
+        "recordSha256": "81bd37cf5cd5849e03c80da77baf2412d89e184788851ca69138388c702e87e0",
+        "recordHashedFilesVerified": 8
+      },
+      "licenseText": {
+        "wheelPath": "rpds_py-2026.6.3.dist-info/licenses/LICENSE",
+        "repositoryPath": "docs/dependency-licenses/rpds-py/LICENSE",
+        "sha256": "314e4e91be3baa93c0fb4bccc9e4e97cd643eb839b065af921782c2175fe9909",
+        "bytes": 1057,
+        "copyrightLines": [
+          "Copyright (c) 2023 Julian Berman"
+        ],
+        "exactUpstreamBytesMatch": true
+      },
+      "upstreamSource": {
+        "repository": "https://github.com/crate-py/rpds",
+        "releaseTag": "v2026.6.3",
+        "commit": "7277eb681f6efd67eca1bbaa32f78d78bdc044a5",
+        "licensePath": "LICENSE",
+        "licenseUrl": "https://raw.githubusercontent.com/crate-py/rpds/7277eb681f6efd67eca1bbaa32f78d78bdc044a5/LICENSE",
+        "browserUrl": "https://github.com/crate-py/rpds/blob/7277eb681f6efd67eca1bbaa32f78d78bdc044a5/LICENSE",
+        "tagCollectionUrl": "https://api.github.com/repos/crate-py/rpds/tags?per_page=100",
+        "tagCollectionSha256": "e7100812aa03011e4fc41fbd431424f99afb1a1488f5292af1300770dacfef97",
+        "observedAt": "2026-10-06T04:40:03.947362+00:00"
+      },
+      "noticeFileSearch": {
+        "scope": "All non-directory entry basenames in this selected wheel containing LICENSE, COPYING, NOTICE or AUTHORS, case-insensitively",
+        "matchedPaths": [
+          "rpds_py-2026.6.3.dist-info/licenses/LICENSE"
+        ],
+        "separateNoticeFileFound": false
+      },
+      "retentionClauses": [
+        {
+          "section": "MIT notice-retention paragraph",
+          "observedRequirement": "The copyright and permission notices are included in copies or substantial portions of the software."
+        }
+      ],
+      "nativeExtensionPaths": [
+        "rpds/rpds.cpython-312-darwin.so"
+      ],
+      "ambiguities": [
+        "A native extension is present. The single shipped project license file and exact upstream match do not establish complete attribution or license applicability for compiled/bundled transitive components."
+      ]
+    },
+    {
+      "name": "typing_extensions",
+      "normalizedName": "typing-extensions",
+      "version": "4.16.0",
+      "developmentRole": "transitive",
+      "declaredLicenseExpression": "PSF-2.0",
+      "legacyLicenseField": null,
+      "declaredLicenseFiles": [
+        "LICENSE"
+      ],
+      "artifact": {
+        "filename": "typing_extensions-4.16.0-py3-none-any.whl",
+        "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl",
+        "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+        "bytes": 45571,
+        "uploadTime": "2026-07-02T08:40:04.659120Z",
+        "wheelTags": [
+          "py3-none-any"
+        ],
+        "matchesLock": true
+      },
+      "releaseMetadata": {
+        "url": "https://pypi.org/pypi/typing-extensions/4.16.0/json",
+        "observedAt": "2026-10-06T04:38:21.139221+00:00",
+        "sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+        "status": 200
+      },
+      "wheelMetadata": {
+        "path": "typing_extensions-4.16.0.dist-info/METADATA",
+        "sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46",
+        "recordPath": "typing_extensions-4.16.0.dist-info/RECORD",
+        "recordSha256": "44dcf97810bea7b84bcd83890b6674bbcc2f4c5ef899a4887f15d524bdf6bb97",
+        "recordHashedFilesVerified": 4
+      },
+      "licenseText": {
+        "wheelPath": "typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+        "repositoryPath": "docs/dependency-licenses/typing-extensions/LICENSE",
+        "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+        "bytes": 13936,
+        "exactUpstreamBytesMatch": true,
+        "copyrightNoticeBlocks": [
+          {
+            "section": "Python Software Foundation License Version 2, clause 2",
+            "contextStartLine": 85,
+            "contextEndLine": 89,
+            "verbatimContext": "provided, however, that PSF's License Agreement and PSF's notice of copyright,\ni.e., \"Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,\n2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 Python Software Foundation;\nAll Rights Reserved\" are retained in Python alone or in any derivative version\nprepared by Licensee."
+          },
+          {
+            "section": "CNRI License Agreement for Python 1.6.1, clause 2",
+            "contextStartLine": 186,
+            "contextEndLine": 190,
+            "verbatimContext": "alone or in any derivative version, provided, however, that CNRI's\nLicense Agreement and CNRI's notice of copyright, i.e., \"Copyright (c)\n1995-2001 Corporation for National Research Initiatives; All Rights\nReserved\" are retained in Python 1.6.1 alone or in any derivative\nversion prepared by Licensee.  Alternately, in lieu of CNRI's License"
+          },
+          {
+            "section": "CWI License Agreement for Python 0.9.0 through 1.2",
+            "contextStartLine": 247,
+            "contextEndLine": 248,
+            "verbatimContext": "Copyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam,\nThe Netherlands.  All rights reserved."
+          }
+        ]
+      },
+      "upstreamSource": {
+        "repository": "https://github.com/python/typing_extensions",
+        "releaseTag": "4.16.0",
+        "commit": "f29cd28d8ed7642cafb1d18daf5aa41be6a5c0aa",
+        "licensePath": "LICENSE",
+        "licenseUrl": "https://raw.githubusercontent.com/python/typing_extensions/f29cd28d8ed7642cafb1d18daf5aa41be6a5c0aa/LICENSE",
+        "browserUrl": "https://github.com/python/typing_extensions/blob/f29cd28d8ed7642cafb1d18daf5aa41be6a5c0aa/LICENSE",
+        "tagCollectionUrl": "https://api.github.com/repos/python/typing_extensions/tags?per_page=100",
+        "tagCollectionSha256": "97395bf8e29ebf327dd5fa7de6275565d93b8a8d4d1f4fe3063cd6cc5a06d7b4",
+        "observedAt": "2026-10-06T04:40:04.800090+00:00"
+      },
+      "noticeFileSearch": {
+        "scope": "All non-directory entry basenames in this selected wheel containing LICENSE, COPYING, NOTICE or AUTHORS, case-insensitively",
+        "matchedPaths": [
+          "typing_extensions-4.16.0.dist-info/licenses/LICENSE"
+        ],
+        "separateNoticeFileFound": false
+      },
+      "retentionClauses": [
+        {
+          "section": "Python Software Foundation License Version 2, clauses 2–3",
+          "observedRequirement": "Retain the agreement and PSF copyright notice; a derivative made available to others includes a brief summary of changes."
+        },
+        {
+          "section": "BeOpen Python Open Source License Agreement Version 1, clause 2",
+          "observedRequirement": "Retain the BeOpen Python license."
+        },
+        {
+          "section": "CNRI License Agreement for Python 1.6.1, clauses 2–3",
+          "observedRequirement": "Retain the agreement and CNRI copyright notice. Clause 2 permits substituting its specified identifying text/URL in lieu of the Agreement, without replacing the stated copyright-retention condition. Clause 3 states that a derivative made available to others includes a brief summary of changes."
+        },
+        {
+          "section": "CWI License Agreement for Python 0.9.0 through 1.2",
+          "observedRequirement": "Keep its copyright notice in copies and its copyright/permission notices in supporting documentation; the clause also restricts use of CWI/SMC names in advertising without permission."
+        }
+      ],
+      "nativeExtensionPaths": [],
+      "ambiguities": [
+        "Metadata declares PSF-2.0 while the full file contains PSF, BeOpen, CNRI, CWI and documentation 0BSD sections. Their applicability is not resolved or rewritten into a new SPDX expression here."
+      ]
+    }
+  ],
+  "remainingEvidenceGaps": [
+    "Other platform wheels and sdists permitted by the lock were not inspected; these seven license observations must not be generalized to every artifact of the releases.",
+    "The native wheels need a source/build-linked audit of compiled transitive components before any claim of complete binary attribution.",
+    "typing_extensions historical-section applicability is unresolved; preserve its full shipped license rather than replacing it with the short metadata expression."
+  ]
+}
