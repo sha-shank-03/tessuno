@@ -7,6 +7,13 @@ foundation proposal. JSON Schema Draft 2020-12 and Agent Skills conventions info
 
 The validation environment uses jsonschema 4.26.0 and PyYAML 6.0.3, neither vendored. Consult the installed
 package's own license when distributing it; this project does not relicense dependencies.
+The source checkout includes a repository-only factual inventory at
+docs/dependency-license-inventory.md for all seven locked development dependencies.
+Verbatim license texts under docs/dependency-licenses/ retain their originating
+notices and licenses; they are documentation copies, not Apache-2.0 original work.
+Dependency implementations and binaries remain unvendored. The offline kit does not
+include this inventory or the license copies. This inventory does not establish
+complete compiled-transitive attribution, legal compatibility or admission authority.
 Official specification references:
 - https://json-schema.org/draft/2020-12/json-schema-core
 - https://agentskills.io/specification

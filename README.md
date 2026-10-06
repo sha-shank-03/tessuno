@@ -36,6 +36,10 @@ The original source environment and this Mac preparation are documented separate
 docs/tessuno-preparation.md; dependency installation is an explicit setup step.
 All seven development dependencies and platform wheel hashes are pinned in
 requirements-dev.lock. See the setup guide for a hash-checked PyPI installation.
+The [factual dependency license inventory](docs/dependency-license-inventory.md)
+binds seven selected wheels to the lock, published release hashes and exact upstream
+license texts. It records notice clauses and attribution gaps without adopting an
+admission policy or assessing legal compatibility.
 No dependency installation, network call or package download is performed by these commands.
 
 ```sh
