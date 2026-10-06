@@ -134,6 +134,23 @@ def load_catalog(root=ROOT):
     for id in records: visit(id,set())
     return records
 
+def project_identity_check(records, root=ROOT):
+    """Check original Tessuno declarations only; no SPDX policy or identity authentication."""
+    maintainer = {'name': 'sha-shank-03', 'contact': 'https://github.com/sha-shank-03'}
+    license_sha = 'cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30'
+    if hashlib.sha256(safe_path(root, 'LICENSE').read_bytes()).hexdigest() != license_sha:
+        raise Invalid('project policy: LICENSE differs from the approved Apache-2.0 text')
+    if not records:
+        raise Invalid('project policy: empty catalog')
+    # Callers supply a schema/semantic-checked catalog; generic defaults stay unchanged.
+    for id, info in sorted(records.items()):
+        record = info['record']
+        if record['license'] != 'Apache-2.0':
+            raise Invalid(f'project policy: {id} license declaration must be Apache-2.0')
+        if record['maintainer'] != maintainer:
+            raise Invalid(f'project policy: {id} maintainer declaration differs from the selected project maintainer')
+    return True
+
 def closure(records, id):
     seen = set()
     def visit(key):

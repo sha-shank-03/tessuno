@@ -40,6 +40,7 @@ No dependency installation, network call or package download is performed by the
 
 ```sh
 python tools/validate.py
+python tools/validate.py --project-policy  # Optional original-project declaration/license-text check
 python -m unittest discover -s tests -v
 python tools/build.py
 python tools/validate.py --publication  # MUST fail: qualified-release gates are unresolved
@@ -61,6 +62,11 @@ JSON manifests avoid YAML coercion; SKILL.md retains native name/description fro
 The native validator deliberately supports a narrow subset, not all valid Agent Skills YAML.
 The original-work license, Tessuno name and maintainer are selected. Public source availability
 permits inspection and contribution; it does not satisfy the qualified-release or execution gates.
+All ten component maintainer declarations now use the selected public GitHub account/profile.
+The opt-in `--project-policy` check compares those declarations, Apache-2.0 component metadata
+and the exact approved root license bytes. Default schema/catalog validation remains generic.
+This checks declared metadata, not account control, contact delivery or third-party SPDX policy;
+it does not change IDs, versions, host permissions or publication authority.
 `--publication` remains an unconditional rejection: comprehensive SPDX/license validation,
 trusted producer verification and actual host qualification are still unavailable. Source-only
 review is distinct from authenticated runtime evidence or a verified agent release. No data is

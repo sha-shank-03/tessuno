@@ -32,6 +32,19 @@ python -B tools/validate.py
 Success checks ten source objects and their exact references. It establishes local
 schema/semantic validity, not host compatibility, security or trusted evidence.
 
+For this original Tessuno kit, optionally run:
+
+```sh
+python -B tools/validate.py --project-policy
+```
+
+This also compares all component maintainer declarations with the selected public
+GitHub account/profile, checks Apache-2.0 metadata and matches the exact approved
+root `LICENSE` bytes. It authenticates no account or contact route and implements
+no comprehensive SPDX expression, dependency-license or per-file attribution
+policy. Generic source validation above stays compatible with other nonempty
+maintainer/license declarations; this opt-in check is for original Tessuno work.
+
 ## 2. Choose an outcome
 
 **Plan a change.** Read `skills/ios-test-plan/SKILL.md` and the original

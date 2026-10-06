@@ -4,7 +4,9 @@ Recorded 2026-10-05 against main `ca73764a66db6164060313f55c0c441b7ef000c0`,
 tree `83cda15e1fc4dc3ed633de0d0a52b36c84e494bd`. PR20–23 are merged. That source
 tree passed 133 offline tests, zero skips, in producer and independent review;
 five authored diagnosis answers passed 35/35 assertions. Those are source checks.
-The workflow-kit change needs its own exact-head test and review receipt.
+PR24's workflow-kit source tree `fba48010f0d2cfd481673101e7b1f44ca36e99ce`
+passed 139 offline tests in producer and independent review. The maintainer and
+project-policy follow-up needs its own exact-head test and review receipt.
 
 ## Useful source workflow
 
@@ -27,8 +29,10 @@ The reviewer inspected the producer's records; they did not independently
 reproduce or authenticate those browser actions. That evidence belongs to the
 predecessor and does not prove the new start-page workflow.
 
-For this change, the producer observed the catalog, start page and native source
-viewer in installed Chrome 154.0.8037.93, headless, at 1280x720, 375x812 and
+For PR24's workflow-kit change, reviewed tree
+`fba48010f0d2cfd481673101e7b1f44ca36e99ce` / remote head `010a5f0f`, the producer
+observed the catalog, start page and native source viewer in installed Chrome
+154.0.8037.93, headless, at 1280x720, 375x812 and
 320x568. All nine rendered views contained the expected content with no document
 horizontal overflow. Chrome handled CDP-generated Tab/Enter on the first catalog
 link, pointer navigation from the example through its object backlink and a ZIP
@@ -38,8 +42,10 @@ stderr diagnostics are separate and retained in the receipt. The unavailable
 agent-browser CLI was replaced by installed Chrome CDP with a temporary profile;
 no dependency was installed or shared profile changed.
 
-The exact source/build identities, screenshots and all attempts belong in the
-PR receipt. Keep automated HTML/DOM checks distinct from these producer browser
+The maintainer/project-policy follow-up has no new browser observations; changed
+metadata, generated viewers and ZIP bytes require their own current-head browser
+receipt before claiming that coverage. PR24's exact source/build identities,
+screenshots and all attempts belong in its receipt. Keep automated HTML/DOM checks distinct from these producer browser
 observations. Independent inspection of the records does not independently
 reproduce or authenticate the browser actions. Native OS keyboard traversal, a
 screen reader and genuine navigation abort remain NOT_RUN. The old Escape
@@ -54,7 +60,7 @@ was not observed. Browser acceptance is not trusted runtime qualification.
 | Filesystem/network/approval controls: UNSUPPORTED | Adapter and native-Skill reports retain declarations and list losses | Demonstrated enforcement of each declared path, destination and approval action |
 | Evidence trust: BLOCKED | `trust_evidence` rejects all structurally valid records; capture inventories are unauthenticated | Authenticated producer/workflow, protected policy, artifact integrity, redaction, all attempts, expiry/revocation |
 | Qualified publication: BLOCKED | `publication_gate` unconditionally rejects; `validate.py --publication` must exit 1 | Reviewed release policy, identity/license acceptance and trusted qualification; no warning-only shortcut |
-| Canonical identity/license inventory: INCOMPLETE | Project owner/name/license are selected; component maintainer/contact placeholders remain; license checking is not comprehensive SPDX validation | Reconcile canonical identity and comprehensive attribution policy without awarding a badge |
+| Canonical identity/license inventory: INCOMPLETE | All ten component maintainer declarations match the selected public account/profile; opt-in `validate.py --project-policy` checks those declarations, Apache-2.0 metadata and approved LICENSE bytes | Account/contact authentication, comprehensive SPDX expressions and dependency/per-file attribution policy remain unresolved; no badge is awarded |
 | Private reporting route: UNVERIFIED | `SECURITY.md` advertises no verified private route | Readback and monitored delivery evidence before claiming a route; no fabricated mailbox |
 | Untrusted CI Lane B: DISABLED | `docs/ci-proposal.md` records unresolved offline runner/isolation boundaries | Independently reviewed isolation/dependency/protected-harness controls before activation |
 | Current-source hosted CI: NOT_RUN | Historical Lane A runs bind earlier exact source; manual controller still pins `ade193be` | Separately scoped authorization and exact-source readbacks for any future dispatch |
