@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "kind": "synthetic-capture-export",
+  "origin": "original-synthetic",
+  "evaluationId": "synthetic-export-demo",
+  "policySha256": "8a1d6989d5877ca75ef475b682b460c48267e7e1e0bfec2ab34e9fe07ed8a944",
+  "taskId": "synthetic-task",
+  "turnId": "synthetic-turn",
+  "startedAt": "2030-01-01T00:00:00Z",
+  "model": "synthetic-model",
+  "contextMode": "fresh",
+  "captureStatus": "complete",
+  "closedAt": "2030-01-01T00:00:21Z",
+  "requests": [
+    {
+      "requestIndex": 1,
+      "requestId": "synthetic-request-1",
+      "toolName": "synthetic-tool",
+      "operationClaim": "build",
+      "requestedAt": "2030-01-01T00:00:10Z",
+      "completedAt": "2030-01-01T00:00:20Z",
+      "outcome": "success",
+      "requestArtifact": {
+        "path": "payloads/request.txt",
+        "sha256": "ce0db737bf8807ba2b4a7f618251da6e26cc495df6e4479ef4544a07c9406a45"
+      },
+      "responseArtifact": {
+        "path": "payloads/response.txt",
+        "sha256": "3cc8ddec9a6bf5d2c218107554278792abf21fbd8595a3bcbd40c4cdbc395f4c"
+      }
+    }
+  ],
+  "claims": {
+    "producerId": "synthetic-producer",
+    "harnessSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "candidateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "scopeSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "terminalSequence": 1,
+    "approval": "claimed-approved",
+    "redaction": {
+      "rawSha256": "ce0db737bf8807ba2b4a7f618251da6e26cc495df6e4479ef4544a07c9406a45",
+      "sanitizedSha256": "66fa631aa34e1151c9d6d1ac5a68a94033255a6f2220963ebe10074ed6013418",
+      "review": "declared-reviewed"
+    },
+    "expiresAt": "2030-01-02T00:00:00Z",
+    "revoked": false
+  }
+}
