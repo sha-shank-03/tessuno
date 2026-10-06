@@ -22,6 +22,8 @@ and THIRD_PARTY_NOTICES.md. No installer or executable host adapter exists.
   native bytes and canonical field losses for four documented hosts without installing a Skill
 - [Offline evaluation capture inspection](docs/evaluation-capture.md) detects gaps in supplied
   admission/transcript inventories; matching records remain unauthenticated and unqualified
+- [First source workflow](docs/source-workflow.md): the catalog download includes a first-run
+  guide and selected offline tools so an extracted kit can validate source and inspect examples
 
 Compatibility is declared-only. No Codex, Xcode, simulator, device, model, security scanner,
 external producer, or human approval has been qualified by this repository.
@@ -45,6 +47,8 @@ python tools/validate.py --publication  # MUST fail: qualified-release gates are
 
 Open dist/index.html to inspect the catalog and source. For same-origin script execution,
 serve dist with a local-only HTTP server. Catalog deployment is outside this source preview.
+Choose "Start with a source workflow" for planning, diagnosis and evidence-gap tasks.
+The offline inspection kit is source-only and installs no dependencies, Skills or host settings.
 The search box filters
 kind, stack, platform, origin, declared support, network and write-scope terms. Without scripts,
 all objects and source links remain visible. Source and JSON metadata inspection use
@@ -94,5 +98,7 @@ Inspect the [release-readiness evidence workflow](docs/release-readiness-evidenc
 for an operator procedure and original synthetic packets. Its deterministic inventory
 checker reports gaps; even a complete packet leaves release BLOCKED and grants no authority.
 
-See [draft integration order](docs/integration-order.md) for the exact source prerequisites
-and separate test baselines of pending PRs 20–23.
+See [source integration order](docs/integration-order.md) for the pinned inputs and separate
+test baselines of merged PRs 20–23. Main `ca73764a` matches the independently reviewed
+133-test source tree. See the [remaining release checklist](docs/release-checklist.md) for
+source usability, scoped browser evidence and the blocked production qualification gates.

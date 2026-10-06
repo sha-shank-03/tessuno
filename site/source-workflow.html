@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>Start with a source workflow · Tessuno</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="source-viewer">
+  <nav aria-label="Workflow navigation"><a href="index.html">Catalog</a> · <a href="prototype.zip" download>Download offline inspection kit</a></nav>
+  <header>
+    <p class="eyebrow">TESSUNO / GETTING STARTED</p>
+    <h1>Choose an outcome.<br>Inspect the source.</h1>
+    <p>Use an original example to prepare a plan, understand a diagnostic or identify an evidence gap.</p>
+    <p class="notice">Source-only. The download does not install or launch an Agent or Skill. Compatibility is declared-only; host controls and trusted runtime evidence remain unqualified.</p>
+  </header>
+  <section aria-labelledby="download">
+    <h2 id="download">1. Get a usable inspection kit</h2>
+    <p>Extract the <a href="prototype.zip" download>offline inspection kit</a> into a new directory. It includes a first-run README, original source and resources, selected inspectors, schemas, license notices and a dependency lock.</p>
+    <p>Read the <a href="inspection-kit.html">file inventory and hashes</a> and <a href="content-manifests.html">exact object closures</a>. Hashes identify bytes; they do not authenticate a producer or prove safety.</p>
+    <p>Use Python 3.11+ with jsonschema 4.26.0 and PyYAML 6.0.3 in an existing isolated environment. The kit installs no dependencies. From the extracted directory:</p>
+    <pre><code>python -B tools/validate.py</code></pre>
+  </section>
+  <section aria-labelledby="plan">
+    <h2 id="plan">2. Plan a change</h2>
+    <p>Read the <a href="source/skills/ios-test-plan/SKILL.md.html">test-planning Skill</a> and its <a href="source/skills/ios-test-plan/examples/toggle.md.html">original change example</a>. Follow the instructions manually to draft acceptance, failure and accessibility cases. Keep every proposed check labeled NOT RUN.</p>
+    <p><a href="index.html#object-core%2Fios-test-plan">Inspect the Skill's version and declared scope</a></p>
+  </section>
+  <section aria-labelledby="diagnose">
+    <h2 id="diagnose">3. Understand a diagnostic</h2>
+    <p>Compare the <a href="source/skills/xcode-build-diagnosis/fixtures/unresolved-symbol.txt.html">original log</a> with its <a href="source/skills/xcode-build-diagnosis/examples/unresolved-symbol.json.html">authored response</a>. Check all five examples locally:</p>
+    <pre><code>python -B tools/evaluate_build_diagnosis.py --examples</code></pre>
+    <p>The 35 assertions check exact citations and structure. They measure no compiler run or model performance, and apply no fix.</p>
+    <p><a href="index.html#object-core%2Fxcode-build-diagnosis">Inspect the diagnosis Skill's version and declared scope</a></p>
+  </section>
+  <section aria-labelledby="evidence">
+    <h2 id="evidence">4. Identify an evidence gap</h2>
+    <p>Read the <a href="source/skills/release-readiness-evidence/SKILL.md.html">evidence procedure</a> and <a href="source/skills/release-readiness-evidence/fixtures/complete.json.html">original packet</a>, then inspect its inventory:</p>
+    <pre><code>python -B tools/evaluate_release_packet.py skills/release-readiness-evidence/fixtures/complete.json</code></pre>
+    <p>Even the complete authored packet leaves release BLOCKED. Identify the next collection task and preserve failures and missing observations.</p>
+    <p><a href="index.html#object-core%2Frelease-readiness-evidence">Inspect the evidence Skill's version and declared scope</a></p>
+  </section>
+  <section aria-labelledby="host">
+    <h2 id="host">5. Review host losses before use</h2>
+    <pre><code>python -B tools/inspect_skill_portability.py --skill core/ios-test-plan
+python -B tools/export_adapter.py --agent core/ios-quality-reviewer</code></pre>
+    <p>Host versions are unobserved. Filesystem, network and approval controls are unsupported enforcement declarations. Suggested discovery paths and prompt instructions grant no execution authority. Executable exports reject.</p>
+  </section>
+  <footer>
+    <p><a href="source/docs/source-workflow.md.html">Full workflow and kit boundaries</a> · <a href="source/docs/release-checklist.md.html">Remaining release checklist</a> · <a href="index.html">Return to the catalog</a></p>
+    <p>Publication validation remains blocked. No trusted evidence or host qualification is awarded.</p>
+  </footer>
+</main>
+</body>
+</html>
